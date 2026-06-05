@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Color - Blue for Vega -->
+    <color name="primary">#1F77F2</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#D9E8FF</color>
+    <color name="on_primary_container">#001B59</color>
+    
+    <!-- Secondary Color - Teal for accents -->
+    <color name="secondary">#4DB8A8</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#CAFFEE</color>
+    <color name="on_secondary_container">#003831</color>
+    
+    <!-- Error Color - Red for errors -->
+    <color name="error">#DC3545</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#FFDFDF</color>
+    <color name="on_error_container">#400007</color>
+    
+    <!-- Background and Surface -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_surface">#1C1B1B</color>
+    <color name="surface_variant">#E8E3E8</color>
+    <color name="on_surface_variant">#49454E</color>
+    
+    <!-- Outline for borders -->
+    <color name="outline">#79747E</color>
+    <color name="outline_variant">#C4C7C5</color>
+    
+    <!-- Scrim for shadows -->
+    <color name="scrim">#000000</color>
+    
+    <!-- Task Priority Colors -->
+    <color name="priority_none">#9E9E9E</color>
+    <color name="priority_low">#81C3D7</color>
+    <color name="priority_medium">#FFB74D</color>
+    <color name="priority_high">#E57373</color>
+    
+    <!-- Task State Colors -->
+    <color name="state_inbox">#BDBDBD</color>
+    <color name="state_today">#81C3D7</color>
+    <color name="state_upcoming">#FFB74D</color>
+    <color name="state_done">#81C784</color>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Vega</string>
+    
+    <!-- View Titles -->
+    <string name="title_inbox">Inbox</string>
+    <string name="title_today">Today</string>
+    <string name="title_upcoming">Upcoming</string>
+    <string name="title_done">Done</string>
+    
+    <!-- Quick Add -->
+    <string name="title_quick_add">Add Task</string>
+    <string name="hint_task_input">Type task (e.g., \"Buy milk tomorrow 3pm high\")</string>
+    <string name="button_add">Add</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="label_parsing_preview">Extracted:</string>
+    
+    <!-- Task Details -->
+    <string name="label_title">Title</string>
+    <string name="label_due_date">Due Date</string>
+    <string name="label_priority">Priority</string>
+    <string name="label_notes">Notes</string>
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
+    
+    <!-- Priority Values -->
+    <string name="priority_none">None</string>
+    <string name="priority_low">Low</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_high">High</string>
+    
+    <!-- Task States -->
+    <string name="state_inbox">Inbox</string>
+    <string name="state_today">Today</string>
+    <string name="state_upcoming">Upcoming</string>
+    <string name="state_done">Done</string>
+    
+    <!-- Empty States -->
+    <string name="empty_today">Nothing in Today. Check Inbox or Upcoming for tasks to review.</string>
+    <string name="empty_inbox">Inbox is empty. All tasks reviewed!</string>
+    <string name="empty_upcoming">No upcoming tasks yet.</string>
+    <string name="empty_done">No completed tasks yet.</string>
+    <string name="empty_search">No tasks found. Try a different keyword.</string>
+    
+    <!-- Snooze Options -->
+    <string name="snooze_move_tomorrow">Move to Tomorrow</string>
+    <string name="snooze_keep_today">Keep in Today</string>
+    <string name="snooze_mark_done">Mark as Done</string>
+    <string name="snooze_delete">Delete</string>
+    <string name="snooze_prompt_title">Unfinished task from Today</string>
+    
+    <!-- Warnings & Messages -->
+    <string name="warning_too_many_today">You have a lot in Today. Consider focusing on fewer tasks.</string>
+    <string name="error_empty_title">Task title cannot be empty</string>
+    <string name="overflow_more">+%d more</string>
+    <string name="next_best_action">Best to do next</string>
+    
+    <!-- Settings -->
+    <string name="title_settings">Settings</string>
+    <string name="label_notifications">Notifications</string>
+    <string name="label_end_of_day">End-of-day reminders</string>
+    <string name="label_daily_reminder">Daily reminder</string>
+    <string name="label_weekly_review">Weekly review</string>
+    <string name="label_theme">Theme</string>
+    <string name="theme_system">System (default)</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+</resources>

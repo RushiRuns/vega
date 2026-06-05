@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_16"
+    android:background="?android:attr/colorBackground">
+
+    <!-- Search Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_search"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search by title..."
+        android:layout_marginBottom="@dimen/spacing_16"
+        app:startIconDrawable="@android:drawable/ic_menu_search"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:imeOptions="actionSearch"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/spacing_8" />
+
+    <!-- Search Results List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_results"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="visible" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/layout_empty_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_search"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?android:attr/textColorSecondary"
+            android:gravity="center"
+            android:paddingHorizontal="32dp" />
+    </LinearLayout>
+</LinearLayout>

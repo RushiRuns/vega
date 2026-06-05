@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_16"
+        android:background="?android:attr/colorBackground">
+
+        <!-- Handle indicator for bottom sheet -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/spacing_16"
+            android:background="?android:attr/textColorSecondary"
+            android:backgroundTint="?android:attr/textColorSecondary" />
+
+        <!-- Title Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Details"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_marginBottom="@dimen/spacing_16" />
+
+        <!-- Title Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_title"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_title"
+            android:layout_marginBottom="@dimen/spacing_12">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Due Date Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_due_date"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_due_date"
+            android:layout_marginBottom="@dimen/spacing_12"
+            app:startIconDrawable="@android:drawable/ic_menu_agenda"
+            app:endIconMode="custom"
+            app:endIconDrawable="@android:drawable/ic_menu_close_clear_cancel"
+            app:endIconContentDescription="Clear Due Date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_due_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Priority Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_priority"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_priority"
+            android:layout_marginBottom="@dimen/spacing_12">
+
+            <AutoCompleteTextView
+                android:id="@+id/actv_priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- State Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_state"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="State"
+            android:layout_marginBottom="@dimen/spacing_12">
+
+            <AutoCompleteTextView
+                android:id="@+id/actv_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Notes Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_notes"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_notes"
+            android:layout_marginBottom="@dimen/spacing_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="3"
+                android:gravity="top" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_cancel"
+                android:layout_marginEnd="@dimen/spacing_8" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_save" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

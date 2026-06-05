@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_16"
+    android:background="?android:attr/colorBackground">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_notifications"
+        android:textAppearance="?attr/textAppearanceSubtitle2"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginBottom="@dimen/spacing_8" />
+
+    <!-- End-of-day Reminders Switch -->
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_end_of_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_end_of_day"
+        android:layout_marginBottom="@dimen/spacing_12"
+        android:checked="true" />
+
+    <!-- Daily Reminder Switch -->
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_daily_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_daily_reminder"
+        android:layout_marginBottom="@dimen/spacing_12"
+        android:checked="true" />
+
+    <!-- Weekly Review Switch -->
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_weekly_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_weekly_review"
+        android:layout_marginBottom="@dimen/spacing_24"
+        android:checked="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/outline_variant"
+        android:layout_marginBottom="@dimen/spacing_24" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_theme"
+        android:textAppearance="?attr/textAppearanceSubtitle2"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginBottom="@dimen/spacing_12" />
+
+    <!-- Theme Dropdown -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_theme"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Theme">
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

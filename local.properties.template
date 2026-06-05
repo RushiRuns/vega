@@ -1,0 +1,18 @@
+# This file contains local configuration for your machine.
+# Copy this file to 'local.properties' and update with your actual paths.
+# DO NOT commit 'local.properties' to version control - it's already in .gitignore
+
+## SDK Location (REQUIRED)
+# Windows example:
+# sdk.dir=C\:\\Users\\YourUsername\\AppData\\Local\\Android\\Sdk
+
+# macOS example:
+# sdk.dir=/Users/yourusername/Library/Android/sdk
+
+# Linux example:
+# sdk.dir=/home/yourusername/Android/Sdk
+
+sdk.dir=YOUR_SDK_PATH_HERE
+
+## Optional: NDK Location (if using native code)
+# ndk.dir=YOUR_NDK_PATH_HERE

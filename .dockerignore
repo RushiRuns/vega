@@ -1,0 +1,29 @@
+# Gradle build outputs
+build/
+*.gradle
+.gradle/
+
+# Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Local development
+local.properties
+gradle.properties
+
+# Outputs
+*.apk
+*.ap_
+*.dex
+*.jar
+*.class
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Environment
+.env*

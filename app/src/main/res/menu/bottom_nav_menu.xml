@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/inboxFragment"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/title_inbox" />
+    
+    <item
+        android:id="@+id/todayFragment"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/title_today" />
+    
+    <item
+        android:id="@+id/upcomingFragment"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="@string/title_upcoming" />
+    
+    <item
+        android:id="@+id/doneFragment"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="@string/title_done" />
+</menu>

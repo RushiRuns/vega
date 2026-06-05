@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing (Material Design 2) -->
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_12">12dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+    <dimen name="spacing_24">24dp</dimen>
+    <dimen name="spacing_32">32dp</dimen>
+    
+    <!-- Component Sizes -->
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_small">20dp</dimen>
+    
+    <!-- Text Sizes -->
+    <dimen name="text_display_large">57sp</dimen>
+    <dimen name="text_display_medium">45sp</dimen>
+    <dimen name="text_headline_large">32sp</dimen>
+    <dimen name="text_headline_medium">28sp</dimen>
+    <dimen name="text_title_large">22sp</dimen>
+    <dimen name="text_body_large">16sp</dimen>
+    <dimen name="text_body_medium">14sp</dimen>
+    <dimen name="text_label_large">14sp</dimen>
+    <dimen name="text_label_medium">12sp</dimen>
+    
+    <!-- Card and List Item -->
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="list_item_height">56dp</dimen>
+    <dimen name="bottom_navigation_height">56dp</dimen>
+    
+    <!-- Dialog -->
+    <dimen name="dialog_corner_radius">28dp</dimen>
+</resources>

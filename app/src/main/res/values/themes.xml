@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Vega" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Material Design 2 Primary Color -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        
+        <!-- Secondary Color -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        
+        <!-- Error Color -->
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/on_error</item>
+        
+        <!-- Surface & Background -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        
+        <!-- Typography -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.Vega.Headline1</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.Vega.Headline6</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Vega.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Vega.Body2</item>
+        
+        <!-- Shape -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Vega.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Vega.MediumComponent</item>
+    </style>
+    
+    <!-- Typography Styles -->
+    <style name="TextAppearance.Vega.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="TextAppearance.Vega.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="TextAppearance.Vega.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="TextAppearance.Vega.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+    
+    <!-- Shape Styles -->
+    <style name="ShapeAppearance.Vega.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerRadius">8dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.Vega.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerRadius">12dp</item>
+    </style>
+</resources>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/spacing_8"
+    android:layout_marginVertical="@dimen/spacing_4"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Foreground Content Layout -->
+        <LinearLayout
+            android:id="@+id/layout_foreground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_16"
+            android:gravity="center_vertical"
+            android:background="?android:attr/colorBackground">
+
+            <!-- Checkbox / Status Indicator -->
+            <CheckBox
+                android:id="@+id/cb_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_12" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Task Title -->
+                <TextView
+                    android:id="@+id/tv_task_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textColor="?android:attr/textColorPrimary" />
+
+                <!-- Task Due Date -->
+                <TextView
+                    android:id="@+id/tv_task_due_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- Priority Badge -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_priority"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:visibility="gone"
+                app:chipMinHeight="24dp"
+                app:chipCornerRadius="4dp"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <!-- Swipe Actions Overlay Layout -->
+        <LinearLayout
+            android:id="@+id/layout_actions_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="#E6000000"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_action_postpone"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Postpone"
+                android:textColor="@android:color/white"
+                app:icon="@android:drawable/ic_menu_agenda"
+                app:iconTint="@android:color/white"
+                android:layout_marginEnd="@dimen/spacing_16" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_action_delete"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:textColor="@color/error"
+                app:icon="@android:drawable/ic_menu_delete"
+                app:iconTint="@color/error" />
+
+        </LinearLayout>
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

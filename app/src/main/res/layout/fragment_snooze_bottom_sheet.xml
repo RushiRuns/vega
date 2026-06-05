@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_16"
+    android:background="?android:attr/colorBackground">
+
+    <!-- Handle indicator for bottom sheet -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/spacing_16"
+        android:background="?android:attr/textColorSecondary"
+        android:backgroundTint="?android:attr/textColorSecondary" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_snooze_prompt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/snooze_prompt_title"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Task Title -->
+    <TextView
+        android:id="@+id/tv_snooze_task_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginBottom="@dimen/spacing_8" />
+
+    <!-- Metadata container (horizontal list of chips) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/spacing_16">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_snooze_due_date"
+            style="@style/Widget.MaterialComponents.Chip.Action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_8"
+            android:clickable="false"
+            android:focusable="false"
+            android:visibility="gone" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_snooze_priority"
+            style="@style/Widget.MaterialComponents.Chip.Action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- Snooze Actions -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_snooze_move_tomorrow"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:text="@string/snooze_move_tomorrow"
+        app:icon="@android:drawable/ic_menu_agenda" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_snooze_keep_today"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:text="@string/snooze_keep_today"
+        app:icon="@android:drawable/ic_dialog_info" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_snooze_mark_done"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:text="@string/snooze_mark_done"
+        app:icon="@android:drawable/ic_menu_view" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_snooze_delete"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:text="@string/snooze_delete"
+        android:textColor="@color/error"
+        app:icon="@android:drawable/ic_menu_delete"
+        app:iconTint="@color/error" />
+
+</LinearLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_16">
+
+    <!-- Title for the Quick Add sheet -->
+    <TextView
+        android:id="@+id/text_quick_add_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_12"
+        android:text="@string/title_quick_add"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textStyle="bold" />
+
+    <!-- Text input for task capture -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_task_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_12"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_task_input"
+            android:inputType="textCapSentences"
+            android:maxLines="3" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Preview Label -->
+    <TextView
+        android:id="@+id/text_preview_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_4"
+        android:text="@string/label_parsing_preview"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?android:attr/textColorSecondary"
+        android:visibility="gone" />
+
+    <!-- Horizontal Chip Container for real-time parser preview -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/group_chips_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_16"
+        app:singleLine="true">
+
+        <!-- Date Chip -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_date_preview"
+            style="@style/Widget.MaterialComponents.Chip.Entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tomorrow"
+            android:visibility="gone"
+            app:chipIcon="@android:drawable/ic_menu_my_calendar"
+            app:closeIconVisible="true" />
+
+        <!-- Priority Chip -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_priority_preview"
+            style="@style/Widget.MaterialComponents.Chip.Entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High"
+            android:visibility="gone"
+            app:chipIcon="@android:drawable/ic_dialog_alert"
+            app:closeIconVisible="true" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Buttons row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_8"
+            android:text="@string/button_cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_add" />
+    </LinearLayout>
+</LinearLayout>

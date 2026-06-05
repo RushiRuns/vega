@@ -1,0 +1,45 @@
+# Gradle
+.gradle/
+build/
+*.gradle.kts~
+
+# Android Studio
+.idea/
+.DS_Store
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+*.class
+*.log
+.vscode/
+
+# Local properties
+local.properties
+
+# Build outputs
+bin/
+gen/
+out/
+*.apk
+*.ap_
+*.dex
+*.class
+*.jar
+
+# Runtime data
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment
+.env
+.env.*
+
+# Common OS files
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+*~
