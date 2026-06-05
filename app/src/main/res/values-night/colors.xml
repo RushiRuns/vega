@@ -19,4 +19,8 @@
     
     <color name="outline">#938F99</color>
     <color name="outline_variant">#49454E</color>
+    
+    <!-- Premium Card Colors -->
+    <color name="task_card_background">#252932</color>
+    <color name="task_card_stroke">#343B4C</color>
 </resources>

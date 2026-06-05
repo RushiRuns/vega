@@ -6,7 +6,10 @@
     android:layout_marginHorizontal="@dimen/spacing_8"
     android:layout_marginVertical="@dimen/spacing_4"
     app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/task_card_background"
+    app:strokeColor="@color/task_card_stroke"
+    app:strokeWidth="1dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -20,7 +23,7 @@
             android:orientation="horizontal"
             android:padding="@dimen/spacing_16"
             android:gravity="center_vertical"
-            android:background="?android:attr/colorBackground">
+            android:background="@android:color/transparent">
 
             <!-- Checkbox / Status Indicator -->
             <CheckBox

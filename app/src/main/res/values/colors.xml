@@ -42,5 +42,10 @@
     <color name="state_inbox">#BDBDBD</color>
     <color name="state_today">#81C3D7</color>
     <color name="state_upcoming">#FFB74D</color>
+    
     <color name="state_done">#81C784</color>
+    
+    <!-- Premium Card Colors -->
+    <color name="task_card_background">#F4F6FA</color>
+    <color name="task_card_stroke">#E2E8F0</color>
 </resources>

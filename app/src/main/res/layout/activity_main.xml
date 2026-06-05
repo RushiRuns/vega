@@ -17,7 +17,9 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 app:title="@string/app_name" />
         </com.google.android.material.appbar.AppBarLayout>
         
@@ -37,6 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             app:menu="@menu/bottom_nav_menu"
             app:labelVisibilityMode="labeled" />
     </LinearLayout>
@@ -47,7 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="96dp"
         android:contentDescription="@string/title_quick_add"
         app:srcCompat="@android:drawable/ic_input_add" />
 </FrameLayout>
