@@ -194,4 +194,9 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onDismiss(dialog: android.content.DialogInterface) {
+        super.onDismiss(dialog)
+        (activity as? com.vega.ui.activities.QuickAddActivity)?.finish()
+    }
 }

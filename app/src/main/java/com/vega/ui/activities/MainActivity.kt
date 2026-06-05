@@ -89,12 +89,14 @@ class MainActivity : AppCompatActivity() {
 
         observeSnoozeFlow()
         handleSnoozeIntent(intent)
+        handleWidgetIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
         handleSnoozeIntent(intent)
+        handleWidgetIntent(intent)
     }
 
     private fun handleSnoozeIntent(intent: Intent?) {
@@ -102,6 +104,15 @@ class MainActivity : AppCompatActivity() {
             // Reset intent extra to avoid re-triggering
             intent.putExtra("EXTRA_START_SNOOZE", false)
             snoozeViewModel.loadTodayTasksForSnooze()
+        }
+    }
+
+    private fun handleWidgetIntent(intent: Intent?) {
+        if (intent?.getBooleanExtra("EXTRA_START_QUICK_ADD", false) == true) {
+            // Reset intent extra to avoid re-triggering
+            intent.putExtra("EXTRA_START_QUICK_ADD", false)
+            val quickAddBottomSheet = QuickAddBottomSheetFragment()
+            quickAddBottomSheet.show(supportFragmentManager, "QuickAddBottomSheetFragment")
         }
     }
 
