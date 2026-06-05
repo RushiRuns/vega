@@ -36,39 +36,60 @@ class TaskRepository @Inject constructor(
         if (task.state == TaskState.DONE.name && (oldTask == null || oldTask.state != TaskState.DONE.name)) {
             val recurrencePattern = task.recurrence
             if (!recurrencePattern.isNullOrBlank()) {
-                val baseTime = task.dueDate ?: System.currentTimeMillis()
-                val nextDueDate = com.vega.utils.RecurrenceUtils.calculateNextDueDate(baseTime, recurrencePattern)
-                
-                val todayCalendar = java.util.Calendar.getInstance().apply {
-                    set(java.util.Calendar.HOUR_OF_DAY, 0)
-                    set(java.util.Calendar.MINUTE, 0)
-                    set(java.util.Calendar.SECOND, 0)
-                    set(java.util.Calendar.MILLISECOND, 0)
-                }
-                
-                val nextDayOnlyCalendar = java.util.Calendar.getInstance().apply {
-                    timeInMillis = nextDueDate
-                    set(java.util.Calendar.HOUR_OF_DAY, 0)
-                    set(java.util.Calendar.MINUTE, 0)
-                    set(java.util.Calendar.SECOND, 0)
-                    set(java.util.Calendar.MILLISECOND, 0)
-                }
-                
-                val nextState = if (nextDayOnlyCalendar.timeInMillis <= todayCalendar.timeInMillis) {
-                    TaskState.TODAY.name
+                val rule = if (recurrencePattern.startsWith("{")) {
+                    com.vega.data.database.RecurrenceRule.fromJson(recurrencePattern)
                 } else {
-                    TaskState.UPCOMING.name
+                    com.vega.data.database.RecurrenceRule(frequency = recurrencePattern)
                 }
                 
-                val nextTask = Task(
-                    title = task.title,
-                    dueDate = nextDueDate,
-                    priority = task.priority,
-                    state = nextState,
-                    notes = task.notes,
-                    recurrence = recurrencePattern
-                )
-                createTask(nextTask)
+                if (rule != null) {
+                    val baseTime = task.dueDate ?: System.currentTimeMillis()
+                    val nextDueDate = com.vega.utils.RecurrenceUtils.calculateNextDueDate(baseTime, rule)
+                    
+                    var shouldSpawn = true
+                    if (rule.endType == "ON_DATE" && rule.endDate != null && nextDueDate > rule.endDate) {
+                        shouldSpawn = false
+                    } else if (rule.endType == "AFTER_OCCURRENCES" && rule.endOccurrences != null) {
+                        if (rule.currentOccurrenceCount >= rule.endOccurrences) {
+                            shouldSpawn = false
+                        }
+                    }
+                    
+                    if (shouldSpawn) {
+                        val todayCalendar = java.util.Calendar.getInstance().apply {
+                            set(java.util.Calendar.HOUR_OF_DAY, 0)
+                            set(java.util.Calendar.MINUTE, 0)
+                            set(java.util.Calendar.SECOND, 0)
+                            set(java.util.Calendar.MILLISECOND, 0)
+                        }
+                        
+                        val nextDayOnlyCalendar = java.util.Calendar.getInstance().apply {
+                            timeInMillis = nextDueDate
+                            set(java.util.Calendar.HOUR_OF_DAY, 0)
+                            set(java.util.Calendar.MINUTE, 0)
+                            set(java.util.Calendar.SECOND, 0)
+                            set(java.util.Calendar.MILLISECOND, 0)
+                        }
+                        
+                        val nextState = if (nextDayOnlyCalendar.timeInMillis <= todayCalendar.timeInMillis) {
+                            TaskState.TODAY.name
+                        } else {
+                            TaskState.UPCOMING.name
+                        }
+                        
+                        val nextRule = rule.copy(currentOccurrenceCount = rule.currentOccurrenceCount + 1)
+                        
+                        val nextTask = Task(
+                            title = task.title,
+                            dueDate = nextDueDate,
+                            priority = task.priority,
+                            state = nextState,
+                            notes = task.notes,
+                            recurrence = nextRule.toJson()
+                        )
+                        createTask(nextTask)
+                    }
+                }
             }
         }
     }

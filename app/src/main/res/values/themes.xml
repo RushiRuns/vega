@@ -56,4 +56,10 @@
     <style name="ShapeAppearance.Vega.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerRadius">12dp</item>
     </style>
+    
+    <style name="Theme.Vega.FullScreenDialog" parent="Theme.Vega">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+    </style>
 </resources>

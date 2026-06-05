@@ -1,7 +1,7 @@
 <!-- 
 SYNC IMPACT REPORT
 ==================
-Version Change: 1.0.0 → 1.1.0 (RECURRING TASKS RATIFICATION)
+Version Change: 1.1.0 → 1.2.0 (ADVANCED RECURRING TASKS RATIFICATION)
 Ratification Date: 2026-06-04
 Last Amended: 2026-06-05
 
@@ -122,7 +122,7 @@ This card must not feel like AI. It must feel like the app simply knows what mat
 ### 3.5 Recurring Tasks Governance
 
 - A recurring task is a schedule that automatically spawns a new task instance when the current active occurrence is marked done.
-- Supported recurrence intervals are: Daily, Weekdays (Mon-Fri), Weekly, Monthly.
+- System must support advanced recurrence configurations similar to Google Tasks: custom intervals, specific day-of-week selections for weekly tasks, monthly relative schedules (e.g., "first Friday"), and flexible termination rules (Never, On Date, After X Occurrences).
 - To prevent cognitive overload, only the *current active occurrence* is visible in Today or Upcoming views. Future occurrences must never clutter these lists.
 - Newly spawned occurrences skip the Inbox and are placed directly in Today or Upcoming depending on their due date.
 
@@ -239,4 +239,4 @@ This constitution is the supreme governing document. All specification, planning
 
 ---
 
-**Version:** 1.1.0 | **Ratified:** 2026-06-04 | **Last Amended:** 2026-06-05
+**Version:** 1.2.0 | **Ratified:** 2026-06-04 | **Last Amended:** 2026-06-05

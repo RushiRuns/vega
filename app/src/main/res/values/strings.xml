@@ -87,4 +87,33 @@
     <string name="recurrence_weekly">Weekly</string>
     <string name="recurrence_weekdays">Weekdays</string>
     <string name="recurrence_monthly">Monthly</string>
+
+    <!-- Repeats Interface -->
+    <string name="label_repeats">Repeats</string>
+    <string name="label_done">Done</string>
+    <string name="label_every">Every</string>
+    <string name="label_starts">Starts</string>
+    <string name="label_ends">Ends</string>
+    <string name="label_never">Never</string>
+    <string name="label_on">On</string>
+    <string name="label_after">After</string>
+    <string name="label_occurrences">occurrences</string>
+    <string name="unit_day">day</string>
+    <string name="unit_days">days</string>
+    <string name="unit_week">week</string>
+    <string name="unit_weeks">weeks</string>
+    <string name="unit_month">month</string>
+    <string name="unit_months">months</string>
+    <string name="unit_year">year</string>
+    <string name="unit_years">years</string>
+    <string name="monthly_day_of_month">Day %d</string>
+    <string name="monthly_relative_day">%1$s %2$s</string>
+    <string name="recurrence_summary_daily">Every %1$d days</string>
+    <string name="recurrence_summary_daily_1">Daily</string>
+    <string name="recurrence_summary_weekly">Every %1$d weeks on %2$s</string>
+    <string name="recurrence_summary_weekly_1">Weekly on %1$s</string>
+    <string name="recurrence_summary_monthly">Every %1$d months</string>
+    <string name="recurrence_summary_monthly_1">Monthly</string>
+    <string name="recurrence_summary_yearly">Every %1$d years</string>
+    <string name="recurrence_summary_yearly_1">Yearly</string>
 </resources>

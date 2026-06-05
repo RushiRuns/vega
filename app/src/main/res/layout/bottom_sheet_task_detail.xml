@@ -103,17 +103,23 @@
         <!-- Recurrence Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_recurrence"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_recurrence"
-            android:layout_marginBottom="@dimen/spacing_12">
+            android:layout_marginBottom="@dimen/spacing_12"
+            app:startIconDrawable="@android:drawable/ic_menu_revert"
+            app:endIconMode="custom"
+            app:endIconDrawable="@android:drawable/ic_menu_close_clear_cancel"
+            app:endIconContentDescription="Clear Recurrence">
 
-            <AutoCompleteTextView
-                android:id="@+id/actv_recurrence"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_recurrence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Notes Field -->

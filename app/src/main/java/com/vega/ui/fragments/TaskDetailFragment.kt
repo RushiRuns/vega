@@ -34,6 +34,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
     private val viewModel: TaskDetailViewModel by viewModels()
     private var taskId: String? = null
     private var selectedDueDate: Long? = null
+    private var selectedRecurrence: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,15 +77,12 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
 
             val priorityOptions = getPriorityOptions()
             val stateOptions = getStateOptions()
-            val recurrenceOptions = getRecurrenceOptions()
 
             val priorityStr = binding.actvPriority.text.toString()
             val stateStr = binding.actvState.text.toString()
-            val recurrenceStr = binding.actvRecurrence.text.toString()
 
             val selectedPriority = priorityOptions.firstOrNull { it.first == priorityStr }?.second ?: TaskPriority.NONE
             val selectedState = stateOptions.firstOrNull { it.first == stateStr }?.second ?: TaskState.INBOX
-            val selectedRecurrence = recurrenceOptions.firstOrNull { it.first == recurrenceStr }?.second
 
             viewModel.saveTask(title, selectedDueDate, selectedPriority, selectedState, selectedRecurrence, notes)
         }
@@ -98,6 +96,27 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         binding.tilDueDate.setEndIconOnClickListener {
             selectedDueDate = null
             binding.etDueDate.setText("")
+        }
+
+        // Recurrence Trigger
+        binding.etRecurrence.setOnClickListener {
+            showRepeatsDialog()
+        }
+
+        // End icon for Recurrence TextInputLayout (Clear button)
+        binding.tilRecurrence.setEndIconOnClickListener {
+            selectedRecurrence = null
+            binding.etRecurrence.setText(com.vega.utils.RecurrenceUtils.formatSummary(requireContext(), null))
+        }
+
+        // Set Fragment Result Listener
+        parentFragmentManager.setFragmentResultListener(
+            RepeatsDialogFragment.REQUEST_KEY_RECURRENCE,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val ruleJson = bundle.getString(RepeatsDialogFragment.RESULT_KEY_RULE_JSON)
+            selectedRecurrence = ruleJson
+            binding.etRecurrence.setText(com.vega.utils.RecurrenceUtils.formatSummary(requireContext(), ruleJson))
         }
     }
 
@@ -156,7 +175,10 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                                 binding.etDueDate.setText("")
                             }
 
-                            setupDropdowns(it.priority, it.state, it.recurrence)
+                            selectedRecurrence = it.recurrence
+                            binding.etRecurrence.setText(com.vega.utils.RecurrenceUtils.formatSummary(requireContext(), it.recurrence))
+
+                            setupDropdowns(it.priority, it.state)
                         }
                     }
                 }
@@ -184,10 +206,9 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setupDropdowns(currentPriority: String, currentState: String, currentRecurrence: String?) {
+    private fun setupDropdowns(currentPriority: String, currentState: String) {
         val priorityOptions = getPriorityOptions()
         val stateOptions = getStateOptions()
-        val recurrenceOptions = getRecurrenceOptions()
 
         // Setup Priority dropdown
         val priorityAdapter = ArrayAdapter(
@@ -218,16 +239,6 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         }
         val currentStateText = stateOptions.firstOrNull { it.second == selectedStateName }?.first.orEmpty()
         binding.actvState.setText(currentStateText, false)
-
-        // Setup Recurrence dropdown
-        val recurrenceAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            recurrenceOptions.map { it.first }
-        )
-        binding.actvRecurrence.setAdapter(recurrenceAdapter)
-        val currentRecurrenceText = recurrenceOptions.firstOrNull { it.second == currentRecurrence }?.first ?: getString(R.string.recurrence_none)
-        binding.actvRecurrence.setText(currentRecurrenceText, false)
     }
 
     private fun getPriorityOptions() = listOf(
@@ -244,13 +255,10 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         getString(R.string.state_done) to TaskState.DONE
     )
 
-    private fun getRecurrenceOptions() = listOf(
-        getString(R.string.recurrence_none) to null,
-        getString(R.string.recurrence_daily) to "DAILY",
-        getString(R.string.recurrence_weekdays) to "WEEKDAYS",
-        getString(R.string.recurrence_weekly) to "WEEKLY",
-        getString(R.string.recurrence_monthly) to "MONTHLY"
-    )
+    private fun showRepeatsDialog() {
+        val dialog = RepeatsDialogFragment.newInstance(selectedRecurrence, selectedDueDate)
+        dialog.show(parentFragmentManager, RepeatsDialogFragment.TAG)
+    }
 
     private fun formatDueDate(timestamp: Long): String {
         val cal = Calendar.getInstance().apply { timeInMillis = timestamp }
