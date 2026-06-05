@@ -34,4 +34,7 @@ interface TaskDao {
     
     @Query("SELECT * FROM tasks WHERE state = 'TODAY'")
     fun getTodayTasksForSnooze(): Flow<List<Task>>
+
+    @Query("SELECT * FROM tasks WHERE state != 'DONE'")
+    suspend fun getAllActiveTasks(): List<Task>
 }

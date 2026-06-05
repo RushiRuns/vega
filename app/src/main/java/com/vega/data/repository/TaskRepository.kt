@@ -1,5 +1,6 @@
 package com.vega.data.repository
 
+import com.vega.alarms.TaskAlarmScheduler
 import com.vega.data.database.Task
 import com.vega.data.database.TaskDao
 import com.vega.data.database.TaskState
@@ -7,7 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TaskRepository @Inject constructor(
-    private val taskDao: TaskDao
+    private val taskDao: TaskDao,
+    private val alarmScheduler: TaskAlarmScheduler
 ) {
     fun getInboxTasks(): Flow<List<Task>> = 
         taskDao.getTasksByState(TaskState.INBOX.name)
@@ -20,15 +22,21 @@ class TaskRepository @Inject constructor(
     
     fun getDoneTasks(): Flow<List<Task>> = 
         taskDao.getDoneTasksSortedByRecency()
-    
-    suspend fun createTask(task: Task) = 
+        
+    suspend fun createTask(task: Task) {
         taskDao.insertTask(task)
+        alarmScheduler.scheduleAlarm(task)
+    }
     
-    suspend fun updateTask(task: Task) = 
+    suspend fun updateTask(task: Task) {
         taskDao.updateTask(task)
+        alarmScheduler.scheduleAlarm(task)
+    }
     
-    suspend fun deleteTask(task: Task) = 
+    suspend fun deleteTask(task: Task) {
         taskDao.deleteTask(task)
+        alarmScheduler.cancelAlarm(task.id)
+    }
     
     fun searchTasks(query: String): Flow<List<Task>> = 
         taskDao.searchByTitle("%$query%")

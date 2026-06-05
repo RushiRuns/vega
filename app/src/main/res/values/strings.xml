@@ -66,4 +66,17 @@
     <string name="theme_system">System (default)</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+
+    <!-- Notification Mode Settings -->
+    <string name="label_notification_mode">Notification Mode</string>
+    <string name="notification_mode_ritual">Ritual Reminders</string>
+    <string name="notification_mode_task_specific">Task-Specific Alarms</string>
+
+    <!-- Alarm Offset Settings -->
+    <string name="label_alarm_offset">Reminder Advance Time</string>
+    <string name="alarm_offset_0">At due time</string>
+    <string name="alarm_offset_5">5 minutes before</string>
+    <string name="alarm_offset_10">10 minutes before</string>
+    <string name="alarm_offset_15">15 minutes before</string>
+    <string name="alarm_offset_30">30 minutes before</string>
 </resources>

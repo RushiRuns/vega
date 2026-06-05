@@ -44,6 +44,11 @@ class DailyReminderWorker(
 
     override suspend fun doWork(): Result {
         val prefs = applicationContext.getSharedPreferences("vega_prefs", Context.MODE_PRIVATE)
+        val mode = prefs.getString("pref_notification_mode", "fixed_ritual")
+        if (mode == "task_specific") {
+            return Result.success()
+        }
+
         val enabled = prefs.getBoolean("pref_daily_reminders", true)
         if (!enabled) {
             return Result.success()

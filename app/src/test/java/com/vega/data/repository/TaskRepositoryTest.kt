@@ -3,6 +3,7 @@ package com.vega.data.repository
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.vega.alarms.TaskAlarmScheduler
 import com.vega.data.database.Task
 import com.vega.data.database.TaskDao
 import com.vega.data.database.TaskState
@@ -15,6 +16,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 
@@ -26,14 +29,18 @@ class TaskRepositoryTest {
     private lateinit var dao: TaskDao
     private lateinit var repository: TaskRepository
 
+    @Mock
+    private lateinit var alarmScheduler: TaskAlarmScheduler
+
     @Before
     fun createDb() {
+        MockitoAnnotations.openMocks(this)
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context, VegaDatabase::class.java)
             .allowMainThreadQueries()
             .build()
         dao = db.taskDao()
-        repository = TaskRepository(dao)
+        repository = TaskRepository(dao, alarmScheduler)
     }
 
     @After

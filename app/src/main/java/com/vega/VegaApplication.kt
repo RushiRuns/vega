@@ -1,6 +1,10 @@
 package com.vega
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -15,9 +19,24 @@ class VegaApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         ThemeManager.applyTheme(this)
+        createNotificationChannel()
         scheduleEndOfDaySnooze()
         scheduleDailyReminder()
         scheduleWeeklyReview()
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                "vega_reminders",
+                "Vega Reminders",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Channel for Vega reminders and snooze prompts"
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     private fun scheduleEndOfDaySnooze() {

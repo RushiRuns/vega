@@ -38,7 +38,10 @@ object AppModule {
     
     @Singleton
     @Provides
-    fun provideTaskRepository(taskDao: TaskDao): TaskRepository {
-        return TaskRepository(taskDao)
+    fun provideTaskRepository(
+        taskDao: TaskDao,
+        alarmScheduler: com.vega.alarms.TaskAlarmScheduler
+    ): TaskRepository {
+        return TaskRepository(taskDao, alarmScheduler)
     }
 }

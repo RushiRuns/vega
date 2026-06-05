@@ -23,6 +23,11 @@ class WeeklyReviewWorker(
 
     override suspend fun doWork(): Result {
         val prefs = applicationContext.getSharedPreferences("vega_prefs", Context.MODE_PRIVATE)
+        val mode = prefs.getString("pref_notification_mode", "fixed_ritual")
+        if (mode == "task_specific") {
+            return Result.success()
+        }
+
         val enabled = prefs.getBoolean("pref_weekly_review", true)
         if (!enabled) {
             return Result.success()

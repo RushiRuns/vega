@@ -15,32 +15,74 @@
         android:textColor="?attr/colorPrimary"
         android:layout_marginBottom="@dimen/spacing_8" />
 
-    <!-- End-of-day Reminders Switch -->
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_end_of_day"
+    <!-- Notification Mode Dropdown -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_notification_mode"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_end_of_day"
-        android:layout_marginBottom="@dimen/spacing_12"
-        android:checked="true" />
+        android:hint="@string/label_notification_mode"
+        android:layout_marginBottom="@dimen/spacing_16">
 
-    <!-- Daily Reminder Switch -->
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_daily_reminder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_daily_reminder"
-        android:layout_marginBottom="@dimen/spacing_12"
-        android:checked="true" />
+        <AutoCompleteTextView
+            android:id="@+id/actv_notification_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Weekly Review Switch -->
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_weekly_review"
+    <!-- Alarm Offset Dropdown -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_alarm_offset"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_weekly_review"
-        android:layout_marginBottom="@dimen/spacing_24"
-        android:checked="true" />
+        android:hint="@string/label_alarm_offset"
+        android:layout_marginBottom="@dimen/spacing_16"
+        android:visibility="gone">
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_alarm_offset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Ritual Reminders Settings Group -->
+    <LinearLayout
+        android:id="@+id/layout_ritual_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <!-- End-of-day Reminders Switch -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_end_of_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_end_of_day"
+            android:layout_marginBottom="@dimen/spacing_12"
+            android:checked="true" />
+
+        <!-- Daily Reminder Switch -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_daily_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_daily_reminder"
+            android:layout_marginBottom="@dimen/spacing_12"
+            android:checked="true" />
+
+        <!-- Weekly Review Switch -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_weekly_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_weekly_review"
+            android:layout_marginBottom="@dimen/spacing_16"
+            android:checked="true" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
