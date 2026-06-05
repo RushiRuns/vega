@@ -22,7 +22,7 @@ class QuickAddActivity : AppCompatActivity() {
         overridePendingTransition(0, 0)
     }
 
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
     override fun onBackPressed() {
         super.onBackPressed()
         finish()

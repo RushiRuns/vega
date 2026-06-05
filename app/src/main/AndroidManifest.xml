@@ -24,6 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activities.QuickAddActivity"
+            android:theme="@style/Theme.Vega.TranslucentQuickAdd"
+            android:launchMode="singleTop"
+            android:exported="false" />
         
         <!-- Notification channel for reminders -->
         <service

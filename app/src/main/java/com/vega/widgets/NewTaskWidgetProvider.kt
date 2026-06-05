@@ -17,9 +17,8 @@ class NewTaskWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         for (appWidgetId in appWidgetIds) {
-            val intent = Intent(context, MainActivity::class.java).apply {
+            val intent = Intent(context, com.vega.ui.activities.QuickAddActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                putExtra("EXTRA_START_QUICK_ADD", true)
             }
             
             val pendingIntent = PendingIntent.getActivity(
