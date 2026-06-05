@@ -274,4 +274,63 @@ class NaturalLanguageParserTest {
         val r7 = parser.parse("Buy milk at supermarket tomorrow", baseTime)
         assertEquals("Buy milk at supermarket", r7.title)
     }
+
+    @Test
+    fun testRecurrenceDaily() {
+        val result = parser.parse("Meditate every day", baseTime)
+        assertEquals("Meditate", result.title)
+        assertEquals("DAILY", result.recurrence)
+        
+        // Expected: Friday, June 5, 2026, 00:00:00
+        val expectedCal = Calendar.getInstance().apply {
+            timeInMillis = baseTime
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        assertEquals(expectedCal.timeInMillis, result.dueDate!!)
+    }
+
+    @Test
+    fun testRecurrenceWeekdays() {
+        val result = parser.parse("Work out every weekday 7am", baseTime)
+        assertEquals("Work out", result.title)
+        assertEquals("WEEKDAYS", result.recurrence)
+        
+        // Expected: Friday, June 5, 2026, 07:00:00
+        val expectedCal = Calendar.getInstance().apply {
+            timeInMillis = baseTime
+            set(Calendar.HOUR_OF_DAY, 7)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        assertEquals(expectedCal.timeInMillis, result.dueDate!!)
+    }
+
+    @Test
+    fun testRecurrenceWeeklySpecificDay() {
+        val result = parser.parse("Submit report every Monday", baseTime)
+        assertEquals("Submit report", result.title)
+        assertEquals("WEEKLY", result.recurrence)
+        
+        // Expected: Next Monday, June 8, 2026, 00:00:00 (since baseTime is Friday, June 5)
+        val expectedCal = Calendar.getInstance().apply {
+            timeInMillis = baseTime
+            set(Calendar.DAY_OF_MONTH, 8)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        assertEquals(expectedCal.timeInMillis, result.dueDate!!)
+    }
+
+    @Test
+    fun testRecurrenceMonthly() {
+        val result = parser.parse("Pay rent every month", baseTime)
+        assertEquals("Pay rent", result.title)
+        assertEquals("MONTHLY", result.recurrence)
+    }
 }

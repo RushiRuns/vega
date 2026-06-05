@@ -39,6 +39,7 @@ class TaskDetailViewModel @Inject constructor(
         dueDate: Long?,
         priority: TaskPriority,
         state: TaskState,
+        recurrence: String?,
         notes: String?
     ) {
         val current = _task.value ?: return
@@ -53,6 +54,7 @@ class TaskDetailViewModel @Inject constructor(
                     dueDate = dueDate,
                     priority = priority.name,
                     state = state.name,
+                    recurrence = recurrence,
                     notes = notes?.trim(),
                     updatedAt = System.currentTimeMillis()
                 )

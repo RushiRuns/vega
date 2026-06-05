@@ -69,6 +69,7 @@ class TaskDetailViewModelTest {
             dueDate = newDueDate,
             priority = TaskPriority.HIGH,
             state = TaskState.TODAY,
+            recurrence = "DAILY",
             notes = "New Notes"
         )
         testDispatcher.scheduler.advanceUntilIdle()
@@ -79,6 +80,7 @@ class TaskDetailViewModelTest {
             assertEquals(newDueDate, task.dueDate)
             assertEquals(TaskPriority.HIGH.name, task.priority)
             assertEquals(TaskState.TODAY.name, task.state)
+            assertEquals("DAILY", task.recurrence)
             assertEquals("New Notes", task.notes)
         })
         assertTrue(viewModel.saveSuccess.value)
@@ -98,6 +100,7 @@ class TaskDetailViewModelTest {
             dueDate = null,
             priority = TaskPriority.LOW,
             state = TaskState.UPCOMING,
+            recurrence = null,
             notes = null
         )
         testDispatcher.scheduler.advanceUntilIdle()

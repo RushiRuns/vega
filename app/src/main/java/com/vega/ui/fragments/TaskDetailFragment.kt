@@ -76,14 +76,17 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
 
             val priorityOptions = getPriorityOptions()
             val stateOptions = getStateOptions()
+            val recurrenceOptions = getRecurrenceOptions()
 
             val priorityStr = binding.actvPriority.text.toString()
             val stateStr = binding.actvState.text.toString()
+            val recurrenceStr = binding.actvRecurrence.text.toString()
 
             val selectedPriority = priorityOptions.firstOrNull { it.first == priorityStr }?.second ?: TaskPriority.NONE
             val selectedState = stateOptions.firstOrNull { it.first == stateStr }?.second ?: TaskState.INBOX
+            val selectedRecurrence = recurrenceOptions.firstOrNull { it.first == recurrenceStr }?.second
 
-            viewModel.saveTask(title, selectedDueDate, selectedPriority, selectedState, notes)
+            viewModel.saveTask(title, selectedDueDate, selectedPriority, selectedState, selectedRecurrence, notes)
         }
 
         // Date Picker Trigger
@@ -153,7 +156,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                                 binding.etDueDate.setText("")
                             }
 
-                            setupDropdowns(it.priority, it.state)
+                            setupDropdowns(it.priority, it.state, it.recurrence)
                         }
                     }
                 }
@@ -181,9 +184,10 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setupDropdowns(currentPriority: String, currentState: String) {
+    private fun setupDropdowns(currentPriority: String, currentState: String, currentRecurrence: String?) {
         val priorityOptions = getPriorityOptions()
         val stateOptions = getStateOptions()
+        val recurrenceOptions = getRecurrenceOptions()
 
         // Setup Priority dropdown
         val priorityAdapter = ArrayAdapter(
@@ -214,6 +218,16 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         }
         val currentStateText = stateOptions.firstOrNull { it.second == selectedStateName }?.first.orEmpty()
         binding.actvState.setText(currentStateText, false)
+
+        // Setup Recurrence dropdown
+        val recurrenceAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            recurrenceOptions.map { it.first }
+        )
+        binding.actvRecurrence.setAdapter(recurrenceAdapter)
+        val currentRecurrenceText = recurrenceOptions.firstOrNull { it.second == currentRecurrence }?.first ?: getString(R.string.recurrence_none)
+        binding.actvRecurrence.setText(currentRecurrenceText, false)
     }
 
     private fun getPriorityOptions() = listOf(
@@ -228,6 +242,14 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         getString(R.string.state_today) to TaskState.TODAY,
         getString(R.string.state_upcoming) to TaskState.UPCOMING,
         getString(R.string.state_done) to TaskState.DONE
+    )
+
+    private fun getRecurrenceOptions() = listOf(
+        getString(R.string.recurrence_none) to null,
+        getString(R.string.recurrence_daily) to "DAILY",
+        getString(R.string.recurrence_weekdays) to "WEEKDAYS",
+        getString(R.string.recurrence_weekly) to "WEEKLY",
+        getString(R.string.recurrence_monthly) to "MONTHLY"
     )
 
     private fun formatDueDate(timestamp: Long): String {

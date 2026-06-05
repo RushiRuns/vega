@@ -79,4 +79,12 @@
     <string name="alarm_offset_10">10 minutes before</string>
     <string name="alarm_offset_15">15 minutes before</string>
     <string name="alarm_offset_30">30 minutes before</string>
+
+    <!-- Recurrence -->
+    <string name="label_recurrence">Recurrence</string>
+    <string name="recurrence_none">None</string>
+    <string name="recurrence_daily">Daily</string>
+    <string name="recurrence_weekly">Weekly</string>
+    <string name="recurrence_weekdays">Weekdays</string>
+    <string name="recurrence_monthly">Monthly</string>
 </resources>

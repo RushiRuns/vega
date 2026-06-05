@@ -28,13 +28,24 @@ class NaturalLanguageParser @Inject constructor() {
         // 1. Extract priority
         val priority = extractPriority(workingText)
         
-        // 2. Extract date/time
-        val dueDate = extractDateTime(workingText, now)
+        // 2. Extract recurrence
+        val recurrence = extractRecurrence(workingText)
 
-        // 3. Remove priority tokens
+        // 3. Extract date/time
+        var dueDate = extractDateTime(workingText, now)
+        if (dueDate == null && recurrence != null) {
+            dueDate = extractRecurrenceDueDate(workingText, now)
+        }
+
+        // 4. Remove priority tokens
         var title = removePriorityTokens(workingText)
 
-        // 4. Remove date/time tokens
+        // 5. Remove recurrence tokens
+        if (recurrence != null) {
+            title = removeRecurrenceTokens(title)
+        }
+
+        // 6. Remove date/time tokens
         if (dueDate != null) {
             title = removeDateTimeTokens(title)
         }
@@ -42,16 +53,17 @@ class NaturalLanguageParser @Inject constructor() {
         // Clean up title (remove double spaces)
         title = title.replace(Regex("\\s+"), " ").trim()
 
-        // Remove trailing prepositions left over after date/time removal
+        // Remove trailing prepositions left over after date/time/recurrence removal
         val prepositionRegex = Regex("(?:^|\\s+)\\b(at|by|on|for|to|in)\\b\\s*$", RegexOption.IGNORE_CASE)
         title = title.replace(prepositionRegex, "").trim()
 
-        // 5. Ambiguity check: if title is empty, fallback
+        // 7. Ambiguity check: if title is empty, fallback
         if (title.isBlank()) {
             return ParseResult(
                 title = input.trim(),
                 dueDate = null,
                 priority = TaskPriority.NONE,
+                recurrence = null,
                 isAmbiguous = true
             )
         }
@@ -60,6 +72,7 @@ class NaturalLanguageParser @Inject constructor() {
             title = title,
             dueDate = dueDate,
             priority = priority,
+            recurrence = recurrence,
             isAmbiguous = false
         )
     }
@@ -215,6 +228,135 @@ class NaturalLanguageParser @Inject constructor() {
         result = result.replace(Regex("\\b\\d{1,2}(?::\\d{2})?\\s*(am|pm)\\b", RegexOption.IGNORE_CASE), "")
         result = result.replace(Regex("\\b\\d{1,2}:\\d{2}\\b"), "")
 
+        return result.trim()
+    }
+
+    private fun extractRecurrence(text: String): String? {
+        val lowerText = text.lowercase(Locale.getDefault()).trim()
+        return when {
+            lowerText.contains(Regex("\\b(every day)\\b")) || lowerText.contains(Regex("\\bdaily$")) || lowerText.contains(Regex("\\bdaily\\b\\s+(at|by|on|for|to|in)\\b")) -> "DAILY"
+            lowerText.contains(Regex("\\b(every weekday)\\b")) -> "WEEKDAYS"
+            lowerText.contains(Regex("\\b(every week)\\b")) || lowerText.contains(Regex("\\bweekly$")) || lowerText.contains(Regex("\\bweekly\\b\\s+(at|by|on|for|to|in)\\b")) ||
+            lowerText.contains(Regex("\\bevery (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\\b")) -> "WEEKLY"
+            lowerText.contains(Regex("\\b(every month)\\b")) || lowerText.contains(Regex("\\bmonthly$")) || lowerText.contains(Regex("\\bmonthly\\b\\s+(at|by|on|for|to|in)\\b")) -> "MONTHLY"
+            else -> null
+        }
+    }
+
+    private fun extractRecurrenceDueDate(text: String, now: Long): Long? {
+        val lowerText = text.lowercase(Locale.getDefault())
+        val weekdays = mapOf(
+            "sunday" to Calendar.SUNDAY,
+            "monday" to Calendar.MONDAY,
+            "tuesday" to Calendar.TUESDAY,
+            "wednesday" to Calendar.WEDNESDAY,
+            "thursday" to Calendar.THURSDAY,
+            "friday" to Calendar.FRIDAY,
+            "saturday" to Calendar.SATURDAY
+        )
+        for ((name, value) in weekdays) {
+            if (lowerText.contains("every $name")) {
+                val calendar = Calendar.getInstance().apply { timeInMillis = now }
+                val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+                var daysToAdd = value - currentDayOfWeek
+                if (daysToAdd < 0) {
+                    daysToAdd += 7
+                }
+                calendar.add(Calendar.DAY_OF_YEAR, daysToAdd)
+
+                val explicitTimePattern = Regex("\\b(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm)\\b|\\b(\\d{1,2}):(\\d{2})\\b", RegexOption.IGNORE_CASE)
+                val match = explicitTimePattern.find(text)
+                if (match != null) {
+                    var hour = 0
+                    var minute = 0
+                    var meridiem = ""
+                    if (match.groupValues[1].isNotEmpty()) {
+                        hour = match.groupValues[1].toInt()
+                        minute = match.groupValues[2].toIntOrNull() ?: 0
+                        meridiem = match.groupValues[3].lowercase(Locale.getDefault())
+                    } else {
+                        hour = match.groupValues[4].toInt()
+                        minute = match.groupValues[5].toInt()
+                    }
+                    val adjustedHour = when {
+                        meridiem == "pm" && hour < 12 -> hour + 12
+                        meridiem == "am" && hour == 12 -> 0
+                        else -> hour
+                    }
+                    calendar.set(Calendar.HOUR_OF_DAY, adjustedHour)
+                    calendar.set(Calendar.MINUTE, minute)
+                } else {
+                    calendar.set(Calendar.HOUR_OF_DAY, 0)
+                    calendar.set(Calendar.MINUTE, 0)
+                }
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+                return calendar.timeInMillis
+            }
+        }
+
+        if (lowerText.contains("every day") || lowerText.contains("daily") || lowerText.contains("every weekday")) {
+            val calendar = Calendar.getInstance().apply { timeInMillis = now }
+            val explicitTimePattern = Regex("\\b(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm)\\b|\\b(\\d{1,2}):(\\d{2})\\b", RegexOption.IGNORE_CASE)
+            val match = explicitTimePattern.find(text)
+            if (match != null) {
+                var hour = 0
+                var minute = 0
+                var meridiem = ""
+                if (match.groupValues[1].isNotEmpty()) {
+                    hour = match.groupValues[1].toInt()
+                    minute = match.groupValues[2].toIntOrNull() ?: 0
+                    meridiem = match.groupValues[3].lowercase(Locale.getDefault())
+                } else {
+                    hour = match.groupValues[4].toInt()
+                    minute = match.groupValues[5].toInt()
+                }
+                val adjustedHour = when {
+                    meridiem == "pm" && hour < 12 -> hour + 12
+                    meridiem == "am" && hour == 12 -> 0
+                    else -> hour
+                }
+                calendar.set(Calendar.HOUR_OF_DAY, adjustedHour)
+                calendar.set(Calendar.MINUTE, minute)
+            } else {
+                calendar.set(Calendar.HOUR_OF_DAY, 0)
+                calendar.set(Calendar.MINUTE, 0)
+            }
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+
+            if (lowerText.contains("every weekday")) {
+                val day = calendar.get(Calendar.DAY_OF_WEEK)
+                if (day == Calendar.SATURDAY) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 2)
+                } else if (day == Calendar.SUNDAY) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
+                }
+            }
+            return calendar.timeInMillis
+        }
+
+        return null
+    }
+
+    private fun removeRecurrenceTokens(text: String): String {
+        val patterns = listOf(
+            "\\b(every day)\\b",
+            "\\bdaily$",
+            "\\bdaily\\b\\s+(at|by|on|for|to|in)\\b",
+            "\\b(every weekday)\\b",
+            "\\b(every week)\\b",
+            "\\bweekly$",
+            "\\bweekly\\b\\s+(at|by|on|for|to|in)\\b",
+            "\\b(every month)\\b",
+            "\\bmonthly$",
+            "\\bmonthly\\b\\s+(at|by|on|for|to|in)\\b",
+            "\\bevery (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\\b"
+        )
+        var result = text
+        for (pattern in patterns) {
+            result = result.replace(Regex(pattern, RegexOption.IGNORE_CASE), "")
+        }
         return result.trim()
     }
 }

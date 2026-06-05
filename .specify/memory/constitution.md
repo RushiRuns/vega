@@ -1,9 +1,9 @@
 <!-- 
 SYNC IMPACT REPORT
 ==================
-Version Change: 0.0.0 → 1.0.0 (INITIAL RATIFICATION)
+Version Change: 1.0.0 → 1.1.0 (RECURRING TASKS RATIFICATION)
 Ratification Date: 2026-06-04
-Last Amended: 2026-06-04
+Last Amended: 2026-06-05
 
 SECTIONS DEFINED:
 - Core Product Philosophy (defines core mission)
@@ -119,6 +119,13 @@ Surface one recommended task based on:
 
 This card must not feel like AI. It must feel like the app simply knows what matters.
 
+### 3.5 Recurring Tasks Governance
+
+- A recurring task is a schedule that automatically spawns a new task instance when the current active occurrence is marked done.
+- Supported recurrence intervals are: Daily, Weekdays (Mon-Fri), Weekly, Monthly.
+- To prevent cognitive overload, only the *current active occurrence* is visible in Today or Upcoming views. Future occurrences must never clutter these lists.
+- Newly spawned occurrences skip the Inbox and are placed directly in Today or Upcoming depending on their due date.
+
 ---
 
 ## 4. What to Never Build (V1 Constraint List)
@@ -130,7 +137,6 @@ The following are explicitly out of scope for V1. Any implementation that introd
 - Social features, sharing, or collaboration
 - Gamification (streaks, points, badges)
 - Custom views or filters
-- Recurring tasks (defer to V2)
 - Calendar integration (defer to V2)
 - More than 4 navigation tabs
 - Onboarding tutorials or feature tours
@@ -233,4 +239,4 @@ This constitution is the supreme governing document. All specification, planning
 
 ---
 
-**Version:** 1.0.0 | **Ratified:** 2026-06-04 | **Last Amended:** 2026-06-04
+**Version:** 1.1.0 | **Ratified:** 2026-06-04 | **Last Amended:** 2026-06-05

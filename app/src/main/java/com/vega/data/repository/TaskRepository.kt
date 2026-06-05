@@ -29,8 +29,48 @@ class TaskRepository @Inject constructor(
     }
     
     suspend fun updateTask(task: Task) {
+        val oldTask = taskDao.getTaskById(task.id)
         taskDao.updateTask(task)
         alarmScheduler.scheduleAlarm(task)
+        
+        if (task.state == TaskState.DONE.name && (oldTask == null || oldTask.state != TaskState.DONE.name)) {
+            val recurrencePattern = task.recurrence
+            if (!recurrencePattern.isNullOrBlank()) {
+                val baseTime = task.dueDate ?: System.currentTimeMillis()
+                val nextDueDate = com.vega.utils.RecurrenceUtils.calculateNextDueDate(baseTime, recurrencePattern)
+                
+                val todayCalendar = java.util.Calendar.getInstance().apply {
+                    set(java.util.Calendar.HOUR_OF_DAY, 0)
+                    set(java.util.Calendar.MINUTE, 0)
+                    set(java.util.Calendar.SECOND, 0)
+                    set(java.util.Calendar.MILLISECOND, 0)
+                }
+                
+                val nextDayOnlyCalendar = java.util.Calendar.getInstance().apply {
+                    timeInMillis = nextDueDate
+                    set(java.util.Calendar.HOUR_OF_DAY, 0)
+                    set(java.util.Calendar.MINUTE, 0)
+                    set(java.util.Calendar.SECOND, 0)
+                    set(java.util.Calendar.MILLISECOND, 0)
+                }
+                
+                val nextState = if (nextDayOnlyCalendar.timeInMillis <= todayCalendar.timeInMillis) {
+                    TaskState.TODAY.name
+                } else {
+                    TaskState.UPCOMING.name
+                }
+                
+                val nextTask = Task(
+                    title = task.title,
+                    dueDate = nextDueDate,
+                    priority = task.priority,
+                    state = nextState,
+                    notes = task.notes,
+                    recurrence = recurrencePattern
+                )
+                createTask(nextTask)
+            }
+        }
     }
     
     suspend fun deleteTask(task: Task) {

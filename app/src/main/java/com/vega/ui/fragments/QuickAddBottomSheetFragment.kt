@@ -76,6 +76,10 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
             viewModel.updatePriority(TaskPriority.NONE)
         }
 
+        binding.chipRecurrencePreview.setOnCloseIconClickListener {
+            viewModel.updateRecurrence(null)
+        }
+
         binding.buttonCancel.setOnClickListener {
             dismiss()
         }
@@ -113,8 +117,16 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
                             binding.chipPriorityPreview.visibility = View.GONE
                         }
 
+                        // Update Recurrence Chip
+                        if (result.recurrence != null) {
+                            binding.chipRecurrencePreview.text = getRecurrenceString(result.recurrence)
+                            binding.chipRecurrencePreview.visibility = View.VISIBLE
+                        } else {
+                            binding.chipRecurrencePreview.visibility = View.GONE
+                        }
+
                         // Update visibility of the container elements
-                        val hasPreview = result.dueDate != null || result.priority != TaskPriority.NONE
+                        val hasPreview = result.dueDate != null || result.priority != TaskPriority.NONE || result.recurrence != null
                         binding.textPreviewLabel.visibility = if (hasPreview) View.VISIBLE else View.GONE
                         binding.groupChipsPreview.visibility = if (hasPreview) View.VISIBLE else View.GONE
                     }
@@ -165,6 +177,16 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
             TaskPriority.MEDIUM -> getString(R.string.priority_medium)
             TaskPriority.HIGH -> getString(R.string.priority_high)
             else -> getString(R.string.priority_none)
+        }
+    }
+
+    private fun getRecurrenceString(recurrence: String): String {
+        return when (recurrence.uppercase()) {
+            "DAILY" -> getString(R.string.recurrence_daily)
+            "WEEKLY" -> getString(R.string.recurrence_weekly)
+            "WEEKDAYS" -> getString(R.string.recurrence_weekdays)
+            "MONTHLY" -> getString(R.string.recurrence_monthly)
+            else -> recurrence
         }
     }
 

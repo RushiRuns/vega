@@ -46,6 +46,10 @@ class QuickAddViewModel @Inject constructor(
         _parseResult.value = _parseResult.value.copy(priority = priority)
     }
 
+    fun updateRecurrence(recurrence: String?) {
+        _parseResult.value = _parseResult.value.copy(recurrence = recurrence)
+    }
+
     fun createTask() {
         val currentResult = _parseResult.value
         val title = currentResult.title
@@ -63,7 +67,8 @@ class QuickAddViewModel @Inject constructor(
                     title = title,
                     dueDate = currentResult.dueDate,
                     priority = currentResult.priority.name,
-                    state = TaskState.INBOX.name
+                    state = TaskState.INBOX.name,
+                    recurrence = currentResult.recurrence
                 )
                 repository.createTask(task)
                 _uiState.value = QuickAddUiState.Success

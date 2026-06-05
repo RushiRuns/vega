@@ -23,6 +23,7 @@ data class Task(
     val priority: String = TaskPriority.NONE.name,
     val state: String = TaskState.INBOX.name,
     val notes: String? = null,
+    val recurrence: String? = null,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis()
 )
