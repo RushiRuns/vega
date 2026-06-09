@@ -48,4 +48,9 @@
     <!-- Premium Card Colors -->
     <color name="task_card_background">#F4F6FA</color>
     <color name="task_card_stroke">#E2E8F0</color>
+    
+    <!-- Recurrence Colors -->
+    <color name="recurrence_primary">#6366F1</color>
+    <color name="recurrence_container">#EEF2FF</color>
+    <color name="recurrence_stroke">#C7D2FE</color>
 </resources>

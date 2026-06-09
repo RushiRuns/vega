@@ -69,6 +69,7 @@ class TaskListAdapter(
     inner class TaskViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
             binding.tvTaskTitle.text = task.title
+            val context = binding.root.context
             
             // Bind Due Date
             if (task.dueDate != null) {
@@ -76,6 +77,18 @@ class TaskListAdapter(
                 binding.tvTaskDueDate.visibility = View.VISIBLE
             } else {
                 binding.tvTaskDueDate.visibility = View.GONE
+            }
+
+            // Bind Recurrence
+            if (!task.recurrence.isNullOrBlank()) {
+                binding.layoutTaskRecurrence.visibility = View.VISIBLE
+                binding.tvTaskRecurrence.text = com.vega.utils.RecurrenceUtils.formatSummary(context, task.recurrence)
+                binding.cardTask.setCardBackgroundColor(context.getColor(R.color.task_card_background))
+                binding.cardTask.strokeColor = context.getColor(R.color.task_card_stroke)
+            } else {
+                binding.layoutTaskRecurrence.visibility = View.GONE
+                binding.cardTask.setCardBackgroundColor(context.getColor(R.color.task_card_background))
+                binding.cardTask.strokeColor = context.getColor(R.color.task_card_stroke)
             }
 
             // Bind Checkbox state
