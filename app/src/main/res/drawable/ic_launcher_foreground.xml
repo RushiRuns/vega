@@ -7,13 +7,23 @@
       android:scaleY="0.8"
       android:translateX="10.8"
       android:translateY="10.8">
-    <!-- V for Vega -->
+    <!-- Abstract geometric frame (4 outer chevrons) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M30,20 L40,50 L50,20 L60,20 L45,65 L35,65 L20,20 Z"/>
-    <!-- Star accent -->
+        android:pathData="M 34,34 L 54,34 L 54,40 L 40,40 L 40,54 L 34,54 Z"/>
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M70,25 L72,30 L77,30 L73,33 L75,38 L70,35 L65,38 L67,33 L63,30 L68,30 Z"/>
+        android:pathData="M 54,34 L 74,34 L 74,54 L 68,54 L 68,40 L 54,40 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 74,54 L 74,74 L 54,74 L 54,68 L 68,68 L 68,54 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 54,74 L 34,74 L 34,54 L 40,54 L 40,68 L 54,68 Z"/>
+
+    <!-- Central Diamond Core -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 54,45 L 63,54 L 54,63 L 45,54 Z"/>
   </group>
 </vector>
