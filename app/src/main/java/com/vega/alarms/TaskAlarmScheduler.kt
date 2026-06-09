@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import com.vega.data.database.RecurrenceRule
 import com.vega.data.database.Task
 import com.vega.data.database.TaskDao
 import com.vega.data.database.TaskState
@@ -30,7 +31,7 @@ class TaskAlarmScheduler @Inject constructor(
 
     /**
      * Schedules a precise alarm for the given task.
-     * If the task is completed or has no due date, any existing alarm is cancelled.
+     * If the task is completed or has no due date/recurrence start date, any existing alarm is cancelled.
      */
     fun scheduleAlarm(task: Task) {
         val mode = prefs.getString("pref_notification_mode", "fixed_ritual")
@@ -39,23 +40,28 @@ class TaskAlarmScheduler @Inject constructor(
             return
         }
 
-        val dueDate = task.dueDate
-        if (dueDate == null || task.state == TaskState.DONE.name) {
+        val rule = task.recurrence?.let {
+            if (it.startsWith("{")) RecurrenceRule.fromJson(it)
+            else null
+        }
+        val alarmTime = task.dueDate ?: rule?.startDate
+
+        if (alarmTime == null || task.state == TaskState.DONE.name) {
             cancelAlarm(task.id)
             return
         }
 
         // Retrieve alarm offset in minutes (default is 5)
         val offsetMinutes = prefs.getInt("pref_alarm_offset_minutes", 5)
-        val triggerTime = dueDate - (offsetMinutes * 60 * 1000)
+        val triggerTime = alarmTime - (offsetMinutes * 60 * 1000)
 
-        // Fallback: If trigger time is in the past, but the due date is still in the future,
+        // Fallback: If trigger time is in the past, but the target time is still in the future,
         // schedule it to fire immediately (in 1 second) so the reminder isn't missed.
         val targetTime = if (triggerTime < System.currentTimeMillis()) {
-            if (dueDate > System.currentTimeMillis()) {
+            if (alarmTime > System.currentTimeMillis()) {
                 System.currentTimeMillis() + 1000
             } else {
-                // Due date is already in the past, cancel any active alarm
+                // Target time is already in the past, cancel any active alarm
                 cancelAlarm(task.id)
                 return
             }

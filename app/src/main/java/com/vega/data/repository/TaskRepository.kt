@@ -71,7 +71,7 @@ class TaskRepository @Inject constructor(
                 }
                 
                 if (rule != null) {
-                    val baseTime = task.dueDate ?: System.currentTimeMillis()
+                    val baseTime = task.dueDate ?: rule.startDate
                     val nextDueDate = com.vega.utils.RecurrenceUtils.calculateNextDueDate(baseTime, rule)
                     
                     var shouldSpawn = true
