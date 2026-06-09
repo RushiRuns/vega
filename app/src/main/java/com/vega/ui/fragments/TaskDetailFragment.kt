@@ -96,6 +96,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         binding.tilDueDate.setEndIconOnClickListener {
             selectedDueDate = null
             binding.etDueDate.setText("")
+            updateStateBasedOnDueDate()
         }
 
         // Recurrence Trigger
@@ -150,6 +151,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
 
                 selectedDueDate = calendar.timeInMillis
                 binding.etDueDate.setText(formatDueDate(selectedDueDate!!))
+                updateStateBasedOnDueDate()
             },
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
@@ -265,6 +267,35 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         val hasTime = cal.get(Calendar.HOUR_OF_DAY) != 0 || cal.get(Calendar.MINUTE) != 0
         val pattern = if (hasTime) "MMM d, yyyy 'at' h:mm a" else "MMM d, yyyy"
         return SimpleDateFormat(pattern, Locale.getDefault()).format(cal.time)
+    }
+
+    private fun updateStateBasedOnDueDate() {
+        if (!selectedRecurrence.isNullOrBlank()) {
+            return
+        }
+        val dueDate = selectedDueDate
+        val stateOptions = getStateOptions()
+        if (dueDate == null) {
+            val inboxText = stateOptions.firstOrNull { it.second == TaskState.INBOX }?.first.orEmpty()
+            binding.actvState.setText(inboxText, false)
+            return
+        }
+
+        val todayEnd = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+            set(Calendar.MILLISECOND, 999)
+        }.timeInMillis
+
+        val targetState = if (dueDate <= todayEnd) {
+            TaskState.TODAY
+        } else {
+            TaskState.UPCOMING
+        }
+
+        val stateText = stateOptions.firstOrNull { it.second == targetState }?.first.orEmpty()
+        binding.actvState.setText(stateText, false)
     }
 
     override fun onDestroyView() {
