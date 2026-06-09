@@ -17,7 +17,8 @@ import com.vega.databinding.FragmentUpcomingBinding
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import android.graphics.Canvas
-import com.vega.ui.adapters.TaskListAdapter
+import com.vega.ui.adapters.UpcomingTasksAdapter
+import com.vega.ui.models.UpcomingListItem
 import com.vega.ui.viewmodels.UpcomingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class UpcomingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: UpcomingViewModel by viewModels()
-    private lateinit var adapter: TaskListAdapter
+    private lateinit var adapter: UpcomingTasksAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +51,7 @@ class UpcomingFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TaskListAdapter(
+        adapter = UpcomingTasksAdapter(
             onCompleteClick = { task ->
                 viewModel.completeTask(task)
             },
@@ -86,6 +87,19 @@ class UpcomingFragment : Fragment() {
 
     private fun setupSwipeGestures() {
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                val position = viewHolder.adapterPosition
+                if (position == RecyclerView.NO_POSITION) return makeMovementFlags(0, 0)
+                val item = adapter.currentList[position]
+                if (item is UpcomingListItem.Header) {
+                    return makeMovementFlags(0, 0)
+                }
+                return super.getMovementFlags(recyclerView, viewHolder)
+            }
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -95,7 +109,9 @@ class UpcomingFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 if (position == RecyclerView.NO_POSITION) return
-                val task = adapter.currentList[position]
+                val item = adapter.currentList[position]
+                if (item !is UpcomingListItem.TaskItem) return
+                val task = item.task
                 if (direction == ItemTouchHelper.RIGHT) {
                     if (adapter.isActionsRevealed(task.id)) {
                         adapter.hideTaskActions(task.id)
@@ -119,7 +135,11 @@ class UpcomingFragment : Fragment() {
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     val position = viewHolder.adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
-                        val task = adapter.currentList[position]
+                        val item = adapter.currentList[position]
+                        if (item !is UpcomingListItem.TaskItem) {
+                            super.onChildDraw(c, recyclerView, viewHolder, 0f, dY, actionState, isCurrentlyActive)
+                            return
+                        }
                         if (dX < 0) {
                             super.onChildDraw(c, recyclerView, viewHolder, 0f, dY, actionState, isCurrentlyActive)
                         } else {
