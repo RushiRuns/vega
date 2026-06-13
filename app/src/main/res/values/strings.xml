@@ -13,6 +13,7 @@
     <string name="title_quick_add">Add Task</string>
     <string name="hint_task_input">Type task (e.g., \"Buy milk tomorrow 3pm high\")</string>
     <string name="button_add">Add</string>
+    <string name="button_add_another">Add &amp; Continue</string>
     <string name="button_cancel">Cancel</string>
     <string name="label_parsing_preview">Extracted:</string>
     

@@ -64,6 +64,7 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
+                binding.layoutTaskInput.error = null
                 viewModel.parseInput(s?.toString() ?: "")
             }
         })
@@ -82,6 +83,19 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
 
         binding.buttonCancel.setOnClickListener {
             dismiss()
+        }
+
+        binding.buttonAddAnother.setOnClickListener {
+            val title = viewModel.parseResult.value.title
+            if (title.isNullOrBlank()) {
+                binding.layoutTaskInput.error = getString(R.string.error_empty_title)
+            } else {
+                viewModel.createTask()
+                binding.inputTask.setText("")
+                binding.layoutTaskInput.error = null
+                viewModel.clearState()
+                binding.inputTask.requestFocus()
+            }
         }
 
         binding.buttonConfirm.setOnClickListener {
@@ -134,6 +148,11 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
 
                 launch {
                     viewModel.uiState.collect { state ->
+                        val isLoading = state is QuickAddUiState.Loading
+                        binding.buttonConfirm.isEnabled = !isLoading
+                        binding.buttonAddAnother.isEnabled = !isLoading
+                        binding.buttonCancel.isEnabled = !isLoading
+
                         when (state) {
                             is QuickAddUiState.Error -> {
                                 // Since we might have optimistically dismissed, showing Toast on application context

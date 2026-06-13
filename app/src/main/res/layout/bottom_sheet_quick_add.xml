@@ -104,6 +104,14 @@
             android:text="@string/button_cancel" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_add_another"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_8"
+            android:text="@string/button_add_another" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
