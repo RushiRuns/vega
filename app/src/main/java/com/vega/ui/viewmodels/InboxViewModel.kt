@@ -103,4 +103,35 @@ class InboxViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateMultipleTasks(
+        taskIds: List<String>,
+        dueDate: Long? = null,
+        dueDateUpdated: Boolean = false,
+        priority: com.vega.data.database.TaskPriority? = null,
+        state: com.vega.data.database.TaskState? = null,
+        recurrence: String? = null,
+        recurrenceUpdated: Boolean = false
+    ) {
+        viewModelScope.launch {
+            try {
+                taskIds.forEach { id ->
+                    val task = repository.getTaskById(id)
+                    if (task != null) {
+                        val updatedTask = task.copy(
+                            dueDate = if (dueDateUpdated) dueDate else task.dueDate,
+                            priority = priority?.name ?: task.priority,
+                            state = state?.name ?: task.state,
+                            recurrence = if (recurrenceUpdated) recurrence else task.recurrence,
+                            updatedAt = System.currentTimeMillis()
+                        )
+                        repository.updateTask(updatedTask)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("InboxViewModel", "Failed to update multiple tasks", e)
+                _error.value = "Failed to update selected tasks"
+            }
+        }
+    }
 }

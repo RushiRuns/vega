@@ -21,6 +21,9 @@ import com.vega.ui.adapters.TaskListAdapter
 import com.vega.ui.viewmodels.DoneViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import java.util.Calendar
 
 import com.google.android.material.snackbar.Snackbar
 
@@ -47,6 +50,7 @@ class DoneFragment : Fragment() {
 
         setupRecyclerView()
         observeViewModel()
+        setupMultiSelectActions()
     }
 
     private fun setupRecyclerView() {
@@ -58,8 +62,19 @@ class DoneFragment : Fragment() {
             onDeleteClick = { task ->
                 showDeleteConfirmation(task)
             },
+            onItemClick = { task ->
+                if (adapter.isSelectionMode()) {
+                    adapter.toggleSelection(task.id)
+                } else {
+                    showTaskDetailSheet(task.id)
+                }
+            },
             onItemLongClick = { task ->
-                showTaskDetailSheet(task.id)
+                if (adapter.isSelectionMode()) {
+                    adapter.toggleSelection(task.id)
+                } else {
+                    adapter.enterSelectionMode(task.id)
+                }
             }
         )
         binding.rvDoneTasks.layoutManager = LinearLayoutManager(requireContext())
@@ -154,6 +169,164 @@ class DoneFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setupMultiSelectActions() {
+        adapter.setOnSelectionChangedListener { count ->
+            if (count > 0) {
+                binding.layoutMultiSelect.cardMultiSelectActions.visibility = View.VISIBLE
+                binding.layoutMultiSelect.tvSelectedCount.text = "$count selected"
+            } else {
+                binding.layoutMultiSelect.cardMultiSelectActions.visibility = View.GONE
+            }
+        }
+
+        binding.layoutMultiSelect.btnClearSelection.setOnClickListener {
+            adapter.exitSelectionMode()
+        }
+
+        binding.layoutMultiSelect.btnActionDueDate.setOnClickListener {
+            showBulkDueDateDialog(adapter.getSelectedTaskIds())
+        }
+
+        binding.layoutMultiSelect.btnActionPriority.setOnClickListener {
+            showBulkPriorityDialog(adapter.getSelectedTaskIds())
+        }
+
+        binding.layoutMultiSelect.btnActionState.setOnClickListener {
+            showBulkStateDialog(adapter.getSelectedTaskIds())
+        }
+
+        binding.layoutMultiSelect.btnActionRecurrence.setOnClickListener {
+            showBulkRecurrenceDialog()
+        }
+
+        childFragmentManager.setFragmentResultListener(
+            "bulk_recurrence_done",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val ruleJson = bundle.getString(RepeatsDialogFragment.RESULT_KEY_RULE_JSON)
+            if (adapter.isSelectionMode()) {
+                viewModel.updateMultipleTasks(
+                    adapter.getSelectedTaskIds(),
+                    recurrence = ruleJson,
+                    recurrenceUpdated = true
+                )
+                adapter.exitSelectionMode()
+            }
+        }
+    }
+
+    private fun showBulkDueDateDialog(selectedTaskIds: List<String>) {
+        val options = arrayOf("Today", "Tomorrow", "Choose Date & Time...", "Clear Due Date")
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Set Due Date")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> { // Today
+                        val calendar = Calendar.getInstance().apply {
+                            set(Calendar.HOUR_OF_DAY, 9)
+                            set(Calendar.MINUTE, 0)
+                            set(Calendar.SECOND, 0)
+                            set(Calendar.MILLISECOND, 0)
+                        }
+                        viewModel.updateMultipleTasks(selectedTaskIds, dueDate = calendar.timeInMillis, dueDateUpdated = true)
+                        adapter.exitSelectionMode()
+                    }
+                    1 -> { // Tomorrow
+                        val calendar = Calendar.getInstance().apply {
+                            add(Calendar.DAY_OF_YEAR, 1)
+                            set(Calendar.HOUR_OF_DAY, 9)
+                            set(Calendar.MINUTE, 0)
+                            set(Calendar.SECOND, 0)
+                            set(Calendar.MILLISECOND, 0)
+                        }
+                        viewModel.updateMultipleTasks(selectedTaskIds, dueDate = calendar.timeInMillis, dueDateUpdated = true)
+                        adapter.exitSelectionMode()
+                    }
+                    2 -> { // Choose Date & Time
+                        showBulkDatePicker(selectedTaskIds)
+                    }
+                    3 -> { // Clear Due Date
+                        viewModel.updateMultipleTasks(selectedTaskIds, dueDate = null, dueDateUpdated = true)
+                        adapter.exitSelectionMode()
+                    }
+                }
+            }
+            .show()
+    }
+
+    private fun showBulkDatePicker(selectedTaskIds: List<String>) {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                showBulkTimePicker(selectedTaskIds, calendar)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun showBulkTimePicker(selectedTaskIds: List<String>, calendar: Calendar) {
+        TimePickerDialog(
+            requireContext(),
+            { _, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+
+                viewModel.updateMultipleTasks(selectedTaskIds, dueDate = calendar.timeInMillis, dueDateUpdated = true)
+                adapter.exitSelectionMode()
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false
+        ).show()
+    }
+
+    private fun showBulkPriorityDialog(selectedTaskIds: List<String>) {
+        val priorities = arrayOf("None", "Low", "Medium", "High")
+        val priorityValues = arrayOf(
+            com.vega.data.database.TaskPriority.NONE,
+            com.vega.data.database.TaskPriority.LOW,
+            com.vega.data.database.TaskPriority.MEDIUM,
+            com.vega.data.database.TaskPriority.HIGH
+        )
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Set Priority")
+            .setItems(priorities) { _, which ->
+                viewModel.updateMultipleTasks(selectedTaskIds, priority = priorityValues[which])
+                adapter.exitSelectionMode()
+            }
+            .show()
+    }
+
+    private fun showBulkStateDialog(selectedTaskIds: List<String>) {
+        val states = arrayOf("Inbox", "Today", "Upcoming", "Done")
+        val stateValues = arrayOf(
+            com.vega.data.database.TaskState.INBOX,
+            com.vega.data.database.TaskState.TODAY,
+            com.vega.data.database.TaskState.UPCOMING,
+            com.vega.data.database.TaskState.DONE
+        )
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Set State")
+            .setItems(states) { _, which ->
+                viewModel.updateMultipleTasks(selectedTaskIds, state = stateValues[which])
+                adapter.exitSelectionMode()
+            }
+            .show()
+    }
+
+    private fun showBulkRecurrenceDialog() {
+        val dialog = RepeatsDialogFragment.newInstance(null, null, "bulk_recurrence_done")
+        dialog.show(childFragmentManager, "BulkRepeatsDialog")
     }
 
     override fun onDestroyView() {

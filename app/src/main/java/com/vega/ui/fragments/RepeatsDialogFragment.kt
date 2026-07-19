@@ -62,13 +62,14 @@ class RepeatsDialogFragment : DialogFragment() {
         // Done button
         binding.btnDone.setOnClickListener {
             val rule = buildRule()
+            val requestKey = arguments?.getString(ARG_REQUEST_KEY) ?: REQUEST_KEY_RECURRENCE
             if (rule != null) {
                 val bundle = Bundle().apply {
                     putString(RESULT_KEY_RULE_JSON, rule.toJson())
                 }
-                parentFragmentManager.setFragmentResult(REQUEST_KEY_RECURRENCE, bundle)
+                parentFragmentManager.setFragmentResult(requestKey, bundle)
             } else {
-                parentFragmentManager.setFragmentResult(REQUEST_KEY_RECURRENCE, Bundle())
+                parentFragmentManager.setFragmentResult(requestKey, Bundle())
             }
             dismiss()
         }
@@ -418,13 +419,17 @@ class RepeatsDialogFragment : DialogFragment() {
         
         const val ARG_RULE_JSON = "arg_rule_json"
         const val ARG_TASK_DUE_DATE = "arg_task_due_date"
+        const val ARG_REQUEST_KEY = "arg_request_key"
 
-        fun newInstance(ruleJson: String?, taskDueDate: Long?): RepeatsDialogFragment {
+        fun newInstance(ruleJson: String?, taskDueDate: Long?, requestKey: String? = null): RepeatsDialogFragment {
             return RepeatsDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_RULE_JSON, ruleJson)
                     if (taskDueDate != null) {
                         putLong(ARG_TASK_DUE_DATE, taskDueDate)
+                    }
+                    if (requestKey != null) {
+                        putString(ARG_REQUEST_KEY, requestKey)
                     }
                 }
             }

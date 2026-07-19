@@ -25,6 +25,60 @@ class TaskListAdapter(
 
     private val revealedTaskIds = mutableSetOf<String>()
 
+    private var isSelectionMode = false
+    private val selectedTaskIds = mutableSetOf<String>()
+    private var onSelectionChangedListener: ((Int) -> Unit)? = null
+
+    fun setOnSelectionChangedListener(listener: (Int) -> Unit) {
+        onSelectionChangedListener = listener
+    }
+
+    fun isSelectionMode(): Boolean = isSelectionMode
+
+    fun getSelectedTaskIds(): List<String> = selectedTaskIds.toList()
+
+    fun enterSelectionMode(firstTaskId: String) {
+        isSelectionMode = true
+        selectedTaskIds.clear()
+        selectedTaskIds.add(firstTaskId)
+        notifyDataSetChanged()
+        onSelectionChangedListener?.invoke(selectedTaskIds.size)
+    }
+
+    fun exitSelectionMode() {
+        isSelectionMode = false
+        selectedTaskIds.clear()
+        notifyDataSetChanged()
+        onSelectionChangedListener?.invoke(0)
+    }
+
+    fun clearSelection() {
+        selectedTaskIds.clear()
+        notifyDataSetChanged()
+        onSelectionChangedListener?.invoke(0)
+    }
+
+    fun toggleSelection(taskId: String) {
+        if (selectedTaskIds.contains(taskId)) {
+            selectedTaskIds.remove(taskId)
+        } else {
+            selectedTaskIds.add(taskId)
+        }
+        val pos = currentList.indexOfFirst { it.id == taskId }
+        if (pos != -1) {
+            notifyItemChanged(pos)
+        }
+        if (selectedTaskIds.isEmpty()) {
+            isSelectionMode = false
+            notifyDataSetChanged()
+        }
+        onSelectionChangedListener?.invoke(selectedTaskIds.size)
+    }
+
+    private fun dpToPx(context: android.content.Context, dp: Int): Int {
+        return (dp * context.resources.displayMetrics.density).toInt()
+    }
+
     fun isActionsRevealed(taskId: String): Boolean = revealedTaskIds.contains(taskId)
 
     fun revealTaskActions(taskId: String) {
@@ -83,20 +137,34 @@ class TaskListAdapter(
             if (!task.recurrence.isNullOrBlank()) {
                 binding.layoutTaskRecurrence.visibility = View.VISIBLE
                 binding.tvTaskRecurrence.text = com.vega.utils.RecurrenceUtils.formatSummary(context, task.recurrence)
-                binding.cardTask.setCardBackgroundColor(context.getColor(R.color.task_card_background))
-                binding.cardTask.strokeColor = context.getColor(R.color.task_card_stroke)
             } else {
                 binding.layoutTaskRecurrence.visibility = View.GONE
-                binding.cardTask.setCardBackgroundColor(context.getColor(R.color.task_card_background))
+            }
+            binding.cardTask.setCardBackgroundColor(context.getColor(R.color.task_card_background))
+
+            // Stroke based on selection
+            if (isSelectionMode) {
+                val isSel = selectedTaskIds.contains(task.id)
+                binding.cardTask.strokeColor = context.getColor(if (isSel) R.color.primary else R.color.task_card_stroke)
+                binding.cardTask.strokeWidth = dpToPx(context, if (isSel) 2 else 1)
+            } else {
                 binding.cardTask.strokeColor = context.getColor(R.color.task_card_stroke)
+                binding.cardTask.strokeWidth = dpToPx(context, 1)
             }
 
             // Bind Checkbox state
             binding.cbComplete.setOnCheckedChangeListener(null)
-            binding.cbComplete.isChecked = (task.state == TaskState.DONE.name)
-            binding.cbComplete.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked && task.state != TaskState.DONE.name) {
-                    onCompleteClick(task)
+            if (isSelectionMode) {
+                binding.cbComplete.isChecked = selectedTaskIds.contains(task.id)
+                binding.cbComplete.setOnCheckedChangeListener { _, _ ->
+                    toggleSelection(task.id)
+                }
+            } else {
+                binding.cbComplete.isChecked = (task.state == TaskState.DONE.name)
+                binding.cbComplete.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked && task.state != TaskState.DONE.name) {
+                        onCompleteClick(task)
+                    }
                 }
             }
 
@@ -136,11 +204,19 @@ class TaskListAdapter(
 
             // Foreground click/long-press
             binding.layoutForeground.setOnClickListener {
-                onItemClick?.invoke(task)
+                if (isSelectionMode) {
+                    toggleSelection(task.id)
+                } else {
+                    onItemClick?.invoke(task)
+                }
             }
 
             binding.layoutForeground.setOnLongClickListener {
-                onItemLongClick?.invoke(task)
+                if (isSelectionMode) {
+                    toggleSelection(task.id)
+                } else {
+                    onItemLongClick?.invoke(task)
+                }
                 true
             }
 

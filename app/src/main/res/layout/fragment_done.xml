@@ -11,11 +11,22 @@
         android:id="@+id/rv_done_tasks"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingBottom="88dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_task" />
+
+    <include
+        android:id="@+id/layout_multi_select"
+        layout="@layout/layout_multi_select_actions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Empty State View -->
     <LinearLayout
