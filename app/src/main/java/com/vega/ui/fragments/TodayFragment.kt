@@ -35,6 +35,28 @@ class TodayFragment : Fragment() {
     private val viewModel: TodayViewModel by viewModels()
     private lateinit var adapter: TaskListAdapter
     private var previousTaskCount = -1
+    private var hasAnimatedListEntrance = false
+
+    private fun runEntranceStaggerAnimation(recyclerView: RecyclerView) {
+        if (hasAnimatedListEntrance) return
+        hasAnimatedListEntrance = true
+
+        recyclerView.post {
+            val childCount = recyclerView.childCount
+            for (i in 0 until minOf(childCount, 5)) {
+                val child = recyclerView.getChildAt(i) ?: continue
+                child.translationY = 60f
+                child.alpha = 0f
+                child.animate()
+                    .translationY(0f)
+                    .alpha(1f)
+                    .setStartDelay(i * 30L)
+                    .setDuration(150)
+                    .setInterpolator(android.view.animation.DecelerateInterpolator())
+                    .start()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -206,7 +228,12 @@ class TodayFragment : Fragment() {
                 // Observe today tasks
                 launch {
                     viewModel.todayTasks.collect { tasks ->
-                        adapter.submitList(tasks)
+                        val isInitialEmission = !hasAnimatedListEntrance && tasks.isNotEmpty()
+                        adapter.submitList(tasks) {
+                            if (isInitialEmission) {
+                                runEntranceStaggerAnimation(binding.rvTodayTasks)
+                            }
+                        }
                         
                         // Handle Empty State
                         if (tasks.isEmpty()) {

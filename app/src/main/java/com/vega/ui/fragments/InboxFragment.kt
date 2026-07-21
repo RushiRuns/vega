@@ -159,12 +159,40 @@ class InboxFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvInboxTasks)
     }
 
+    private var hasAnimatedListEntrance = false
+
+    private fun runEntranceStaggerAnimation(recyclerView: RecyclerView) {
+        if (hasAnimatedListEntrance) return
+        hasAnimatedListEntrance = true
+
+        recyclerView.post {
+            val childCount = recyclerView.childCount
+            for (i in 0 until minOf(childCount, 5)) {
+                val child = recyclerView.getChildAt(i) ?: continue
+                child.translationY = 60f
+                child.alpha = 0f
+                child.animate()
+                    .translationY(0f)
+                    .alpha(1f)
+                    .setStartDelay(i * 30L)
+                    .setDuration(150)
+                    .setInterpolator(android.view.animation.DecelerateInterpolator())
+                    .start()
+            }
+        }
+    }
+
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.inboxTasks.collect { tasks ->
-                        adapter.submitList(tasks)
+                        val isInitialEmission = !hasAnimatedListEntrance && tasks.isNotEmpty()
+                        adapter.submitList(tasks) {
+                            if (isInitialEmission) {
+                                runEntranceStaggerAnimation(binding.rvInboxTasks)
+                            }
+                        }
                         if (tasks.isEmpty()) {
                             binding.layoutEmptyState.visibility = View.VISIBLE
                             binding.rvInboxTasks.visibility = View.GONE
