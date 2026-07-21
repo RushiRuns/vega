@@ -54,6 +54,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.dynamicanimation:dynamicanimation:1.0.0")
     
     // Material Design 2 (MDC-Android 1.x)
     implementation("com.google.android.material:material:1.11.0")
