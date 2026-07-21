@@ -173,11 +173,29 @@ class DoneFragment : Fragment() {
 
     private fun setupMultiSelectActions() {
         adapter.setOnSelectionChangedListener { count ->
+            val bar = binding.layoutMultiSelect.cardMultiSelectActions
             if (count > 0) {
-                binding.layoutMultiSelect.cardMultiSelectActions.visibility = View.VISIBLE
+                if (bar.visibility != View.VISIBLE) {
+                    bar.visibility = View.VISIBLE
+                    bar.translationY = 100f
+                    bar.alpha = 0f
+                    bar.animate()
+                        .translationY(0f)
+                        .alpha(1f)
+                        .setDuration(200)
+                        .setInterpolator(androidx.interpolator.view.animation.FastOutSlowInInterpolator())
+                        .start()
+                }
                 binding.layoutMultiSelect.tvSelectedCount.text = "$count selected"
             } else {
-                binding.layoutMultiSelect.cardMultiSelectActions.visibility = View.GONE
+                if (bar.visibility == View.VISIBLE) {
+                    bar.animate()
+                        .translationY(100f)
+                        .alpha(0f)
+                        .setDuration(150)
+                        .withEndAction { bar.visibility = View.GONE }
+                        .start()
+                }
             }
         }
 

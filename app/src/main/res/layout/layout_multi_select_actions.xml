@@ -4,34 +4,33 @@
     android:id="@+id/card_multi_select_actions"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="6dp"
-    app:cardBackgroundColor="?attr/colorSurface"
-    app:strokeColor="?attr/colorPrimary"
-    app:strokeWidth="1dp"
+    android:layout_margin="@dimen/spacing_md"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/vega_surface_overlay"
+    app:strokeWidth="0dp"
     android:visibility="gone">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="@dimen/spacing_md">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="@dimen/spacing_sm">
 
             <ImageButton
                 android:id="@+id/btn_clear_selection"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/icon_tap_target"
+                android:layout_height="@dimen/icon_tap_target"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
-                app:tint="?android:attr/textColorSecondary"
+                app:tint="@color/vega_on_surface_muted"
                 android:contentDescription="Clear Selection" />
 
             <TextView
@@ -39,11 +38,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textStyle="bold"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:textAppearance="@style/TextAppearance.Vega.Title"
                 android:text="0 selected"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/vega_on_background" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,19 +61,26 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground"
-                android:paddingVertical="8dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_agenda"
-                    app:tint="?attr/colorPrimary" />
+                android:paddingVertical="@dimen/spacing_xs">
+                
+                <FrameLayout
+                    android:layout_width="@dimen/bulk_select_tap_target"
+                    android:layout_height="@dimen/bulk_select_tap_target"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_menu_agenda"
+                        app:tint="@color/vega_on_surface" />
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Due Date"
-                    android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginTop="2dp" />
+                    android:textAppearance="@style/TextAppearance.Vega.Micro"
+                    android:textColor="@color/vega_on_surface_muted" />
             </LinearLayout>
 
             <!-- Priority Action -->
@@ -89,19 +94,26 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground"
-                android:paddingVertical="8dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_manage"
-                    app:tint="?attr/colorPrimary" />
+                android:paddingVertical="@dimen/spacing_xs">
+                
+                <FrameLayout
+                    android:layout_width="@dimen/bulk_select_tap_target"
+                    android:layout_height="@dimen/bulk_select_tap_target"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_menu_manage"
+                        app:tint="@color/vega_on_surface" />
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Priority"
-                    android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginTop="2dp" />
+                    android:textAppearance="@style/TextAppearance.Vega.Micro"
+                    android:textColor="@color/vega_on_surface_muted" />
             </LinearLayout>
 
             <!-- State Action -->
@@ -115,19 +127,26 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground"
-                android:paddingVertical="8dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_directions"
-                    app:tint="?attr/colorPrimary" />
+                android:paddingVertical="@dimen/spacing_xs">
+
+                <FrameLayout
+                    android:layout_width="@dimen/bulk_select_tap_target"
+                    android:layout_height="@dimen/bulk_select_tap_target"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_menu_directions"
+                        app:tint="@color/vega_on_surface" />
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="State"
-                    android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginTop="2dp" />
+                    android:textAppearance="@style/TextAppearance.Vega.Micro"
+                    android:textColor="@color/vega_on_surface_muted" />
             </LinearLayout>
 
             <!-- Recurrence Action -->
@@ -141,19 +160,26 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground"
-                android:paddingVertical="8dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_repeat"
-                    app:tint="?attr/colorPrimary" />
+                android:paddingVertical="@dimen/spacing_xs">
+
+                <FrameLayout
+                    android:layout_width="@dimen/bulk_select_tap_target"
+                    android:layout_height="@dimen/bulk_select_tap_target"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_repeat"
+                        app:tint="@color/vega_recurring_accent" />
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Repeat"
-                    android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginTop="2dp" />
+                    android:textAppearance="@style/TextAppearance.Vega.Micro"
+                    android:textColor="@color/vega_on_surface_muted" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
