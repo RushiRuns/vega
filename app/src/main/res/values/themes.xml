@@ -34,28 +34,28 @@
     
     <!-- Typography Scale Styles (Vega Design Spec) -->
     <style name="TextAppearance.Vega.Display" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/vega_on_background</item>
     </style>
 
     <style name="TextAppearance.Vega.Title" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/vega_on_background</item>
     </style>
 
     <style name="TextAppearance.Vega.Body" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/vega_on_background</item>
     </style>
 
     <style name="TextAppearance.Vega.Label" parent="TextAppearance.MaterialComponents.Overline">
-        <item name="fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">13sp</item>
         <item name="android:letterSpacing">0.04</item>
@@ -63,14 +63,14 @@
     </style>
 
     <style name="TextAppearance.Vega.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/vega_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vega.Micro" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/vega_on_surface_muted</item>
