@@ -1,8 +1,14 @@
 package com.vega.ui.adapters
 
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -128,6 +134,20 @@ class UpcomingTasksAdapter(
             }
             TYPE_TASK -> {
                 val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val context = parent.context
+                val cornerRadius = context.resources.getDimension(R.dimen.card_corner_radius)
+                val gradientDrawable = GradientDrawable(
+                    GradientDrawable.Orientation.TL_BR,
+                    intArrayOf(
+                        ContextCompat.getColor(context, R.color.vega_surface_elevated),
+                        ContextCompat.getColor(context, R.color.vega_surface)
+                    )
+                ).apply {
+                    setCornerRadius(cornerRadius)
+                }
+                binding.cardTask.background = gradientDrawable
+                binding.cardTask.setCardBackgroundColor(Color.TRANSPARENT)
+
                 TaskViewHolder(binding)
             }
             else -> throw IllegalArgumentException("Invalid view type")
@@ -152,6 +172,11 @@ class UpcomingTasksAdapter(
             binding.tvTaskTitle.text = task.title
             val context = binding.root.context
             
+            // Reset visual state modified by completion animation
+            binding.tvTaskTitle.paintFlags = binding.tvTaskTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            binding.tvTaskTitle.alpha = 1.0f
+            binding.root.alpha = 1.0f
+            
             // Bind Due Date
             if (task.dueDate != null) {
                 binding.tvTaskDueDate.text = formatDueDate(task.dueDate)
@@ -167,30 +192,34 @@ class UpcomingTasksAdapter(
             } else {
                 binding.layoutTaskRecurrence.visibility = View.GONE
             }
-            binding.cardTask.setCardBackgroundColor(context.getColor(R.color.task_card_background))
 
             // Stroke based on selection
+            val baseBorderColor = ContextCompat.getColor(context, R.color.vega_border)
+            val borderWithAlpha = ColorUtils.setAlphaComponent(baseBorderColor, 102) // 40% alpha
+
             if (isSelectionMode) {
                 val isSel = selectedTaskIds.contains(task.id)
-                binding.cardTask.strokeColor = context.getColor(if (isSel) R.color.primary else R.color.task_card_stroke)
+                binding.cardTask.strokeColor = if (isSel) ContextCompat.getColor(context, R.color.vega_primary) else borderWithAlpha
                 binding.cardTask.strokeWidth = dpToPx(context, if (isSel) 2 else 1)
             } else {
-                binding.cardTask.strokeColor = context.getColor(R.color.task_card_stroke)
+                binding.cardTask.strokeColor = borderWithAlpha
                 binding.cardTask.strokeWidth = dpToPx(context, 1)
             }
 
             // Bind Checkbox state
-            binding.cbComplete.setOnCheckedChangeListener(null)
+            binding.circularCheckbox.setOnCheckedChangeListener(null)
+            binding.circularCheckbox.isSelectionMode = isSelectionMode
             if (isSelectionMode) {
-                binding.cbComplete.isChecked = selectedTaskIds.contains(task.id)
-                binding.cbComplete.setOnCheckedChangeListener { _, _ ->
+                binding.circularCheckbox.setChecked(selectedTaskIds.contains(task.id), animate = false)
+                binding.circularCheckbox.setOnCheckedChangeListener { _ ->
                     toggleSelection(task.id)
                 }
             } else {
-                binding.cbComplete.isChecked = (task.state == TaskState.DONE.name)
-                binding.cbComplete.setOnCheckedChangeListener { _, isChecked ->
+                val isDone = (task.state == TaskState.DONE.name)
+                binding.circularCheckbox.setChecked(isDone, animate = false)
+                binding.circularCheckbox.setOnCheckedChangeListener { isChecked ->
                     if (isChecked && task.state != TaskState.DONE.name) {
-                        onCompleteClick(task)
+                        animateCompletion(task)
                     }
                 }
             }
@@ -205,11 +234,10 @@ class UpcomingTasksAdapter(
             if (priority != TaskPriority.NONE) {
                 binding.chipPriority.visibility = View.VISIBLE
                 
-                // Color based on priority
                 val (colorRes, textRes) = when (priority) {
-                    TaskPriority.HIGH -> Pair(R.color.error, R.string.priority_high)
-                    TaskPriority.MEDIUM -> Pair(R.color.secondary, R.string.priority_medium)
-                    TaskPriority.LOW -> Pair(R.color.primary, R.string.priority_low)
+                    TaskPriority.HIGH -> Pair(R.color.vega_priority_high, R.string.priority_high)
+                    TaskPriority.MEDIUM -> Pair(R.color.vega_priority_medium, R.string.priority_medium)
+                    TaskPriority.LOW -> Pair(R.color.vega_priority_low, R.string.priority_low)
                     else -> Pair(android.R.color.transparent, R.string.priority_none)
                 }
                 binding.chipPriority.text = context.getString(textRes)
@@ -222,7 +250,7 @@ class UpcomingTasksAdapter(
             val showOverlay = isActionsRevealed(task.id)
             if (showOverlay) {
                 binding.layoutActionsOverlay.visibility = View.VISIBLE
-                binding.layoutForeground.visibility = View.INVISIBLE // prevent clicks on foreground
+                binding.layoutForeground.visibility = View.INVISIBLE
             } else {
                 binding.layoutActionsOverlay.visibility = View.GONE
                 binding.layoutForeground.visibility = View.VISIBLE
@@ -257,10 +285,33 @@ class UpcomingTasksAdapter(
                 onDeleteClick(task)
             }
 
-            // Tapping actions overlay outer area dismisses overlay
             binding.layoutActionsOverlay.setOnClickListener {
                 hideTaskActions(task.id)
             }
+        }
+
+        private fun animateCompletion(task: Task) {
+            binding.tvTaskTitle.animate().cancel()
+            binding.root.animate().cancel()
+
+            binding.tvTaskTitle.paintFlags = binding.tvTaskTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            
+            binding.tvTaskTitle.animate()
+                .alpha(0.5f)
+                .setDuration(300)
+                .setInterpolator(LinearOutSlowInInterpolator())
+                .start()
+
+            binding.root.animate()
+                .alpha(0.6f)
+                .setDuration(300)
+                .setInterpolator(LinearOutSlowInInterpolator())
+                .withEndAction {
+                    binding.root.postDelayed({
+                        onCompleteClick(task)
+                    }, 600)
+                }
+                .start()
         }
 
         private fun formatDueDate(timestamp: Long): String {
@@ -295,3 +346,4 @@ class UpcomingTasksAdapter(
         private const val TYPE_TASK = 1
     }
 }
+

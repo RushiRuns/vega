@@ -4,12 +4,12 @@
     android:id="@+id/card_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_8"
-    android:layout_marginVertical="@dimen/spacing_4"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="0dp"
-    app:cardBackgroundColor="@color/task_card_background"
-    app:strokeColor="@color/task_card_stroke"
+    android:layout_marginHorizontal="@dimen/spacing_lg"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:strokeColor="@color/vega_border"
     app:strokeWidth="1dp">
 
     <FrameLayout
@@ -22,16 +22,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/spacing_16"
+            android:paddingVertical="@dimen/spacing_md"
+            android:paddingHorizontal="@dimen/spacing_lg"
             android:gravity="center_vertical"
             android:background="@android:color/transparent">
 
             <!-- Checkbox / Status Indicator -->
-            <CheckBox
-                android:id="@+id/cb_complete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_12" />
+            <com.vega.ui.views.CircularCheckboxView
+                android:id="@+id/circular_checkbox"
+                android:layout_width="@dimen/checkbox_size"
+                android:layout_height="@dimen/checkbox_size"
+                android:layout_marginEnd="@dimen/spacing_md" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -44,8 +45,8 @@
                     android:id="@+id/tv_task_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="@style/TextAppearance.Vega.Title"
+                    android:textColor="@color/vega_on_background" />
 
                 <!-- Task Due Date -->
                 <TextView
@@ -53,8 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textAppearance="?attr/textAppearanceCaption"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="@style/TextAppearance.Vega.Label"
+                    android:textColor="@color/vega_on_surface"
                     android:visibility="gone" />
 
                 <!-- Recurrence Indicator Row -->
@@ -72,15 +73,14 @@
                         android:layout_height="14dp"
                         android:layout_marginEnd="4dp"
                         app:srcCompat="@drawable/ic_repeat"
-                        app:tint="@color/recurrence_primary" />
+                        app:tint="@color/vega_recurring_accent" />
 
                     <TextView
                         android:id="@+id/tv_task_recurrence"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceCaption"
-                        android:textColor="@color/recurrence_primary"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.Vega.Caption"
+                        android:textColor="@color/vega_recurring_accent" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -93,9 +93,9 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:visibility="gone"
-                app:chipMinHeight="24dp"
-                app:chipCornerRadius="4dp"
-                android:textSize="10sp" />
+                app:chipMinHeight="20dp"
+                app:chipCornerRadius="50dp"
+                android:textSize="11sp" />
 
         </LinearLayout>
 
@@ -106,7 +106,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:background="#E6000000"
+            android:background="@color/vega_surface_overlay"
             android:visibility="gone"
             android:clickable="true"
             android:focusable="true">
@@ -117,10 +117,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Postpone"
-                android:textColor="@android:color/white"
+                android:textColor="@color/vega_on_background"
                 app:icon="@android:drawable/ic_menu_agenda"
-                app:iconTint="@android:color/white"
-                android:layout_marginEnd="@dimen/spacing_16" />
+                app:iconTint="@color/vega_on_background"
+                android:layout_marginEnd="@dimen/spacing_lg" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_action_delete"
@@ -128,9 +128,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete"
-                android:textColor="@color/error"
+                android:textColor="@color/vega_priority_high"
                 app:icon="@android:drawable/ic_menu_delete"
-                app:iconTint="@color/error" />
+                app:iconTint="@color/vega_priority_high" />
 
         </LinearLayout>
     </FrameLayout>
