@@ -1,51 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Vega" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Material Design 2 Primary Color -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorOnPrimary">@color/on_primary</item>
+    <!-- Base App Theme (Locked Dark Theme per Vega Spec) -->
+    <style name="Theme.Vega" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Primary Color -->
+        <item name="colorPrimary">@color/vega_primary</item>
+        <item name="colorOnPrimary">#121218</item>
         
         <!-- Secondary Color -->
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSecondary">@color/vega_primary</item>
+        <item name="colorOnSecondary">#121218</item>
         
         <!-- Error Color -->
-        <item name="colorError">@color/error</item>
-        <item name="colorOnError">@color/on_error</item>
+        <item name="colorError">@color/vega_priority_high</item>
+        <item name="colorOnError">#FFFFFF</item>
         
         <!-- Surface & Background -->
-        <item name="android:windowBackground">@color/background</item>
-        <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="android:windowBackground">@color/vega_background</item>
+        <item name="colorSurface">@color/vega_surface</item>
+        <item name="colorOnSurface">@color/vega_on_background</item>
         
-        <!-- Typography -->
-        <item name="textAppearanceHeadline1">@style/TextAppearance.Vega.Headline1</item>
-        <item name="textAppearanceHeadline6">@style/TextAppearance.Vega.Headline6</item>
-        <item name="textAppearanceBody1">@style/TextAppearance.Vega.Body1</item>
-        <item name="textAppearanceBody2">@style/TextAppearance.Vega.Body2</item>
+        <!-- Typography Scale Mapping -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.Vega.Display</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.Vega.Title</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Vega.Body</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Vega.Caption</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Vega.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Vega.Label</item>
         
-        <!-- Shape -->
+        <!-- Shape Appearances -->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Vega.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Vega.MediumComponent</item>
     </style>
     
-    <!-- Typography Styles -->
-    <style name="TextAppearance.Vega.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">sans-serif-black</item>
+    <!-- Typography Scale Styles (Vega Design Spec) -->
+    <style name="TextAppearance.Vega.Display" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/vega_on_background</item>
     </style>
-    
-    <style name="TextAppearance.Vega.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+
+    <style name="TextAppearance.Vega.Title" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/vega_on_background</item>
     </style>
-    
-    <style name="TextAppearance.Vega.Body1" parent="TextAppearance.MaterialComponents.Body1">
+
+    <style name="TextAppearance.Vega.Body" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/vega_on_background</item>
     </style>
-    
-    <style name="TextAppearance.Vega.Body2" parent="TextAppearance.MaterialComponents.Body2">
+
+    <style name="TextAppearance.Vega.Label" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">@color/vega_on_surface</item>
+    </style>
+
+    <style name="TextAppearance.Vega.Caption" parent="TextAppearance.MaterialComponents.Caption">
         <item name="fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/vega_on_surface</item>
+    </style>
+
+    <style name="TextAppearance.Vega.Micro" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/vega_on_surface_muted</item>
     </style>
     
     <!-- Shape Styles -->
@@ -54,13 +82,33 @@
     </style>
     
     <style name="ShapeAppearance.Vega.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerRadius">12dp</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Vega.BottomSheet" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- Bottom Sheet Dialog Theme -->
+    <style name="Style.Vega.BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Vega.BottomSheet</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.Vega.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="backgroundTint">@color/vega_surface_overlay</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Vega.BottomSheet</item>
     </style>
     
     <style name="Theme.Vega.FullScreenDialog" parent="Theme.Vega">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:windowBackground">@color/vega_background</item>
     </style>
     
     <style name="Theme.Vega.TranslucentQuickAdd" parent="Theme.Vega">
