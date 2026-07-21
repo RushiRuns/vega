@@ -74,6 +74,21 @@ class TodayViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, 0)
 
+    private val startOfToday: Long
+        get() = java.util.Calendar.getInstance().apply {
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+    val completedTodayCount: StateFlow<Int> = repository.countCompletedToday(startOfToday)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
+
+    val totalTodayCount: StateFlow<Int> = combine(allTodayTasks, completedTodayCount) { tasks, completed ->
+        tasks.size + completed
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, 0)
+
     fun toggleExpand() {
         _isExpanded.value = !_isExpanded.value
     }

@@ -255,6 +255,19 @@ class TodayFragment : Fragment() {
                     }
                 }
 
+                // Observe progress counts for SegmentedProgressBar
+                launch {
+                    kotlinx.coroutines.flow.combine(
+                        viewModel.completedTodayCount,
+                        viewModel.totalTodayCount
+                    ) { completed, total ->
+                        Pair(completed, total)
+                    }.collect { (completed, total) ->
+                        binding.progressToday.setProgress(completed, total, animate = true)
+                        binding.tvTodayProgressText.text = "$completed of $total done today"
+                    }
+                }
+
                 launch {
                     viewModel.error.collect { message ->
                         if (message != null) {

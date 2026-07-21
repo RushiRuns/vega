@@ -51,6 +51,9 @@ class TaskRepository @Inject constructor(
     fun getDoneTasks(): Flow<List<Task>> = 
         taskDao.getDoneTasksSortedByRecency()
         
+    fun countCompletedToday(startOfToday: Long): Flow<Int> =
+        taskDao.countCompletedToday(startOfToday)
+        
     suspend fun createTask(task: Task) {
         taskDao.insertTask(task)
         alarmScheduler.scheduleAlarm(task)

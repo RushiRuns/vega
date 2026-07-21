@@ -4,7 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/spacing_16">
+    android:padding="@dimen/spacing_lg"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Today Header Progress Section -->
+    <LinearLayout
+        android:id="@+id/layout_today_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/spacing_md"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.vega.ui.views.SegmentedProgressBar
+            android:id="@+id/progress_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_today_progress_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:textAppearance="@style/TextAppearance.Vega.Label"
+            android:textColor="@color/vega_on_surface"
+            android:gravity="end"
+            tools:text="0 of 0 done today" />
+    </LinearLayout>
 
     <!-- Next Best Action Card -->
     <include
@@ -12,9 +43,10 @@
         layout="@layout/item_next_best_action_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
         android:layout_marginBottom="@dimen/spacing_16"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_today_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -23,7 +55,7 @@
         android:id="@+id/rv_today_tasks"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_8"
+        android:layout_marginTop="@dimen/spacing_sm"
         app:layout_constraintBottom_toTopOf="@id/chip_overflow_indicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
