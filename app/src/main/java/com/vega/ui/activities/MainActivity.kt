@@ -82,6 +82,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Setup FAB for Quick Add
+        binding.fabQuickAdd.setOnTouchListener { v, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.94f).scaleY(0.94f).setDuration(100).start()
+                }
+                android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+                }
+            }
+            false
+        }
+
         binding.fabQuickAdd.setOnClickListener {
             val quickAddBottomSheet = QuickAddBottomSheetFragment()
             quickAddBottomSheet.show(supportFragmentManager, "QuickAddBottomSheetFragment")
