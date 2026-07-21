@@ -101,6 +101,40 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+    <!-- Tags Selection Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/spacing_xs">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tags"
+            android:textAppearance="@style/TextAppearance.Vega.Label"
+            android:textColor="@color/vega_on_surface" />
+
+        <TextView
+            android:id="@+id/btn_manage_tags_quick_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Manage Tags"
+            android:textAppearance="@style/TextAppearance.Vega.Caption"
+            android:textColor="@color/vega_primary"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_quick_add_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_md"
+        app:singleSelection="false" />
+
     <!-- Buttons row -->
     <LinearLayout
         android:layout_width="match_parent"

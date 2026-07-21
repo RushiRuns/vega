@@ -17,8 +17,12 @@ import android.util.Log
 
 @HiltViewModel
 class InboxViewModel @Inject constructor(
-    private val repository: TaskRepository
+    private val repository: TaskRepository,
+    private val tagRepository: com.vega.data.repository.TagRepository
 ) : ViewModel() {
+
+    val taskTagsMap = tagRepository.allTaskTagsMap
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()

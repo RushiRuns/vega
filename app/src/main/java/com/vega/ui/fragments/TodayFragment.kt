@@ -225,6 +225,13 @@ class TodayFragment : Fragment() {
                         }
                     }
                 }
+                // Observe task tags map
+                launch {
+                    viewModel.taskTagsMap.collect { map ->
+                        adapter.setTaskTagsMap(map)
+                    }
+                }
+
                 // Observe today tasks
                 launch {
                     viewModel.todayTasks.collect { tasks ->

@@ -87,12 +87,16 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
+        binding.btnManageTagsQuickAdd.setOnClickListener {
+            TagManagementDialogFragment().show(parentFragmentManager, TagManagementDialogFragment.TAG)
+        }
+
         binding.buttonAddAnother.setOnClickListener {
             val title = viewModel.parseResult.value.title
             if (title.isNullOrBlank()) {
                 binding.layoutTaskInput.error = getString(R.string.error_empty_title)
             } else {
-                viewModel.createTask()
+                viewModel.createTask(getSelectedTagIds())
                 binding.inputTask.setText("")
                 binding.layoutTaskInput.error = null
                 viewModel.clearState()
@@ -105,7 +109,7 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
             if (title.isNullOrBlank()) {
                 binding.layoutTaskInput.error = getString(R.string.error_empty_title)
             } else {
-                viewModel.createTask()
+                viewModel.createTask(getSelectedTagIds())
                 // Optimistic UI: dismiss immediately on confirmation
                 dismiss()
             }
@@ -149,6 +153,12 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
                 }
 
                 launch {
+                    viewModel.allTags.collect { tags ->
+                        populateTagChips(tags)
+                    }
+                }
+
+                launch {
                     viewModel.uiState.collect { state ->
                         val isLoading = state is QuickAddUiState.Loading
                         binding.buttonConfirm.isEnabled = !isLoading
@@ -178,6 +188,36 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
     }
+
+    private fun populateTagChips(tags: List<com.vega.data.database.Tag>) {
+        val selectedIds = getSelectedTagIds()
+        binding.chipGroupQuickAddTags.removeAllViews()
+        tags.forEach { tagItem ->
+            val chip = com.google.android.material.chip.Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter).apply {
+                id = View.generateViewId()
+                setTag(tagItem.id)
+                text = tagItem.name
+                isCheckable = true
+                isChecked = selectedIds.contains(tagItem.id)
+                chipCornerRadius = 50f
+                chipMinHeight = 24f.dpToPx()
+            }
+            binding.chipGroupQuickAddTags.addView(chip)
+        }
+    }
+
+    private fun getSelectedTagIds(): List<String> {
+        val list = mutableListOf<String>()
+        for (i in 0 until binding.chipGroupQuickAddTags.childCount) {
+            val chip = binding.chipGroupQuickAddTags.getChildAt(i) as? com.google.android.material.chip.Chip
+            if (chip != null && chip.isChecked && chip.tag != null) {
+                list.add(chip.tag.toString())
+            }
+        }
+        return list
+    }
+
+    private fun Float.dpToPx(): Float = this * resources.displayMetrics.density
 
     private fun formatDueDate(timestamp: Long): String {
         val calendar = Calendar.getInstance().apply { timeInMillis = timestamp }

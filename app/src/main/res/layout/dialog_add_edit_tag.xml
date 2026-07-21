@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_lg"
+    android:background="@color/vega_surface_overlay">
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tag Details"
+        android:textAppearance="@style/TextAppearance.Vega.Title"
+        android:textColor="@color/vega_on_background"
+        android:layout_marginBottom="@dimen/spacing_md" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_tag_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tag Name"
+        android:layout_marginBottom="@dimen/spacing_md">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_tag_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:textColor="@color/vega_on_background" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Color"
+        android:textAppearance="@style/TextAppearance.Vega.Label"
+        android:textColor="@color/vega_on_surface"
+        android:layout_marginBottom="@dimen/spacing_xs" />
+
+    <!-- Color Tokens Palette Radio/Chip Group -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_tag_colors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        android:layout_marginBottom="@dimen/spacing_lg">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_color_teal"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teal"
+            app:chipCornerRadius="50dp"
+            app:chipIconVisible="false"
+            android:checked="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_color_red"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Red"
+            app:chipCornerRadius="50dp"
+            app:chipIconVisible="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_color_amber"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amber"
+            app:chipCornerRadius="50dp"
+            app:chipIconVisible="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_color_purple"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Purple"
+            app:chipCornerRadius="50dp"
+            app:chipIconVisible="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_color_gray"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Muted"
+            app:chipCornerRadius="50dp"
+            app:chipIconVisible="false" />
+    </com.google.android.material.chip.ChipGroup>
+
+</LinearLayout>

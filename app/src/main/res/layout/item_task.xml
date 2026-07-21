@@ -82,6 +82,16 @@
                         android:textAppearance="@style/TextAppearance.Vega.Caption"
                         android:textColor="@color/vega_recurring_accent" />
                 </LinearLayout>
+
+                <!-- Tags ChipGroup Row -->
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_task_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:chipSpacingHorizontal="4dp"
+                    app:singleLine="true"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <!-- Priority Badge -->

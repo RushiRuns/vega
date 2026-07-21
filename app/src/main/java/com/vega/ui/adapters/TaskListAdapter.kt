@@ -35,6 +35,13 @@ class TaskListAdapter(
     private val selectedTaskIds = mutableSetOf<String>()
     private var onSelectionChangedListener: ((Int) -> Unit)? = null
 
+    private var taskTagsMap = emptyMap<String, List<com.vega.data.database.Tag>>()
+
+    fun setTaskTagsMap(map: Map<String, List<com.vega.data.database.Tag>>) {
+        taskTagsMap = map
+        notifyDataSetChanged()
+    }
+
     fun setOnSelectionChangedListener(listener: (Int) -> Unit) {
         onSelectionChangedListener = listener
     }
@@ -195,6 +202,29 @@ class TaskListAdapter(
                         animateCompletion(task)
                     }
                 }
+            }
+
+            // Bind Tags
+            val tags = taskTagsMap[task.id]
+            if (!tags.isNullOrEmpty()) {
+                binding.chipGroupTaskTags.removeAllViews()
+                binding.chipGroupTaskTags.visibility = View.VISIBLE
+                tags.forEach { tag ->
+                    val chip = com.google.android.material.chip.Chip(context).apply {
+                        text = tag.name
+                        chipMinHeight = dpToPx(context, 18).toFloat()
+                        chipCornerRadius = dpToPx(context, 50).toFloat()
+                        textSize = 10f
+                        isClickable = false
+                        isFocusable = false
+                        val colorInt = try { Color.parseColor(tag.colorHex) } catch (e: Exception) { Color.parseColor("#4ECDC4") }
+                        chipBackgroundColor = android.content.res.ColorStateList.valueOf(colorInt)
+                        setTextColor(ContextCompat.getColor(context, R.color.vega_background))
+                    }
+                    binding.chipGroupTaskTags.addView(chip)
+                }
+            } else {
+                binding.chipGroupTaskTags.visibility = View.GONE
             }
 
             // Bind Priority

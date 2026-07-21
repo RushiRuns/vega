@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.vega.data.database.TaskDao
 import com.vega.data.database.VegaDatabase
 import com.vega.data.repository.TaskRepository
+import com.vega.data.repository.TagRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,5 +44,17 @@ object AppModule {
         alarmScheduler: com.vega.alarms.TaskAlarmScheduler
     ): TaskRepository {
         return TaskRepository(taskDao, alarmScheduler)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTagDao(database: VegaDatabase): com.vega.data.database.TagDao {
+        return database.tagDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTagRepository(tagDao: com.vega.data.database.TagDao): TagRepository {
+        return TagRepository(tagDao)
     }
 }

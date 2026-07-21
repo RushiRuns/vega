@@ -186,6 +186,12 @@ class InboxFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.taskTagsMap.collect { map ->
+                        adapter.setTaskTagsMap(map)
+                    }
+                }
+
+                launch {
                     viewModel.inboxTasks.collect { tasks ->
                         val isInitialEmission = !hasAnimatedListEntrance && tasks.isNotEmpty()
                         adapter.submitList(tasks) {

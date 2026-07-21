@@ -170,6 +170,12 @@ class DoneFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.taskTagsMap.collect { map ->
+                        adapter.setTaskTagsMap(map)
+                    }
+                }
+
+                launch {
                     viewModel.doneTasks.collect { tasks ->
                         val isInitialEmission = !hasAnimatedListEntrance && tasks.isNotEmpty()
                         adapter.submitList(tasks) {

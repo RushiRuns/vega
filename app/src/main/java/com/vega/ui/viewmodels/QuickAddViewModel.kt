@@ -25,8 +25,11 @@ sealed interface QuickAddUiState {
 @HiltViewModel
 class QuickAddViewModel @Inject constructor(
     private val repository: TaskRepository,
+    private val tagRepository: com.vega.data.repository.TagRepository,
     private val parser: NaturalLanguageParser
 ) : ViewModel() {
+
+    val allTags = tagRepository.allTags
 
     private val _parseResult = MutableStateFlow(ParseResult())
     val parseResult: StateFlow<ParseResult> = _parseResult.asStateFlow()
@@ -50,7 +53,7 @@ class QuickAddViewModel @Inject constructor(
         _parseResult.value = _parseResult.value.copy(recurrence = recurrence)
     }
 
-    fun createTask() {
+    fun createTask(selectedTagIds: List<String> = emptyList()) {
         val currentResult = _parseResult.value
         val title = currentResult.title
 
@@ -71,6 +74,9 @@ class QuickAddViewModel @Inject constructor(
                     recurrence = currentResult.recurrence
                 )
                 repository.createTask(task)
+                if (selectedTagIds.isNotEmpty()) {
+                    tagRepository.setTaskTags(task.id, selectedTagIds)
+                }
                 _uiState.value = QuickAddUiState.Success
             } catch (e: Exception) {
                 _uiState.value = QuickAddUiState.Error(e.message ?: "Failed to create task")

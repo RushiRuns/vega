@@ -72,6 +72,11 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
+        // Manage tags trigger
+        binding.btnManageTagsDetail.setOnClickListener {
+            TagManagementDialogFragment().show(parentFragmentManager, TagManagementDialogFragment.TAG)
+        }
+
         // Save button
         binding.btnSave.setOnClickListener {
             val title = binding.etTitle.text?.toString().orEmpty()
@@ -86,7 +91,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             val selectedPriority = priorityOptions.firstOrNull { it.first == priorityStr }?.second ?: TaskPriority.NONE
             val selectedState = stateOptions.firstOrNull { it.first == stateStr }?.second ?: TaskState.INBOX
 
-            viewModel.saveTask(title, selectedDueDate, selectedPriority, selectedState, selectedRecurrence, notes)
+            viewModel.saveTask(title, selectedDueDate, selectedPriority, selectedState, selectedRecurrence, notes, getSelectedTagIds())
         }
 
         // Date Picker Trigger
@@ -187,6 +192,18 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                     }
                 }
 
+                // Observe task tags
+                launch {
+                    kotlinx.coroutines.flow.combine(
+                        viewModel.allTags,
+                        viewModel.taskTags
+                    ) { allTags, taskTags ->
+                        Pair(allTags, taskTags)
+                    }.collect { (allTags, taskTags) ->
+                        populateDetailTagChips(allTags, taskTags)
+                    }
+                }
+
                 // Observe Save Success
                 launch {
                     viewModel.saveSuccess.collect { success ->
@@ -263,6 +280,36 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         val dialog = RepeatsDialogFragment.newInstance(selectedRecurrence, selectedDueDate)
         dialog.show(parentFragmentManager, RepeatsDialogFragment.TAG)
     }
+
+    private fun populateDetailTagChips(allTags: List<com.vega.data.database.Tag>, assignedTags: List<com.vega.data.database.Tag>) {
+        val currentlySelectedIds = getSelectedTagIds().ifEmpty { assignedTags.map { it.id }.toSet() }
+        binding.chipGroupDetailTags.removeAllViews()
+        allTags.forEach { tagItem ->
+            val chip = com.google.android.material.chip.Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter).apply {
+                id = View.generateViewId()
+                setTag(tagItem.id)
+                text = tagItem.name
+                isCheckable = true
+                isChecked = currentlySelectedIds.contains(tagItem.id)
+                chipCornerRadius = 50f
+                chipMinHeight = 24f.dpToPx()
+            }
+            binding.chipGroupDetailTags.addView(chip)
+        }
+    }
+
+    private fun getSelectedTagIds(): List<String> {
+        val list = mutableListOf<String>()
+        for (i in 0 until binding.chipGroupDetailTags.childCount) {
+            val chip = binding.chipGroupDetailTags.getChildAt(i) as? com.google.android.material.chip.Chip
+            if (chip != null && chip.isChecked && chip.tag != null) {
+                list.add(chip.tag.toString())
+            }
+        }
+        return list
+    }
+
+    private fun Float.dpToPx(): Float = this * resources.displayMetrics.density
 
     private fun formatDueDate(timestamp: Long): String {
         val cal = Calendar.getInstance().apply { timeInMillis = timestamp }

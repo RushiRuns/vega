@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Task::class], version = 3, exportSchema = false)
+@Database(entities = [Task::class, Tag::class, TaskTagCrossRef::class], version = 4, exportSchema = false)
 abstract class VegaDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
+    abstract fun tagDao(): TagDao
     
     companion object {
         @Volatile

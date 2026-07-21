@@ -15,11 +15,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskDetailViewModel @Inject constructor(
-    private val repository: TaskRepository
+    private val repository: TaskRepository,
+    private val tagRepository: com.vega.data.repository.TagRepository
 ) : ViewModel() {
+
+    val allTags = tagRepository.allTags
 
     private val _task = MutableStateFlow<Task?>(null)
     val task: StateFlow<Task?> = _task.asStateFlow()
+
+    private val _taskTags = MutableStateFlow<List<com.vega.data.database.Tag>>(emptyList())
+    val taskTags: StateFlow<List<com.vega.data.database.Tag>> = _taskTags.asStateFlow()
 
     private val _saveSuccess = MutableStateFlow(false)
     val saveSuccess: StateFlow<Boolean> = _saveSuccess.asStateFlow()
@@ -31,6 +37,11 @@ class TaskDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val loadedTask = repository.getTaskById(taskId)
             _task.value = loadedTask
+            launch {
+                tagRepository.getTaskWithTags(taskId).collect { taskWithTags ->
+                    _taskTags.value = taskWithTags?.tags ?: emptyList()
+                }
+            }
         }
     }
 
@@ -40,7 +51,8 @@ class TaskDetailViewModel @Inject constructor(
         priority: TaskPriority,
         state: TaskState,
         recurrence: String?,
-        notes: String?
+        notes: String?,
+        selectedTagIds: List<String> = emptyList()
     ) {
         val current = _task.value ?: return
         if (title.isBlank()) {
@@ -59,6 +71,7 @@ class TaskDetailViewModel @Inject constructor(
                     updatedAt = System.currentTimeMillis()
                 )
                 repository.updateTask(updatedTask)
+                tagRepository.setTaskTags(current.id, selectedTagIds)
                 _saveSuccess.value = true
             } catch (e: Exception) {
                 _error.value = e.localizedMessage ?: "Failed to save task"
