@@ -45,16 +45,16 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:src="@android:drawable/ic_menu_view"
-            app:tint="?android:attr/textColorSecondary" />
+            app:tint="@color/vega_on_surface_muted" />
 
         <TextView
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16"
+            android:layout_marginTop="@dimen/spacing_lg"
             android:gravity="center"
             android:text="@string/empty_done"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:textAppearance="@style/TextAppearance.Vega.Caption"
+            android:textColor="@color/vega_on_surface_muted" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
