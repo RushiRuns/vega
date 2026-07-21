@@ -94,23 +94,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_theme"
-        android:textAppearance="?attr/textAppearanceSubtitle2"
-        android:textColor="?attr/colorPrimary"
+        android:textAppearance="@style/TextAppearance.Vega.Title"
+        android:textColor="@color/vega_primary"
         android:layout_marginBottom="@dimen/spacing_12" />
 
-    <!-- Theme Dropdown -->
+    <!-- Theme Indicator (Locked Dark Mode) -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_theme"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Select Theme">
+        android:enabled="false"
+        android:hint="Theme">
 
-        <AutoCompleteTextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/actv_theme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:focusable="false"
+            android:clickable="false"
+            android:text="Dark Mode (Vega Canvas)"
+            android:textColor="@color/vega_on_surface_muted" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

@@ -134,27 +134,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupThemeDropdown() {
-        val themeOptions = listOf(
-            getString(R.string.theme_system) to "system",
-            getString(R.string.theme_light) to "light",
-            getString(R.string.theme_dark) to "dark"
-        )
-
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            themeOptions.map { it.first }
-        )
-        binding.actvTheme.setAdapter(adapter)
-
-        val currentThemeValue = ThemeManager.getTheme(requireContext())
-        val currentThemeLabel = themeOptions.firstOrNull { it.second == currentThemeValue }?.first.orEmpty()
-        binding.actvTheme.setText(currentThemeLabel, false)
-
-        binding.actvTheme.setOnItemClickListener { _, _, position, _ ->
-            val selectedOption = themeOptions[position]
-            ThemeManager.setTheme(requireContext(), selectedOption.second)
-        }
+        binding.actvTheme.setText("Dark Mode (Vega Canvas)")
+        binding.tilTheme.isEnabled = false
     }
 
     override fun onDestroyView() {

@@ -9,7 +9,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.vega.workers.EndOfDaySnoozeWorker
-import com.vega.ui.theme.ThemeManager
+import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 class VegaApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        ThemeManager.applyTheme(this)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         createNotificationChannel()
         scheduleEndOfDaySnooze()
         scheduleDailyReminder()
