@@ -181,9 +181,9 @@ class TodayFragment : Fragment() {
                             if (priority != TaskPriority.NONE) {
                                 val context = requireContext()
                                 val (colorRes, textRes) = when (priority) {
-                                    TaskPriority.HIGH -> Pair(R.color.error, R.string.priority_high)
-                                    TaskPriority.MEDIUM -> Pair(R.color.secondary, R.string.priority_medium)
-                                    TaskPriority.LOW -> Pair(R.color.primary, R.string.priority_low)
+                                    TaskPriority.HIGH -> Pair(R.color.vega_priority_high, R.string.priority_high)
+                                    TaskPriority.MEDIUM -> Pair(R.color.vega_priority_medium, R.string.priority_medium)
+                                    TaskPriority.LOW -> Pair(R.color.vega_priority_low, R.string.priority_low)
                                     else -> Pair(android.R.color.transparent, R.string.priority_none)
                                 }
                                 binding.cardNextBestAction.chipNbaPriority.text = context.getString(textRes)

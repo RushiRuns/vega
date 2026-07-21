@@ -1,87 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.vega.ui.views.StackedCardLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_nba_root"
+    android:id="@+id/layout_stacked_hero"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_8"
-    android:layout_marginVertical="@dimen/spacing_8"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="0dp"
-    app:cardBackgroundColor="@color/task_card_background"
-    app:strokeColor="?attr/colorPrimary"
-    app:strokeWidth="1dp">
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_nba_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_16">
+        android:layout_marginBottom="@dimen/nba_peek_offset"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/vega_surface"
+        app:strokeColor="@color/vega_primary"
+        app:strokeWidth="1dp">
 
-        <!-- Recommended / NBA Tag -->
-        <TextView
-            android:id="@+id/tv_nba_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/next_best_action"
-            android:textAppearance="?attr/textAppearanceOverline"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold" />
-
-        <!-- Close / Dismiss button -->
-        <ImageButton
-            android:id="@+id/btn_nba_dismiss"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/button_cancel"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:tint="?android:attr/textColorSecondary" />
-
-        <!-- Task Title (below tag, wrapping before close button) -->
-        <TextView
-            android:id="@+id/tv_nba_title"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_nba_badge"
-            android:layout_toStartOf="@id/btn_nba_dismiss"
-            android:layout_marginTop="@dimen/spacing_8"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textStyle="bold" />
+            android:padding="@dimen/spacing_lg">
 
-        <!-- Info row (Due Date and Priority Chip) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_nba_title"
-            android:layout_marginTop="@dimen/spacing_12"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <!-- Due Date Display -->
+            <!-- Recommended / NBA Tag -->
             <TextView
-                android:id="@+id/tv_nba_due_date"
+                android:id="@+id/tv_nba_badge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textColor="?android:attr/textColorSecondary"
-                android:visibility="gone"
-                android:layout_marginEnd="@dimen/spacing_12" />
+                android:text="@string/next_best_action"
+                android:textAppearance="@style/TextAppearance.Vega.Label"
+                android:textColor="@color/vega_primary" />
 
-            <!-- Priority Chip -->
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_nba_priority"
-                style="@style/Widget.MaterialComponents.Chip.Action"
-                android:layout_width="wrap_content"
+            <!-- Close / Dismiss button -->
+            <ImageButton
+                android:id="@+id/btn_nba_dismiss"
+                android:layout_width="@dimen/icon_tap_target"
+                android:layout_height="@dimen/icon_tap_target"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/button_cancel"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                app:tint="@color/vega_on_surface_muted" />
+
+            <!-- Task Title (below tag, wrapping before close button) -->
+            <TextView
+                android:id="@+id/tv_nba_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="gone"
-                app:chipMinHeight="24dp"
-                app:chipCornerRadius="4dp"
-                android:textSize="10sp" />
-        </LinearLayout>
-    </RelativeLayout>
-</com.google.android.material.card.MaterialCardView>
+                android:layout_below="@id/tv_nba_badge"
+                android:layout_toStartOf="@id/btn_nba_dismiss"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:textAppearance="@style/TextAppearance.Vega.Title"
+                android:textColor="@color/vega_on_background" />
+
+            <!-- Info row (Due Date and Priority Chip) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_nba_title"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Due Date Display -->
+                <TextView
+                    android:id="@+id/tv_nba_due_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Vega.Label"
+                    android:textColor="@color/vega_on_surface"
+                    android:visibility="gone"
+                    android:layout_marginEnd="@dimen/spacing_md" />
+
+                <!-- Priority Chip -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_nba_priority"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:visibility="gone"
+                    app:chipMinHeight="20dp"
+                    app:chipCornerRadius="50dp"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</com.vega.ui.views.StackedCardLayout>
