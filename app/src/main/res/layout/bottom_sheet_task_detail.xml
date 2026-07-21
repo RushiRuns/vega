@@ -9,26 +9,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_16"
-        android:background="?android:attr/colorBackground">
+        android:padding="@dimen/spacing_lg"
+        android:background="@color/vega_surface_overlay">
 
         <!-- Handle indicator for bottom sheet -->
-        <View
-            android:layout_width="40dp"
-            android:layout_height="4dp"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/spacing_16"
-            android:background="?android:attr/textColorSecondary"
-            android:backgroundTint="?android:attr/textColorSecondary" />
+            android:layout_marginBottom="@dimen/spacing_lg"
+            android:src="@drawable/bg_drag_handle" />
 
         <!-- Title Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Task Details"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="?android:attr/textColorPrimary"
-            android:layout_marginBottom="@dimen/spacing_16" />
+            android:textAppearance="@style/TextAppearance.Vega.Title"
+            android:textColor="@color/vega_on_background"
+            android:layout_marginBottom="@dimen/spacing_lg" />
 
         <!-- Title Field -->
         <com.google.android.material.textfield.TextInputLayout
@@ -37,13 +36,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_title"
-            android:layout_marginBottom="@dimen/spacing_12">
+            android:layout_marginBottom="@dimen/spacing_md"
+            app:boxStrokeColor="@color/vega_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences" />
+                android:inputType="textCapSentences"
+                android:textColor="@color/vega_on_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Due Date Field -->
@@ -53,10 +54,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_due_date"
-            android:layout_marginBottom="@dimen/spacing_12"
+            android:layout_marginBottom="@dimen/spacing_md"
+            app:boxStrokeColor="@color/vega_primary"
             app:startIconDrawable="@android:drawable/ic_menu_agenda"
+            app:startIconTint="@color/vega_on_surface"
             app:endIconMode="custom"
             app:endIconDrawable="@android:drawable/ic_menu_close_clear_cancel"
+            app:endIconTint="@color/vega_on_surface_muted"
             app:endIconContentDescription="Clear Due Date">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -65,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:clickable="true"
-                android:cursorVisible="false" />
+                android:cursorVisible="false"
+                android:textColor="@color/vega_on_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Priority Field -->
@@ -75,13 +80,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_priority"
-            android:layout_marginBottom="@dimen/spacing_12">
+            android:layout_marginBottom="@dimen/spacing_md"
+            app:boxStrokeColor="@color/vega_primary">
 
             <AutoCompleteTextView
                 android:id="@+id/actv_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:textColor="@color/vega_on_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- State Field -->
@@ -91,13 +98,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="State"
-            android:layout_marginBottom="@dimen/spacing_12">
+            android:layout_marginBottom="@dimen/spacing_md"
+            app:boxStrokeColor="@color/vega_primary">
 
             <AutoCompleteTextView
                 android:id="@+id/actv_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:textColor="@color/vega_on_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Recurrence Field -->
@@ -107,10 +116,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_recurrence"
-            android:layout_marginBottom="@dimen/spacing_12"
+            android:layout_marginBottom="@dimen/spacing_md"
+            app:boxStrokeColor="@color/vega_primary"
             app:startIconDrawable="@android:drawable/ic_menu_revert"
+            app:startIconTint="@color/vega_recurring_accent"
             app:endIconMode="custom"
             app:endIconDrawable="@android:drawable/ic_menu_close_clear_cancel"
+            app:endIconTint="@color/vega_on_surface_muted"
             app:endIconContentDescription="Clear Recurrence">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -119,7 +131,8 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:clickable="true"
-                android:cursorVisible="false" />
+                android:cursorVisible="false"
+                android:textColor="@color/vega_on_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Notes Field -->
@@ -129,7 +142,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_notes"
-            android:layout_marginBottom="@dimen/spacing_24">
+            android:layout_marginBottom="@dimen/spacing_2xl"
+            app:boxStrokeColor="@color/vega_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_notes"
@@ -137,7 +151,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine|textCapSentences"
                 android:minLines="3"
-                android:gravity="top" />
+                android:gravity="top"
+                android:textColor="@color/vega_on_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Action Buttons -->
@@ -153,13 +168,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_cancel"
-                android:layout_marginEnd="@dimen/spacing_8" />
+                android:textColor="@color/vega_primary"
+                android:layout_marginEnd="@dimen/spacing_sm" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/button_save" />
+                android:text="@string/button_save"
+                app:backgroundTint="@color/vega_primary"
+                android:textColor="#121218" />
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

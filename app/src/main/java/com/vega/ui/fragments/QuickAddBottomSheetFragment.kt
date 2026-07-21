@@ -33,6 +33,8 @@ class QuickAddBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val viewModel: QuickAddViewModel by viewModels()
 
+    override fun getTheme(): Int = R.style.Style_Vega_BottomSheet
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

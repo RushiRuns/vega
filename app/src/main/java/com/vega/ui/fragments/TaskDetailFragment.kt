@@ -36,6 +36,8 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
     private var selectedDueDate: Long? = null
     private var selectedRecurrence: String? = null
 
+    override fun getTheme(): Int = R.style.Style_Vega_BottomSheet
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         taskId = arguments?.getString(ARG_TASK_ID)
