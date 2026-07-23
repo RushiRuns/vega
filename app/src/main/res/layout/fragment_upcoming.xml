@@ -18,16 +18,28 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Standalone Top Screen Title: Upcoming -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="16dp"
+                android:text="Upcoming"
+                android:textAppearance="@style/TextAppearance.Vega.Display"
+                android:textColor="@color/vega_on_background"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+
             <!-- Calendar Widget Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_calendar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="24dp"
-                app:cardBackgroundColor="@color/vega_surface"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/vega_surface_task"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
 
@@ -37,35 +49,18 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Calendar Section Title -->
+                    <!-- Month Header -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Calendar"
-                        android:textAppearance="@style/TextAppearance.Vega.Display"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/vega_on_background" />
-
-                    <!-- Divider -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="14dp"
-                        android:background="@color/vega_border" />
-
-                    <!-- Month Subtitle -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="October, 2024"
                         android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/vega_on_background"
-                        android:layout_marginBottom="18dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <!-- Calendar Grid -->
+                    <!-- Clean Calendar Grid -->
                     <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,41 +95,14 @@
                                 android:textColor="@color/vega_on_background"
                                 android:textSize="14sp" />
 
-                            <!-- Date 3: Spark icon + green dot -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:src="@drawable/ic_meta_spark"
-                                        app:tint="@color/vega_on_background" />
-
-                                    <View
-                                        android:layout_width="4dp"
-                                        android:layout_height="4dp"
-                                        android:layout_marginStart="2dp"
-                                        android:background="@drawable/bg_circle_primary"
-                                        app:tint="#4ECDC4" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="3"
-                                    android:textColor="@color/vega_on_surface_muted"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
+                                android:text="3"
+                                android:textColor="@color/vega_on_background"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -215,41 +183,14 @@
                                 android:textColor="@color/vega_on_background"
                                 android:textSize="14sp" />
 
-                            <!-- Date 12: Pink icon + purple dot -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:src="@drawable/ic_inline_habit"
-                                        app:tint="#FF69B4" />
-
-                                    <View
-                                        android:layout_width="4dp"
-                                        android:layout_height="4dp"
-                                        android:layout_marginStart="2dp"
-                                        android:background="@drawable/bg_circle_primary"
-                                        app:tint="#9B51E0" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="12"
-                                    android:textColor="@color/vega_on_surface_muted"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
+                                android:text="12"
+                                android:textColor="@color/vega_on_background"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -276,79 +217,23 @@
                                 android:textColor="@color/vega_on_background"
                                 android:textSize="14sp" />
 
-                            <!-- Date 15: Red N icon + green dot -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical">
+                                android:text="15"
+                                android:textColor="@color/vega_on_background"
+                                android:textSize="14sp" />
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="N"
-                                        android:textColor="#E50914"
-                                        android:textSize="11sp"
-                                        android:textStyle="bold" />
-
-                                    <View
-                                        android:layout_width="4dp"
-                                        android:layout_height="4dp"
-                                        android:layout_marginStart="2dp"
-                                        android:background="@drawable/bg_circle_primary"
-                                        app:tint="#4ECDC4" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="15"
-                                    android:textColor="@color/vega_on_surface_muted"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-
-                            <!-- Date 16: Pen icon + green dot -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:src="@android:drawable/ic_menu_edit"
-                                        app:tint="@color/vega_on_background" />
-
-                                    <View
-                                        android:layout_width="4dp"
-                                        android:layout_height="4dp"
-                                        android:layout_marginStart="2dp"
-                                        android:background="@drawable/bg_circle_primary"
-                                        app:tint="#4ECDC4" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="16"
-                                    android:textColor="@color/vega_on_surface_muted"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
+                                android:text="16"
+                                android:textColor="@color/vega_on_background"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -377,41 +262,14 @@
                                 android:textColor="@color/vega_on_background"
                                 android:textSize="14sp" />
 
-                            <!-- Date 20: TV icon + green dot -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:src="@android:drawable/ic_menu_view"
-                                        app:tint="@color/vega_on_background" />
-
-                                    <View
-                                        android:layout_width="4dp"
-                                        android:layout_height="4dp"
-                                        android:layout_marginStart="2dp"
-                                        android:background="@drawable/bg_circle_primary"
-                                        app:tint="#4ECDC4" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="20"
-                                    android:textColor="@color/vega_on_surface_muted"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
+                                android:text="20"
+                                android:textColor="@color/vega_on_background"
+                                android:textSize="14sp" />
                         </TableRow>
 
                         <!-- Row 4: Dates 21..27 -->
@@ -456,44 +314,14 @@
                                 android:textColor="@color/vega_on_background"
                                 android:textSize="14sp" />
 
-                            <!-- Date 25: Spotify icon + green dot + "+2" badge -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:src="@drawable/ic_meta_spotify" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="2dp"
-                                        android:background="@drawable/bg_circle_primary"
-                                        android:paddingHorizontal="3dp"
-                                        android:text="+2"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="8sp"
-                                        app:tint="#6B7080" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="25"
-                                    android:textColor="@color/vega_on_surface_muted"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
+                                android:text="25"
+                                android:textColor="@color/vega_on_background"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -519,40 +347,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <!-- Date 28: Diamond icon + purple dot -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:src="@drawable/ic_meta_diamond" />
-
-                                    <View
-                                        android:layout_width="4dp"
-                                        android:layout_height="4dp"
-                                        android:layout_marginStart="2dp"
-                                        android:background="@drawable/bg_circle_primary"
-                                        app:tint="#9B51E0" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="28"
-                                    android:textColor="@color/vega_on_surface_muted"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
+                                android:text="28"
+                                android:textColor="@color/vega_on_background"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -600,6 +402,18 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Tasks Header Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:layout_marginBottom="10dp"
+                android:text="Tasks"
+                android:textAppearance="@style/TextAppearance.Vega.Title"
+                android:textColor="@color/vega_on_background"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <!-- Tasks Container Card -->
             <com.google.android.material.card.MaterialCardView
