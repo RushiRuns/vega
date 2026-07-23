@@ -19,6 +19,10 @@
         <item name="colorSurface">@color/vega_surface</item>
         <item name="colorOnSurface">@color/vega_on_background</item>
         
+        <!-- Global App Font Family -->
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        
         <!-- Typography Scale Mapping -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.Vega.Display</item>
         <item name="textAppearanceHeadline6">@style/TextAppearance.Vega.Title</item>
