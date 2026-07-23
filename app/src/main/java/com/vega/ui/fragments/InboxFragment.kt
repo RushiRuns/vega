@@ -77,10 +77,12 @@ class InboxFragment : Fragment() {
                 } else {
                     adapter.enterSelectionMode(task.id)
                 }
-            }
+            },
+            itemLayoutRes = R.layout.item_task_today
         )
         binding.rvInboxTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvInboxTasks.adapter = adapter
+        binding.rvInboxTasks.isNestedScrollingEnabled = false
         setupSwipeGestures()
     }
 
