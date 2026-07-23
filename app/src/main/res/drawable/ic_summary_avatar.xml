@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="26dp"
+    android:height="26dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Circle background -->
+    <path
+        android:fillColor="#4A4B52"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2z" />
+    <!-- Person silhouette with sunglasses/beard look -->
+    <path
+        android:fillColor="#F0F0F2"
+        android:pathData="M12,6c-1.93,0 -3.5,1.57 -3.5,3.5 0,1.2 0.61,2.26 1.54,2.89C8.36,13.23 7,15.19 7,17.5h10c0,-2.31 -1.36,-4.27 -3.04,-5.11 0.93,-0.63 1.54,-1.69 1.54,-2.89 0,-1.93 -1.57,-3.5 -3.5,-3.5z" />
+</vector>

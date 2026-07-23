@@ -29,6 +29,9 @@ class TaskDetailViewModelTest {
     @Mock
     private lateinit var repository: TaskRepository
 
+    @Mock
+    private lateinit var tagRepository: com.vega.data.repository.TagRepository
+
     private lateinit var viewModel: TaskDetailViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -36,7 +39,9 @@ class TaskDetailViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
-        viewModel = TaskDetailViewModel(repository)
+        org.mockito.Mockito.`when`(tagRepository.allTags).thenReturn(kotlinx.coroutines.flow.flowOf(emptyList()))
+        org.mockito.Mockito.`when`(tagRepository.getTaskWithTags(org.mockito.kotlin.any())).thenReturn(kotlinx.coroutines.flow.flowOf(null))
+        viewModel = TaskDetailViewModel(repository, tagRepository)
     }
 
     @After

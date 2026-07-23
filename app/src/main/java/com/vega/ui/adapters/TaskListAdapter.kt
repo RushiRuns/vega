@@ -26,7 +26,8 @@ class TaskListAdapter(
     private val onPostponeClick: (Task) -> Unit,
     private val onDeleteClick: (Task) -> Unit,
     private val onItemClick: ((Task) -> Unit)? = null,
-    private val onItemLongClick: ((Task) -> Unit)? = null
+    private val onItemLongClick: ((Task) -> Unit)? = null,
+    private val itemLayoutRes: Int = R.layout.item_task
 ) : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(TaskDiffCallback()) {
 
     private val revealedTaskIds = mutableSetOf<String>()
@@ -125,26 +126,34 @@ class TaskListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(itemLayoutRes, parent, false)
+        val binding = ItemTaskBinding.bind(view)
         val context = parent.context
-        val cornerRadius = context.resources.getDimension(R.dimen.card_corner_radius)
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                ContextCompat.getColor(context, R.color.vega_surface_elevated),
-                ContextCompat.getColor(context, R.color.vega_surface)
-            )
-        ).apply {
-            setCornerRadius(cornerRadius)
+
+        if (itemLayoutRes == R.layout.item_task) {
+            val cornerRadius = context.resources.getDimension(R.dimen.card_corner_radius)
+            val gradientDrawable = GradientDrawable(
+                GradientDrawable.Orientation.TL_BR,
+                intArrayOf(
+                    ContextCompat.getColor(context, R.color.vega_surface_elevated),
+                    ContextCompat.getColor(context, R.color.vega_surface)
+                )
+            ).apply {
+                setCornerRadius(cornerRadius)
+            }
+            binding.cardTask.background = gradientDrawable
+            (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.setCardBackgroundColor(Color.TRANSPARENT)
         }
-        binding.cardTask.background = gradientDrawable
-        binding.cardTask.setCardBackgroundColor(Color.TRANSPARENT)
 
         return TaskViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(getItem(position))
+        val dividerView = holder.itemView.findViewById<View>(R.id.view_item_divider)
+        if (dividerView != null) {
+            dividerView.visibility = if (position == itemCount - 1) View.GONE else View.VISIBLE
+        }
     }
 
     inner class TaskViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -177,17 +186,22 @@ class TaskListAdapter(
             val baseBorderColor = ContextCompat.getColor(context, R.color.vega_border)
             val borderWithAlpha = ColorUtils.setAlphaComponent(baseBorderColor, 102) // 40% alpha
 
-            if (isSelectionMode) {
-                val isSel = selectedTaskIds.contains(task.id)
-                binding.cardTask.strokeColor = if (isSel) ContextCompat.getColor(context, R.color.vega_primary) else borderWithAlpha
-                binding.cardTask.strokeWidth = dpToPx(context, if (isSel) 2 else 1)
+            if (itemLayoutRes == R.layout.item_task_today) {
+                (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeWidth = 0
             } else {
-                binding.cardTask.strokeColor = borderWithAlpha
-                binding.cardTask.strokeWidth = dpToPx(context, 1)
+                if (isSelectionMode) {
+                    val isSel = selectedTaskIds.contains(task.id)
+                    (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeColor = if (isSel) ContextCompat.getColor(context, R.color.vega_primary) else borderWithAlpha
+                    (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeWidth = dpToPx(context, if (isSel) 2 else 1)
+                } else {
+                    (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeColor = borderWithAlpha
+                    (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeWidth = dpToPx(context, 1)
+                }
             }
 
             // Bind Checkbox state
             binding.circularCheckbox.setOnCheckedChangeListener(null)
+            binding.circularCheckbox.isSquare = (itemLayoutRes == R.layout.item_task_today)
             binding.circularCheckbox.isSelectionMode = isSelectionMode
             if (isSelectionMode) {
                 binding.circularCheckbox.setChecked(selectedTaskIds.contains(task.id), animate = false)

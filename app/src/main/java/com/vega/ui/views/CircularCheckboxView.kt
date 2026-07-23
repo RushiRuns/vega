@@ -134,19 +134,35 @@ class CircularCheckboxView @JvmOverloads constructor(
         pathMeasure.setPath(checkmarkPath, false)
     }
 
+    var isSquare: Boolean = false
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val radius = circleBounds.width() / 2f
         val cx = circleBounds.centerX()
         val cy = circleBounds.centerY()
 
-        if (fillProgress > 0f || isSelectionMode) {
-            val fillRadius = if (isSelectionMode && checked) radius else radius * fillProgress
-            canvas.drawCircle(cx, cy, fillRadius, fillPaint)
-        }
+        if (isSquare) {
+            val rx = dpToPx(5f)
+            if (fillProgress > 0f || isSelectionMode) {
+                canvas.drawRoundRect(circleBounds, rx, rx, fillPaint)
+            }
+            if (fillProgress < 1f && !checked) {
+                canvas.drawRoundRect(circleBounds, rx, rx, strokePaint)
+            }
+        } else {
+            if (fillProgress > 0f || isSelectionMode) {
+                val fillRadius = if (isSelectionMode && checked) radius else radius * fillProgress
+                canvas.drawCircle(cx, cy, fillRadius, fillPaint)
+            }
 
-        if (fillProgress < 1f && !checked) {
-            canvas.drawCircle(cx, cy, radius, strokePaint)
+            if (fillProgress < 1f && !checked) {
+                canvas.drawCircle(cx, cy, radius, strokePaint)
+            }
         }
 
         if (fillProgress > 0f) {

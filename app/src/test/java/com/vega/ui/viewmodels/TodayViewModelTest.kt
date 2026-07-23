@@ -26,6 +26,9 @@ class TodayViewModelTest {
     @Mock
     private lateinit var repository: TaskRepository
 
+    @Mock
+    private lateinit var tagRepository: com.vega.data.repository.TagRepository
+
     private lateinit var viewModel: TodayViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -33,6 +36,8 @@ class TodayViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
+        `when`(tagRepository.allTaskTagsMap).thenReturn(flowOf(emptyMap()))
+        `when`(repository.countCompletedToday(org.mockito.kotlin.any())).thenReturn(flowOf(0))
     }
 
     @After
@@ -55,7 +60,7 @@ class TodayViewModelTest {
         val mockTasks = generateMockTasks(10)
         `when`(repository.getTodayTasks()).thenReturn(flowOf(mockTasks))
 
-        viewModel = TodayViewModel(repository)
+        viewModel = TodayViewModel(repository, tagRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertFalse(viewModel.isExpanded.value)
@@ -73,7 +78,7 @@ class TodayViewModelTest {
         val mockTasks = generateMockTasks(10)
         `when`(repository.getTodayTasks()).thenReturn(flowOf(mockTasks))
 
-        viewModel = TodayViewModel(repository)
+        viewModel = TodayViewModel(repository, tagRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // Toggle expand
@@ -90,7 +95,7 @@ class TodayViewModelTest {
         val mockTasks = generateMockTasks(4)
         `when`(repository.getTodayTasks()).thenReturn(flowOf(mockTasks))
 
-        viewModel = TodayViewModel(repository)
+        viewModel = TodayViewModel(repository, tagRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertFalse(viewModel.isExpanded.value)

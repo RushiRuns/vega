@@ -30,6 +30,9 @@ class QuickAddViewModelTest {
     private lateinit var repository: TaskRepository
 
     @Mock
+    private lateinit var tagRepository: com.vega.data.repository.TagRepository
+
+    @Mock
     private lateinit var parser: NaturalLanguageParser
 
     private lateinit var viewModel: QuickAddViewModel
@@ -39,7 +42,7 @@ class QuickAddViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
-        viewModel = QuickAddViewModel(repository, parser)
+        viewModel = QuickAddViewModel(repository, tagRepository, parser)
     }
 
     @After

@@ -1,107 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/spacing_lg"
-    android:clipChildren="false"
-    android:clipToPadding="false">
+    android:background="@color/vega_background">
 
-    <!-- Today Header Progress Section -->
-    <LinearLayout
-        android:id="@+id/layout_today_header"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="@dimen/spacing_md"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="96dp">
 
-        <com.vega.ui.views.SegmentedProgressBar
-            android:id="@+id/progress_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_today_progress_text"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/spacing_md"
-            android:textAppearance="@style/TextAppearance.Vega.Label"
-            android:textColor="@color/vega_on_surface"
-            android:gravity="end"
-            tools:text="0 of 0 done today" />
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <!-- Next Best Action Card -->
-    <include
-        android:id="@+id/card_next_best_action"
-        layout="@layout/item_next_best_action_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_sm"
-        android:layout_marginBottom="@dimen/spacing_16"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/layout_today_header"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <!-- Today Top Header Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="28dp">
 
-    <!-- Task List RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_today_tasks"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_sm"
-        app:layout_constraintBottom_toTopOf="@id/chip_overflow_indicator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_next_best_action"
-        tools:listitem="@android:layout/simple_list_item_2" />
+                <TextView
+                    android:id="@+id/tv_day_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Vega.Display"
+                    android:textSize="44sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/vega_on_background"
+                    tools:text="Fri" />
 
-    <!-- Empty State View -->
-    <LinearLayout
-        android:id="@+id/layout_empty_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/tv_orange_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" •"
+                    android:textSize="44sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/vega_fab_orange" />
 
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@android:drawable/ic_menu_today"
-            app:tint="?android:attr/textColorSecondary" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16"
-            android:gravity="center"
-            android:text="@string/empty_today"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="?android:attr/textColorSecondary" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_date_full"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textAppearance="@style/TextAppearance.Vega.Label"
+                    android:textColor="@color/vega_on_surface"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="2dp"
+                    tools:text="January 17\n2024" />
+            </LinearLayout>
 
-    <!-- Overflow Indicator Chip at bottom -->
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip_overflow_indicator"
-        style="@style/Widget.MaterialComponents.Chip.Action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_8"
-        android:text="+5 more"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <!-- Static Summary Greeting Block -->
+            <TextView
+                android:id="@+id/tv_summary_greeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="24dp"
+                android:textAppearance="@style/TextAppearance.Vega.Display"
+                android:textSize="24sp"
+                android:textColor="@color/vega_on_background"
+                android:lineSpacingMultiplier="1.2"
+                android:text="Good morning, Alexey. You have 3 meetings, 2 tasks and 1 habit today. You're mostly free after 4 pm." />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Tasks Section Rounded Card Container -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_tasks_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="24dp"
+                app:cardBackgroundColor="@color/vega_surface"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Task List RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_today_tasks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingVertical="4dp"
+                        tools:listitem="@layout/item_task_today" />
+
+                    <!-- Empty State View -->
+                    <LinearLayout
+                        android:id="@+id/layout_empty_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="32dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@android:drawable/ic_menu_today"
+                            app:tint="@color/vega_on_surface_muted" />
+
+                        <TextView
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:text="@string/empty_today"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="@color/vega_on_surface_muted" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

@@ -9,11 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.vega.R
@@ -45,39 +47,28 @@ class MainActivity : AppCompatActivity() {
         // Setup navigation
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        
-        // Link toolbar with NavController
-        NavigationUI.setupWithNavController(binding.toolbar, navController)
-        NavigationUI.setupWithNavController(binding.bottomNavView, navController)
 
-        // Inflate toolbar search menu
-        binding.toolbar.inflateMenu(R.menu.toolbar_menu)
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_search -> {
-                    navController.navigate(R.id.searchFragment)
-                    true
-                }
-                R.id.settingsFragment -> {
-                    navController.navigate(R.id.settingsFragment)
-                    true
-                }
-                else -> false
-            }
+        // Setup floating navigation bar click listeners
+        binding.navBtnToday.setOnClickListener {
+            navigateToTab(navController, R.id.todayFragment)
+        }
+        binding.navBtnUpcoming.setOnClickListener {
+            navigateToTab(navController, R.id.upcomingFragment)
+        }
+        binding.navBtnInbox.setOnClickListener {
+            navigateToTab(navController, R.id.inboxFragment)
+        }
+        binding.navBtnSettings.setOnClickListener {
+            navigateToTab(navController, R.id.settingsFragment)
         }
 
-        // Toggle elements based on destination
+        // Toggle floating bar visibility & active icon tint based on destination
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.searchFragment || destination.id == R.id.settingsFragment) {
-                binding.toolbar.menu.findItem(R.id.action_search)?.isVisible = false
-                binding.toolbar.menu.findItem(R.id.settingsFragment)?.isVisible = false
-                binding.fabQuickAdd.hide()
-                binding.bottomNavView.visibility = android.view.View.GONE
+            updateNavActiveState(destination.id)
+            if (destination.id == R.id.searchFragment) {
+                binding.layoutFloatingBottomBar.visibility = View.GONE
             } else {
-                binding.toolbar.menu.findItem(R.id.action_search)?.isVisible = true
-                binding.toolbar.menu.findItem(R.id.settingsFragment)?.isVisible = true
-                binding.fabQuickAdd.show()
-                binding.bottomNavView.visibility = android.view.View.VISIBLE
+                binding.layoutFloatingBottomBar.visibility = View.VISIBLE
             }
         }
 
@@ -102,6 +93,26 @@ class MainActivity : AppCompatActivity() {
         observeSnoozeFlow()
         handleSnoozeIntent(intent)
         handleWidgetIntent(intent)
+    }
+
+    private fun navigateToTab(navController: NavController, destinationId: Int) {
+        if (navController.currentDestination?.id == destinationId) return
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setRestoreState(true)
+            .setPopUpTo(R.id.todayFragment, false, true)
+            .build()
+        navController.navigate(destinationId, null, navOptions)
+    }
+
+    private fun updateNavActiveState(destinationId: Int) {
+        val activeColor = ContextCompat.getColor(this, R.color.vega_nav_icon_active)
+        val inactiveColor = ContextCompat.getColor(this, R.color.vega_nav_icon_inactive)
+
+        binding.navBtnToday.setColorFilter(if (destinationId == R.id.todayFragment) activeColor else inactiveColor)
+        binding.navBtnUpcoming.setColorFilter(if (destinationId == R.id.upcomingFragment) activeColor else inactiveColor)
+        binding.navBtnInbox.setColorFilter(if (destinationId == R.id.inboxFragment) activeColor else inactiveColor)
+        binding.navBtnSettings.setColorFilter(if (destinationId == R.id.settingsFragment) activeColor else inactiveColor)
     }
 
     override fun onNewIntent(intent: Intent?) {

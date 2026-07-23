@@ -1,5 +1,6 @@
 package com.vega.ui.fragments
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.vega.R
-import com.vega.databinding.FragmentTodayBinding
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import android.graphics.Canvas
 import com.vega.data.database.Task
+import com.vega.databinding.FragmentTodayBinding
 import com.vega.ui.adapters.TaskListAdapter
 import com.vega.ui.viewmodels.TodayViewModel
-import com.vega.data.database.TaskPriority
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -70,9 +69,85 @@ class TodayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupHeaderDate()
         setupRecyclerView()
-        setupListeners()
         observeViewModel()
+    }
+
+    private fun setupHeaderDate() {
+        val calendar = Calendar.getInstance()
+        val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MMMM d\nyyyy", Locale.getDefault())
+
+        binding.tvDayName.text = dayFormat.format(calendar.time)
+        binding.tvDateFull.text = dateFormat.format(calendar.time)
+        setupSummaryGreeting()
+    }
+
+    private fun setupSummaryGreeting() {
+        val context = requireContext()
+        val builder = android.text.SpannableStringBuilder()
+
+        val mutedColor = androidx.core.content.ContextCompat.getColor(context, R.color.vega_on_surface_muted)
+        val whiteColor = androidx.core.content.ContextCompat.getColor(context, R.color.vega_on_background)
+
+        fun appendMuted(text: String) {
+            val start = builder.length
+            builder.append(text)
+            builder.setSpan(
+                android.text.style.ForegroundColorSpan(mutedColor),
+                start,
+                builder.length,
+                android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        fun appendBoldWhite(text: String) {
+            val start = builder.length
+            builder.append(text)
+            builder.setSpan(android.text.style.ForegroundColorSpan(whiteColor), start, builder.length, android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            builder.setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD), start, builder.length, android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        fun appendInlineIcon(drawableRes: Int, sizeDp: Int = 20) {
+            val drawable = androidx.core.content.ContextCompat.getDrawable(context, drawableRes)?.mutate() ?: return
+            val px = (sizeDp * resources.displayMetrics.density).toInt()
+            drawable.setBounds(0, 0, px, px)
+            val start = builder.length
+            builder.append(" ")
+            builder.setSpan(
+                android.text.style.ImageSpan(drawable, android.text.style.ImageSpan.ALIGN_CENTER),
+                start,
+                builder.length,
+                android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            builder.append(" ")
+        }
+
+        appendMuted("Good morning,")
+        appendInlineIcon(R.drawable.ic_summary_avatar, 26)
+        appendBoldWhite("Alexey.")
+        builder.append("\n")
+
+        appendMuted("You have")
+        appendInlineIcon(R.drawable.ic_inline_meetings, 18)
+        appendBoldWhite("3 meetings,")
+        builder.append("\n")
+
+        appendInlineIcon(R.drawable.ic_inline_tasks, 18)
+        appendBoldWhite("2 tasks ")
+        appendMuted("and")
+        appendInlineIcon(R.drawable.ic_inline_habit, 18)
+        appendBoldWhite("1 habit")
+        builder.append("\n")
+
+        appendMuted("today. You're ")
+        appendBoldWhite("mostly free")
+        builder.append("\n")
+
+        appendBoldWhite("after 4 pm.")
+
+        binding.tvSummaryGreeting.text = builder
     }
 
     private fun setupRecyclerView() {
@@ -88,10 +163,12 @@ class TodayFragment : Fragment() {
             },
             onItemLongClick = { task ->
                 showTaskDetailSheet(task.id)
-            }
+            },
+            itemLayoutRes = R.layout.item_task_today
         )
         binding.rvTodayTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTodayTasks.adapter = adapter
+        binding.rvTodayTasks.isNestedScrollingEnabled = false
         setupSwipeGestures()
     }
 
@@ -172,59 +249,9 @@ class TodayFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvTodayTasks)
     }
 
-    private fun setupListeners() {
-        binding.chipOverflowIndicator.setOnClickListener {
-            viewModel.toggleExpand()
-        }
-    }
-
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Observe Next Best Action (T037)
-                launch {
-                    viewModel.nextBestAction.collect { task ->
-                        if (task != null) {
-                            binding.cardNextBestAction.tvNbaTitle.text = task.title
-                            
-                            if (task.dueDate != null) {
-                                binding.cardNextBestAction.tvNbaDueDate.text = formatDueDate(task.dueDate)
-                                binding.cardNextBestAction.tvNbaDueDate.visibility = View.VISIBLE
-                            } else {
-                                binding.cardNextBestAction.tvNbaDueDate.visibility = View.GONE
-                            }
-
-                            val priority = try {
-                                TaskPriority.valueOf(task.priority)
-                            } catch (e: Exception) {
-                                TaskPriority.NONE
-                            }
-
-                            if (priority != TaskPriority.NONE) {
-                                val context = requireContext()
-                                val (colorRes, textRes) = when (priority) {
-                                    TaskPriority.HIGH -> Pair(R.color.vega_priority_high, R.string.priority_high)
-                                    TaskPriority.MEDIUM -> Pair(R.color.vega_priority_medium, R.string.priority_medium)
-                                    TaskPriority.LOW -> Pair(R.color.vega_priority_low, R.string.priority_low)
-                                    else -> Pair(android.R.color.transparent, R.string.priority_none)
-                                }
-                                binding.cardNextBestAction.chipNbaPriority.text = context.getString(textRes)
-                                binding.cardNextBestAction.chipNbaPriority.setChipBackgroundColorResource(colorRes)
-                                binding.cardNextBestAction.chipNbaPriority.visibility = View.VISIBLE
-                            } else {
-                                binding.cardNextBestAction.chipNbaPriority.visibility = View.GONE
-                            }
-
-                            binding.cardNextBestAction.btnNbaDismiss.setOnClickListener {
-                                viewModel.dismissNextBestAction(task.id)
-                            }
-
-                            binding.cardNextBestAction.root.visibility = View.VISIBLE
-                        } else {
-                            binding.cardNextBestAction.root.visibility = View.GONE
-                        }
-                    }
-                }
                 // Observe task tags map
                 launch {
                     viewModel.taskTagsMap.collect { map ->
@@ -241,7 +268,7 @@ class TodayFragment : Fragment() {
                                 runEntranceStaggerAnimation(binding.rvTodayTasks)
                             }
                         }
-                        
+
                         // Handle Empty State
                         if (tasks.isEmpty()) {
                             binding.layoutEmptyState.visibility = View.VISIBLE
@@ -253,29 +280,8 @@ class TodayFragment : Fragment() {
                     }
                 }
 
-                // Observe overflow indicator & soft cap warnings
+                // Observe total tasks size for soft cap warning (T033)
                 launch {
-                    launch {
-                        viewModel.isExpanded.collect { isExpanded ->
-                            updateOverflowChip(isExpanded, viewModel.overflowCount.value)
-                        }
-                    }
-
-                    launch {
-                        viewModel.overflowCount.collect { overflowCount ->
-                            updateOverflowChip(viewModel.isExpanded.value, overflowCount)
-                        }
-                    }
-                }
-
-                // Observe total tasks size from DB for soft cap warning (T033)
-                launch {
-                    // Let's get the full list count to check for soft cap warning
-                    // Wait, we can count total tasks from the TodayViewModel's combined flow
-                    // Since allTodayTasks is private, we can observe total size by adding it or calculating it
-                    // Wait, todayTasks size is capped at 7. If isExpanded is false, todayTasks size is 7, overflowCount is N.
-                    // So total size = todayTasks.size + overflowCount
-                    // Let's compute this dynamically!
                     viewModel.todayTasks.collect { tasks ->
                         val totalTasks = tasks.size + viewModel.overflowCount.value
                         if (totalTasks >= 8 && previousTaskCount >= 0 && previousTaskCount < 8) {
@@ -289,19 +295,7 @@ class TodayFragment : Fragment() {
                     }
                 }
 
-                // Observe progress counts for SegmentedProgressBar
-                launch {
-                    kotlinx.coroutines.flow.combine(
-                        viewModel.completedTodayCount,
-                        viewModel.totalTodayCount
-                    ) { completed, total ->
-                        Pair(completed, total)
-                    }.collect { (completed, total) ->
-                        binding.progressToday.setProgress(completed, total, animate = true)
-                        binding.tvTodayProgressText.text = "$completed of $total done today"
-                    }
-                }
-
+                // Observe errors
                 launch {
                     viewModel.error.collect { message ->
                         if (message != null) {
@@ -314,30 +308,6 @@ class TodayFragment : Fragment() {
         }
     }
 
-    private fun updateOverflowChip(isExpanded: Boolean, overflowCount: Int) {
-        if (isExpanded) {
-            binding.chipOverflowIndicator.text = getString(R.string.button_cancel) // reuse Cancel for collapse or "Show less"
-            // Wait, cancel string is "Cancel". We can use a direct text or customize. Let's set it to "Show less" manually
-            binding.chipOverflowIndicator.text = "Show less"
-            binding.chipOverflowIndicator.visibility = View.VISIBLE
-        } else {
-            if (overflowCount > 0) {
-                binding.chipOverflowIndicator.text = getString(R.string.overflow_more, overflowCount)
-                binding.chipOverflowIndicator.visibility = View.VISIBLE
-            } else {
-                binding.chipOverflowIndicator.visibility = View.GONE
-            }
-        }
-    }
-
-    private fun formatDueDate(timestamp: Long): String {
-        val calendar = Calendar.getInstance().apply { timeInMillis = timestamp }
-        val hasTime = calendar.get(Calendar.HOUR_OF_DAY) != 0 || calendar.get(Calendar.MINUTE) != 0
-        
-        val pattern = if (hasTime) "MMM d 'at' h:mm a" else "MMM d"
-        return SimpleDateFormat(pattern, Locale.getDefault()).format(calendar.time)
-    }
- 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
