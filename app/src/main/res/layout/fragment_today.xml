@@ -83,16 +83,16 @@
                 android:text="Good morning, Alexey. You have 3 meetings, 2 tasks and 1 habit today. You're mostly free after 4 pm." />
 
             <!-- Tasks Section Header Title -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="24dp"
-                android:layout_marginBottom="10dp"
-                android:text="Tasks"
-                android:textAppearance="@style/TextAppearance.Vega.Title"
-                android:textColor="@color/vega_on_background"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingHorizontal="24dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:text="Tasks"-->
+<!--                android:textAppearance="@style/TextAppearance.Vega.Title"-->
+<!--                android:textColor="@color/vega_on_background"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold" />-->
 
             <!-- Tasks Section Rounded Card Container -->
             <com.google.android.material.card.MaterialCardView

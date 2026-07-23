@@ -155,5 +155,5 @@
         android:layout_height="1dp"
         android:layout_gravity="bottom"
         android:layout_marginHorizontal="16dp"
-        android:background="#1FFFFFFF" />
+        android:background="#0DFFFFFF" />
 </com.google.android.material.card.MaterialCardView>

@@ -88,7 +88,7 @@ class TodayFragment : Fragment() {
         val context = requireContext()
         val builder = android.text.SpannableStringBuilder()
 
-        val mutedColor = androidx.core.content.ContextCompat.getColor(context, R.color.vega_on_surface_muted)
+        val mutedColor = android.graphics.Color.parseColor("#7A7A7A")
         val whiteColor = androidx.core.content.ContextCompat.getColor(context, R.color.vega_on_background)
 
         fun appendMuted(text: String) {
@@ -126,24 +126,20 @@ class TodayFragment : Fragment() {
 
         appendMuted("Good morning,")
         appendInlineIcon(R.drawable.ic_summary_avatar, 26)
-        appendBoldWhite("Alexey.")
-        builder.append("\n")
+        appendBoldWhite("Alexey. ")
 
         appendMuted("You have")
         appendInlineIcon(R.drawable.ic_inline_meetings, 18)
-        appendBoldWhite("3 meetings,")
-        builder.append("\n")
+        appendBoldWhite("3 meetings, ")
 
         appendInlineIcon(R.drawable.ic_inline_tasks, 18)
         appendBoldWhite("2 tasks ")
         appendMuted("and")
         appendInlineIcon(R.drawable.ic_inline_habit, 18)
-        appendBoldWhite("1 habit")
-        builder.append("\n")
+        appendBoldWhite("1 habit ")
 
         appendMuted("today. You're ")
-        appendBoldWhite("mostly free")
-        builder.append("\n")
+        appendBoldWhite("mostly free ")
 
         appendBoldWhite("after 4 pm.")
 
