@@ -38,8 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="24dp"
-                app:cardCornerRadius="24dp"
-                app:cardBackgroundColor="@color/vega_surface"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/vega_surface_task"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
 

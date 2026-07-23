@@ -36,12 +36,12 @@ class CircularCheckboxView @JvmOverloads constructor(
     private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = dpToPx(1.5f)
-        color = ContextCompat.getColor(context, R.color.vega_on_surface)
+        color = ContextCompat.getColor(context, R.color.vega_on_surface_muted)
     }
 
     private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.vega_primary)
+        color = ContextCompat.getColor(context, R.color.vega_surface_task)
     }
 
     private val checkmarkPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -49,7 +49,7 @@ class CircularCheckboxView @JvmOverloads constructor(
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
         strokeWidth = dpToPx(2f)
-        color = ContextCompat.getColor(context, R.color.vega_background)
+        color = ContextCompat.getColor(context, R.color.vega_on_background)
     }
 
     private val circleBounds = RectF()

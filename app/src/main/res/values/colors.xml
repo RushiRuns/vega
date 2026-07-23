@@ -3,6 +3,7 @@
     <!-- Vega Design System Colors (AGFlow DNA) -->
     <color name="vega_background">#161719</color>
     <color name="vega_surface">#232427</color>
+    <color name="vega_surface_task">#222224</color>
     <color name="vega_surface_elevated">#2B2C30</color>
     <color name="vega_surface_overlay">#2E2F33</color>
     <color name="vega_border">#2E2F32</color>
