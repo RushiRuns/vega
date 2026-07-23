@@ -16,6 +16,9 @@
         
         <!-- Surface & Background -->
         <item name="android:windowBackground">@drawable/bg_dark_gradient</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorSurface">@color/vega_surface</item>
         <item name="colorOnSurface">@color/vega_on_background</item>
         

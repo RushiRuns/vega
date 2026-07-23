@@ -26,6 +26,10 @@ import com.vega.ui.viewmodels.SnoozeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -39,8 +43,29 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Enable edge-to-edge full screen gradient rendering
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        window.navigationBarColor = android.graphics.Color.TRANSPARENT
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+
+            binding.navHostFragment.setPadding(0, statusBarHeight, 0, 0)
+
+            val lp = binding.layoutFloatingBottomBar.layoutParams as? android.view.ViewGroup.MarginLayoutParams
+            if (lp != null) {
+                val baseMargin = resources.getDimensionPixelSize(R.dimen.floating_nav_bar_bottom_margin)
+                lp.bottomMargin = baseMargin + navBarHeight
+                binding.layoutFloatingBottomBar.layoutParams = lp
+            }
+
+            insets
+        }
 
         checkAndRequestNotificationPermission()
 
