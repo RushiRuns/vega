@@ -139,21 +139,10 @@ class UpcomingTasksAdapter(
                 HeaderViewHolder(binding)
             }
             TYPE_TASK -> {
-                val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                val context = parent.context
-                val cornerRadius = context.resources.getDimension(R.dimen.card_corner_radius)
-                val gradientDrawable = GradientDrawable(
-                    GradientDrawable.Orientation.TL_BR,
-                    intArrayOf(
-                        ContextCompat.getColor(context, R.color.vega_surface_elevated),
-                        ContextCompat.getColor(context, R.color.vega_surface)
-                    )
-                ).apply {
-                    setCornerRadius(cornerRadius)
-                }
-                binding.cardTask.background = gradientDrawable
-                binding.cardTask.setCardBackgroundColor(Color.TRANSPARENT)
-
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task_today, parent, false)
+                val binding = ItemTaskBinding.bind(view)
+                (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeWidth = 0
+                binding.circularCheckbox.isSquare = true
                 TaskViewHolder(binding)
             }
             else -> throw IllegalArgumentException("Invalid view type")

@@ -82,6 +82,7 @@ class UpcomingFragment : Fragment() {
         )
         binding.rvUpcomingTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvUpcomingTasks.adapter = adapter
+        binding.rvUpcomingTasks.isNestedScrollingEnabled = false
         setupSwipeGestures()
     }
 
