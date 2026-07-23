@@ -62,10 +62,10 @@
     <dimen name="card_elevation">0dp</dimen>
     <dimen name="list_item_height">56dp</dimen>
     <dimen name="bottom_navigation_height">56dp</dimen>
-    <dimen name="floating_nav_bar_height">58dp</dimen>
+    <dimen name="floating_nav_bar_height">64dp</dimen>
     <dimen name="floating_nav_bar_bottom_margin">24dp</dimen>
-    <dimen name="floating_nav_bar_side_margin">16dp</dimen>
-    <dimen name="floating_fab_size">60dp</dimen>
+    <dimen name="floating_nav_bar_side_margin">20dp</dimen>
+    <dimen name="floating_fab_size">64dp</dimen>
     <dimen name="floating_nav_bar_corner_radius">32dp</dimen>
     
     <!-- Dialog -->

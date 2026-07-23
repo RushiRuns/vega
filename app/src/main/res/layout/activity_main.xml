@@ -17,10 +17,11 @@
     <!-- Floating Bottom Bar & Action Button Container -->
     <LinearLayout
         android:id="@+id/layout_floating_bottom_bar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_gravity="bottom"
         android:layout_marginBottom="@dimen/floating_nav_bar_bottom_margin"
+        android:paddingHorizontal="20dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:elevation="8dp">
@@ -28,17 +29,19 @@
         <!-- Floating Pill Toolbar -->
         <LinearLayout
             android:id="@+id/floating_nav_bar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="@dimen/floating_nav_bar_height"
             android:background="@drawable/bg_floating_nav_bar"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingHorizontal="12dp">
+            android:paddingHorizontal="8dp">
 
             <!-- Today Tab Button -->
             <ImageButton
                 android:id="@+id/nav_btn_today"
-                android:layout_width="48dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/title_today"
@@ -48,7 +51,8 @@
             <!-- Upcoming Tab Button -->
             <ImageButton
                 android:id="@+id/nav_btn_upcoming"
-                android:layout_width="48dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/title_upcoming"
@@ -58,7 +62,8 @@
             <!-- Inbox Tab Button -->
             <ImageButton
                 android:id="@+id/nav_btn_inbox"
-                android:layout_width="48dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/title_inbox"
@@ -68,7 +73,8 @@
             <!-- Settings Tab Button -->
             <ImageButton
                 android:id="@+id/nav_btn_settings"
-                android:layout_width="48dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/title_settings"
