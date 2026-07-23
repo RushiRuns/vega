@@ -27,24 +27,29 @@
                 android:paddingHorizontal="24dp"
                 android:paddingTop="28dp">
 
-                <TextView
-                    android:id="@+id/tv_day_name"
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Vega.Display"
-                    android:textSize="44sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/vega_on_background"
-                    tools:text="Fri" />
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_orange_dot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" •"
-                    android:textSize="44sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/vega_fab_orange" />
+                    <TextView
+                        android:id="@+id/tv_day_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="16dp"
+                        android:textAppearance="@style/TextAppearance.Vega.Display"
+                        android:textColor="@color/vega_on_background"
+                        android:textSize="48sp"
+                        android:textStyle="bold"
+                        tools:text="Fri" />
+
+                    <ImageView
+                        android:id="@+id/tv_orange_dot"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/bg_circle_orange" />
+                </FrameLayout>
 
                 <Space
                     android:layout_width="0dp"
@@ -56,10 +61,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
+                    android:lineSpacingExtra="4dp"
                     android:textAppearance="@style/TextAppearance.Vega.Label"
-                    android:textColor="@color/vega_on_surface"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="2dp"
+                    android:textColor="@color/vega_on_surface_muted"
+                    android:textSize="16sp"
                     tools:text="January 17\n2024" />
             </LinearLayout>
 
