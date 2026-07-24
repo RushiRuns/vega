@@ -39,7 +39,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/vega_surface_task"
+                app:cardBackgroundColor="@android:color/transparent"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
 
@@ -49,16 +49,55 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Month Header -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Month Header with Navigation -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:text="October, 2024"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_on_background"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="24dp">
+
+                        <TextView
+                            android:id="@+id/tv_calendar_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="October 2024"
+                            android:textAppearance="@style/TextAppearance.Vega.Title"
+                            android:textColor="@color/vega_on_background"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/btn_prev_month"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:padding="6dp"
+                                android:src="@drawable/ic_chevron_left"
+                                app:tint="@color/vega_on_surface_muted" />
+
+                            <ImageView
+                                android:id="@+id/btn_next_month"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginStart="16dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:padding="6dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/vega_on_surface_muted" />
+                        </LinearLayout>
+                    </RelativeLayout>
 
                     <!-- Clean Calendar Grid -->
                     <TableLayout
@@ -66,336 +105,799 @@
                         android:layout_height="wrap_content"
                         android:stretchColumns="*">
 
-                        <!-- Row 1: Dates 1..6 -->
+                        <!-- Weekday Initials Header Row -->
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="14dp">
+                            android:layout_marginBottom="16dp">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="S"
+                                android:textColor="@color/vega_on_surface_muted"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="M"
+                                android:textColor="@color/vega_on_surface_muted"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="T"
+                                android:textColor="@color/vega_on_surface_muted"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="W"
+                                android:textColor="@color/vega_on_surface_muted"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="T"
+                                android:textColor="@color/vega_on_surface_muted"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="F"
+                                android:textColor="@color/vega_on_surface_muted"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="S"
+                                android:textColor="@color/vega_on_surface_muted"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </TableRow>
+
+                        <!-- Row 1: Dates 1..5 -->
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
                                 android:layout_weight="1" />
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="1"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:layout_height="44dp"
+                                android:layout_weight="1" />
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="2"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="3"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="4"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="5"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="2"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <!-- Oct 3: Has Task Dot -->
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="6"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="3"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:background="@drawable/bg_circle_muted" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="4"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="5"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
                         </TableRow>
 
-                        <!-- Row 2: Dates 7..13 -->
+                        <!-- Row 2: Dates 6..12 -->
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="14dp">
+                            android:layout_marginBottom="12dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="7"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="6"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="8"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="7"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <!-- Oct 8: Has Task Dot -->
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="9"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="8"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:background="@drawable/bg_circle_muted" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="10"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="9"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="11"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="10"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="12"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="11"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="13"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="12"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
                         </TableRow>
 
-                        <!-- Row 3: Dates 14..20 -->
+                        <!-- Row 3: Dates 13..19 -->
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="14dp">
+                            android:layout_marginBottom="12dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="14"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="13"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="15"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="14"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <!-- Oct 15: SELECTED DATE BADGE -->
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <LinearLayout
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/bg_circle_orange"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="15"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+
+                                    <View
+                                        android:layout_width="3dp"
+                                        android:layout_height="3dp"
+                                        android:layout_marginTop="2dp"
+                                        android:background="@drawable/bg_circle_white" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="16"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="16"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="17"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="17"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="18"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="18"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="19"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="20"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="19"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
                         </TableRow>
 
-                        <!-- Row 4: Dates 21..27 -->
+                        <!-- Row 4: Dates 20..26 -->
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="14dp">
+                            android:layout_marginBottom="12dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="21"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="20"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="22"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="21"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <!-- Oct 22: Has Task Dot -->
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="23"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="22"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:background="@drawable/bg_circle_muted" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="24"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="23"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="25"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="24"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="26"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="25"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <!-- Oct 26: Has Task Dot -->
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="27"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="26"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:background="@drawable/bg_circle_muted" />
+                            </LinearLayout>
                         </TableRow>
 
-                        <!-- Row 5: Dates 28..31 -->
+                        <!-- Row 5: Dates 27..31 -->
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <TextView
+                            <!-- Oct 27: Has Task Dot -->
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="28"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="27"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:background="@drawable/bg_circle_muted" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="29"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="28"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="30"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="29"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="31"
-                                android:textColor="@color/vega_on_background"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="30"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="31"
+                                    android:textColor="@color/vega_on_background"
+                                    android:textSize="15sp" />
+
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
                                 android:layout_weight="1" />
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="44dp"
                                 android:layout_weight="1" />
                         </TableRow>
                     </TableLayout>
