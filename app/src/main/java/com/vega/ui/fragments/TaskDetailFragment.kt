@@ -6,9 +6,12 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -22,8 +25,12 @@ import com.vega.R
 import com.vega.data.database.TaskPriority
 import com.vega.data.database.TaskState
 import com.vega.databinding.BottomSheetTaskDetailBinding
+import com.vega.databinding.PopupPriorityBinding
+import com.vega.databinding.PopupRecurrenceBinding
+import com.vega.databinding.PopupStateBinding
 import com.vega.ui.viewmodels.TaskDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -41,6 +48,11 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
     private var selectedRecurrence: String? = null
     private var selectedPriority: TaskPriority = TaskPriority.NONE
     private var selectedState: TaskState = TaskState.INBOX
+
+    // Active popup windows
+    private var priorityPopup: PopupWindow? = null
+    private var statePopup: PopupWindow? = null
+    private var recurrencePopup: PopupWindow? = null
 
     override fun getTheme(): Int = R.style.Style_Vega_BottomSheet
 
@@ -68,23 +80,21 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
 
         setupUI()
         observeViewModel()
-
         viewModel.loadTask(taskId!!)
     }
 
     private fun setupUI() {
-        // Manage tags trigger
+        // Manage tags
         binding.btnManageTagsDetail.setOnClickListener {
-            closeAllDropdowns()
+            dismissAllPopups()
             TagManagementDialogFragment().show(parentFragmentManager, TagManagementDialogFragment.TAG)
         }
 
-        // Save button in top header
+        // Save button
         binding.btnSave.setOnClickListener {
-            closeAllDropdowns()
+            dismissAllPopups()
             val title = binding.etTitle.text?.toString().orEmpty()
             val notes = binding.etNotes.text?.toString()
-
             viewModel.saveTask(
                 title = title,
                 dueDate = selectedDueDate,
@@ -96,78 +106,56 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             )
         }
 
-        // Tap outside area closes all dropdowns
-        binding.layoutRootContainer.setOnClickListener { closeAllDropdowns() }
-        binding.scrollRoot.setOnClickListener { closeAllDropdowns() }
-        binding.etTitle.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) closeAllDropdowns() }
-        binding.etNotes.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) closeAllDropdowns() }
+        // Dismiss popups on outside taps
+        binding.scrollRoot.setOnClickListener { dismissAllPopups() }
+        binding.layoutRootContainer.setOnClickListener { dismissAllPopups() }
+        binding.etTitle.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) dismissAllPopups() }
+        binding.etNotes.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) dismissAllPopups() }
 
-        // Due Date Picker & Clear
+        // Due Date
         binding.cardDueDate.setOnClickListener {
-            closeAllDropdowns()
+            dismissAllPopups()
             showDatePicker()
         }
         binding.btnClearDueDate.setOnClickListener {
-            closeAllDropdowns()
+            dismissAllPopups()
             selectedDueDate = null
             binding.tvDueDateValue.text = "No Date Assigned"
             binding.btnClearDueDate.visibility = View.GONE
             updateStateBasedOnDueDate()
         }
 
-        // Priority Dropdown Toggles
+        // Priority dropdown
         binding.cardPriority.setOnClickListener {
-            val isExpanded = binding.layoutDropdownPriority.visibility == View.VISIBLE
-            closeAllDropdowns()
-            if (!isExpanded) {
-                refreshPriorityDropdownUI()
-                binding.layoutPriorityStateRow.translationZ = 50f
-                binding.layoutDropdownPriority.visibility = View.VISIBLE
-                binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_up)
+            if (priorityPopup?.isShowing == true) {
+                dismissAllPopups()
+            } else {
+                dismissAllPopups()
+                showPriorityPopup()
             }
         }
-        binding.optionPriorityNone.setOnClickListener { updatePriority(TaskPriority.NONE) }
-        binding.optionPriorityHigh.setOnClickListener { updatePriority(TaskPriority.HIGH) }
-        binding.optionPriorityMedium.setOnClickListener { updatePriority(TaskPriority.MEDIUM) }
-        binding.optionPriorityLow.setOnClickListener { updatePriority(TaskPriority.LOW) }
 
-        // State Dropdown Toggles
+        // State dropdown
         binding.cardState.setOnClickListener {
-            val isExpanded = binding.layoutDropdownState.visibility == View.VISIBLE
-            closeAllDropdowns()
-            if (!isExpanded) {
-                refreshStateDropdownUI()
-                binding.layoutPriorityStateRow.translationZ = 50f
-                binding.layoutDropdownState.visibility = View.VISIBLE
-                binding.ivChevronState.setImageResource(R.drawable.ic_chevron_up)
+            if (statePopup?.isShowing == true) {
+                dismissAllPopups()
+            } else {
+                dismissAllPopups()
+                showStatePopup()
             }
         }
-        binding.optionStateInbox.setOnClickListener { updateState(TaskState.INBOX) }
-        binding.optionStateToday.setOnClickListener { updateState(TaskState.TODAY) }
-        binding.optionStateUpcoming.setOnClickListener { updateState(TaskState.UPCOMING) }
-        binding.optionStateDone.setOnClickListener { updateState(TaskState.DONE) }
 
-        // Recurrence Dropdown Toggles
+        // Recurrence dropdown
         binding.cardRecurrence.setOnClickListener {
-            val isExpanded = binding.layoutDropdownRecurrence.visibility == View.VISIBLE
-            closeAllDropdowns()
-            if (!isExpanded) {
-                refreshRecurrenceDropdownUI()
-                binding.containerRecurrence.translationZ = 50f
-                binding.layoutDropdownRecurrence.visibility = View.VISIBLE
-                binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_up)
+            if (recurrencePopup?.isShowing == true) {
+                dismissAllPopups()
+            } else {
+                dismissAllPopups()
+                showRecurrencePopup()
             }
         }
-        binding.optionRecurrenceNone.setOnClickListener { updateRecurrence(null) }
-        binding.optionRecurrenceDaily.setOnClickListener { updateRecurrence("DAILY") }
-        binding.optionRecurrenceWeekly.setOnClickListener { updateRecurrence("WEEKLY") }
-        binding.optionRecurrenceMonthly.setOnClickListener { updateRecurrence("MONTHLY") }
-        binding.optionRecurrenceCustom.setOnClickListener {
-            closeAllDropdowns()
-            showRepeatsDialog()
-        }
 
-        // Set Fragment Result Listener for Custom Recurrence
+        // Fragment result from RepeatsDialogFragment
         parentFragmentManager.setFragmentResultListener(
             RepeatsDialogFragment.REQUEST_KEY_RECURRENCE,
             viewLifecycleOwner
@@ -178,150 +166,220 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun closeAllDropdowns() {
-        binding.layoutPriorityStateRow.translationZ = 0f
-        binding.containerRecurrence.translationZ = 0f
+    // ── PopupWindow helpers ──────────────────────────────────────────────────
 
-        binding.layoutDropdownPriority.visibility = View.GONE
-        binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_down)
+    private fun showPriorityPopup() {
+        val anchor = binding.cardPriority
+        val popupBinding = PopupPriorityBinding.inflate(LayoutInflater.from(requireContext()))
 
-        binding.layoutDropdownState.visibility = View.GONE
-        binding.ivChevronState.setImageResource(R.drawable.ic_chevron_down)
+        // Mark current selection
+        val views = listOf(
+            Triple(TaskPriority.NONE,   popupBinding.optionPriorityNone,   popupBinding.ivCheckPriorityNone),
+            Triple(TaskPriority.HIGH,   popupBinding.optionPriorityHigh,   popupBinding.ivCheckPriorityHigh),
+            Triple(TaskPriority.MEDIUM, popupBinding.optionPriorityMedium, popupBinding.ivCheckPriorityMedium),
+            Triple(TaskPriority.LOW,    popupBinding.optionPriorityLow,    popupBinding.ivCheckPriorityLow)
+        )
+        for ((prio, row, check) in views) {
+            val sel = prio == selectedPriority
+            row.setBackgroundResource(if (sel) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card)
+            check.visibility = if (sel) View.VISIBLE else View.GONE
+        }
 
-        binding.layoutDropdownRecurrence.visibility = View.GONE
-        binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_down)
+        val popup = buildPopup(popupBinding.root, anchor.width)
+        priorityPopup = popup
+
+        popupBinding.optionPriorityNone.setOnClickListener   { updatePriority(TaskPriority.NONE);   dismissAllPopups() }
+        popupBinding.optionPriorityHigh.setOnClickListener   { updatePriority(TaskPriority.HIGH);   dismissAllPopups() }
+        popupBinding.optionPriorityMedium.setOnClickListener { updatePriority(TaskPriority.MEDIUM); dismissAllPopups() }
+        popupBinding.optionPriorityLow.setOnClickListener    { updatePriority(TaskPriority.LOW);    dismissAllPopups() }
+
+        showPopupBelow(popup, anchor)
+        binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_up)
     }
 
-    private fun refreshPriorityDropdownUI() {
-        val options = listOf(
-            Triple(TaskPriority.NONE, binding.optionPriorityNone, binding.ivCheckPriorityNone),
-            Triple(TaskPriority.HIGH, binding.optionPriorityHigh, binding.ivCheckPriorityHigh),
-            Triple(TaskPriority.MEDIUM, binding.optionPriorityMedium, binding.ivCheckPriorityMedium),
-            Triple(TaskPriority.LOW, binding.optionPriorityLow, binding.ivCheckPriorityLow)
+    private fun showStatePopup() {
+        val anchor = binding.cardState
+        val popupBinding = PopupStateBinding.inflate(LayoutInflater.from(requireContext()))
+
+        val views = listOf(
+            Triple(TaskState.INBOX,    popupBinding.optionStateInbox,    popupBinding.ivCheckStateInbox),
+            Triple(TaskState.TODAY,    popupBinding.optionStateToday,    popupBinding.ivCheckStateToday),
+            Triple(TaskState.UPCOMING, popupBinding.optionStateUpcoming, popupBinding.ivCheckStateUpcoming),
+            Triple(TaskState.DONE,     popupBinding.optionStateDone,     popupBinding.ivCheckStateDone)
         )
-        for (opt in options) {
-            val isSelected = opt.first == selectedPriority
-            opt.second.setBackgroundResource(
-                if (isSelected) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
-            )
-            opt.third.visibility = if (isSelected) View.VISIBLE else View.GONE
+        for ((state, row, check) in views) {
+            val sel = state == selectedState
+            row.setBackgroundResource(if (sel) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card)
+            check.visibility = if (sel) View.VISIBLE else View.GONE
+        }
+
+        val popup = buildPopup(popupBinding.root, anchor.width)
+        statePopup = popup
+
+        popupBinding.optionStateInbox.setOnClickListener    { updateState(TaskState.INBOX);    dismissAllPopups() }
+        popupBinding.optionStateToday.setOnClickListener    { updateState(TaskState.TODAY);    dismissAllPopups() }
+        popupBinding.optionStateUpcoming.setOnClickListener { updateState(TaskState.UPCOMING); dismissAllPopups() }
+        popupBinding.optionStateDone.setOnClickListener     { updateState(TaskState.DONE);     dismissAllPopups() }
+
+        showPopupBelow(popup, anchor)
+        binding.ivChevronState.setImageResource(R.drawable.ic_chevron_up)
+    }
+
+    private fun showRecurrencePopup() {
+        val anchor = binding.cardRecurrence
+        val popupBinding = PopupRecurrenceBinding.inflate(LayoutInflater.from(requireContext()))
+
+        val isCustom = !selectedRecurrence.isNullOrBlank() &&
+                selectedRecurrence != "DAILY" && selectedRecurrence != "WEEKLY" && selectedRecurrence != "MONTHLY"
+
+        val views = listOf(
+            Triple(null,       popupBinding.optionRecurrenceNone,    popupBinding.ivCheckRecurrenceNone),
+            Triple("DAILY",    popupBinding.optionRecurrenceDaily,   popupBinding.ivCheckRecurrenceDaily),
+            Triple("WEEKLY",   popupBinding.optionRecurrenceWeekly,  popupBinding.ivCheckRecurrenceWeekly),
+            Triple("MONTHLY",  popupBinding.optionRecurrenceMonthly, popupBinding.ivCheckRecurrenceMonthly),
+            Triple("CUSTOM",   popupBinding.optionRecurrenceCustom,  popupBinding.ivCheckRecurrenceCustom)
+        )
+        for ((key, row, check) in views) {
+            val sel = if (key == "CUSTOM") isCustom else (key == selectedRecurrence)
+            row.setBackgroundResource(if (sel) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card)
+            check.visibility = if (sel) View.VISIBLE else View.GONE
+        }
+
+        val popup = buildPopup(popupBinding.root, anchor.width)
+        recurrencePopup = popup
+
+        popupBinding.optionRecurrenceNone.setOnClickListener    { updateRecurrence(null);      dismissAllPopups() }
+        popupBinding.optionRecurrenceDaily.setOnClickListener   { updateRecurrence("DAILY");   dismissAllPopups() }
+        popupBinding.optionRecurrenceWeekly.setOnClickListener  { updateRecurrence("WEEKLY");  dismissAllPopups() }
+        popupBinding.optionRecurrenceMonthly.setOnClickListener { updateRecurrence("MONTHLY"); dismissAllPopups() }
+        popupBinding.optionRecurrenceCustom.setOnClickListener  {
+            dismissAllPopups()
+            showRepeatsDialog()
+        }
+
+        showPopupBelow(popup, anchor)
+        binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_up)
+    }
+
+    /** Build a PopupWindow that overlays other views */
+    private fun buildPopup(contentView: View, widthPx: Int): PopupWindow {
+        contentView.measure(
+            View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        return PopupWindow(
+            contentView,
+            widthPx,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true  // focusable — dismisses on outside touch
+        ).apply {
+            isOutsideTouchable = true
+            elevation = 24f
+            setOnDismissListener { resetChevrons() }
         }
     }
+
+    /** Show popup anchored just below the anchor view */
+    private fun showPopupBelow(popup: PopupWindow, anchor: View) {
+        anchor.post {
+            val location = IntArray(2)
+            anchor.getLocationInWindow(location)
+            val x = location[0]
+            val y = location[1] + anchor.height
+
+            popup.showAtLocation(anchor, Gravity.NO_GRAVITY, x, y)
+        }
+    }
+
+    private fun dismissAllPopups() {
+        priorityPopup?.dismiss()
+        statePopup?.dismiss()
+        recurrencePopup?.dismiss()
+        priorityPopup = null
+        statePopup = null
+        recurrencePopup = null
+        resetChevrons()
+    }
+
+    private fun resetChevrons() {
+        if (priorityPopup?.isShowing != true)
+            binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_down)
+        if (statePopup?.isShowing != true)
+            binding.ivChevronState.setImageResource(R.drawable.ic_chevron_down)
+        if (recurrencePopup?.isShowing != true)
+            binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_down)
+    }
+
+    // ── Priority / State / Recurrence update helpers ─────────────────────────
 
     private fun updatePriority(priority: TaskPriority) {
         selectedPriority = priority
-        closeAllDropdowns()
-
         val (text, colorHex) = when (priority) {
-            TaskPriority.HIGH -> "High" to "#E94560"
+            TaskPriority.HIGH   -> "High"   to "#E94560"
             TaskPriority.MEDIUM -> "Medium" to "#F2A65A"
-            TaskPriority.LOW -> "Low" to "#3171C6"
-            else -> "None" to "#8E9096"
+            TaskPriority.LOW    -> "Low"    to "#3171C6"
+            else                -> "None"   to "#8E9096"
         }
-
         binding.tvPriorityValue.text = text
         binding.tvPriorityValue.setTextColor(Color.parseColor(colorHex))
         binding.ivPriorityDot.backgroundTintList = ColorStateList.valueOf(Color.parseColor(colorHex))
     }
 
-    private fun refreshStateDropdownUI() {
-        val options = listOf(
-            Triple(TaskState.INBOX, binding.optionStateInbox, binding.ivCheckStateInbox),
-            Triple(TaskState.TODAY, binding.optionStateToday, binding.ivCheckStateToday),
-            Triple(TaskState.UPCOMING, binding.optionStateUpcoming, binding.ivCheckStateUpcoming),
-            Triple(TaskState.DONE, binding.optionStateDone, binding.ivCheckStateDone)
-        )
-        for (opt in options) {
-            val isSelected = opt.first == selectedState
-            opt.second.setBackgroundResource(
-                if (isSelected) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
-            )
-            opt.third.visibility = if (isSelected) View.VISIBLE else View.GONE
-        }
-    }
-
     private fun updateState(state: TaskState) {
         selectedState = state
-        closeAllDropdowns()
-
         val (text, iconRes, colorHex) = when (state) {
-            TaskState.TODAY -> Triple("Today", R.drawable.ic_nav_today, "#F2A65A")
+            TaskState.TODAY    -> Triple("Today",    R.drawable.ic_nav_today,    "#F2A65A")
             TaskState.UPCOMING -> Triple("Upcoming", R.drawable.ic_nav_upcoming, "#A259FF")
-            TaskState.DONE -> Triple("Done", R.drawable.ic_check, "#4ECDC4")
-            else -> Triple("Inbox", R.drawable.ic_nav_inbox, "#3171C6")
+            TaskState.DONE     -> Triple("Done",     R.drawable.ic_check,        "#4ECDC4")
+            else               -> Triple("Inbox",    R.drawable.ic_nav_inbox,    "#3171C6")
         }
-
         binding.tvStateValue.text = text
         binding.ivStateIcon.setImageResource(iconRes)
         binding.ivStateIcon.setColorFilter(Color.parseColor(colorHex))
     }
 
-    private fun refreshRecurrenceDropdownUI() {
-        val isCustom = !selectedRecurrence.isNullOrBlank() &&
-                selectedRecurrence != "DAILY" && selectedRecurrence != "WEEKLY" && selectedRecurrence != "MONTHLY"
-
-        val options = listOf(
-            Triple(null, binding.optionRecurrenceNone, binding.ivCheckRecurrenceNone),
-            Triple("DAILY", binding.optionRecurrenceDaily, binding.ivCheckRecurrenceDaily),
-            Triple("WEEKLY", binding.optionRecurrenceWeekly, binding.ivCheckRecurrenceWeekly),
-            Triple("MONTHLY", binding.optionRecurrenceMonthly, binding.ivCheckRecurrenceMonthly),
-            Triple("CUSTOM", binding.optionRecurrenceCustom, binding.ivCheckRecurrenceCustom)
-        )
-
-        for (opt in options) {
-            val isSelected = if (opt.first == "CUSTOM") isCustom else (opt.first == selectedRecurrence)
-            opt.second.setBackgroundResource(
-                if (isSelected) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
-            )
-            opt.third.visibility = if (isSelected) View.VISIBLE else View.GONE
-        }
-    }
-
     private fun updateRecurrence(ruleStr: String?) {
         selectedRecurrence = ruleStr
-        closeAllDropdowns()
         updateRecurrenceText(ruleStr)
     }
 
     private fun updateRecurrenceText(ruleStr: String?) {
         val label = when (ruleStr?.uppercase()) {
-            "DAILY" -> "Every Day"
-            "WEEKLY" -> "Every Week"
+            "DAILY"   -> "Every Day"
+            "WEEKLY"  -> "Every Week"
             "MONTHLY" -> "Every Month"
-            null, "" -> "None"
-            else -> com.vega.utils.RecurrenceUtils.formatSummary(requireContext(), ruleStr)
+            null, ""  -> "None"
+            else      -> com.vega.utils.RecurrenceUtils.formatSummary(requireContext(), ruleStr)
         }
         binding.tvRecurrenceValue.text = label
     }
+
+    // ── Date Pickers ─────────────────────────────────────────────────────────
 
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
         selectedDueDate?.let { calendar.timeInMillis = it }
 
-        val datePickerDialog = DatePickerDialog(
+        DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, month)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar.set(year, month, dayOfMonth)
                 showTimePicker(calendar)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.show()
+        ).show()
     }
 
     private fun showTimePicker(calendar: Calendar) {
-        val timePickerDialog = TimePickerDialog(
+        TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
                 calendar.set(Calendar.SECOND, 0)
                 calendar.set(Calendar.MILLISECOND, 0)
-
                 selectedDueDate = calendar.timeInMillis
                 binding.tvDueDateValue.text = formatDueDate(selectedDueDate!!)
                 binding.btnClearDueDate.visibility = View.VISIBLE
@@ -330,19 +388,20 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
             false
-        )
-        timePickerDialog.show()
+        ).show()
     }
 
     private fun showRepeatsDialog() {
-        val dialog = RepeatsDialogFragment.newInstance(selectedRecurrence, selectedDueDate)
-        dialog.show(parentFragmentManager, RepeatsDialogFragment.TAG)
+        RepeatsDialogFragment.newInstance(selectedRecurrence, selectedDueDate)
+            .show(parentFragmentManager, RepeatsDialogFragment.TAG)
     }
+
+    // ── ViewModel observation ─────────────────────────────────────────────────
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Observe Task details
+
                 launch {
                     viewModel.task.collect { task ->
                         task?.let {
@@ -361,28 +420,22 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                             selectedRecurrence = it.recurrence
                             updateRecurrenceText(it.recurrence)
 
-                            val prio = try { TaskPriority.valueOf(it.priority) } catch (e: Exception) { TaskPriority.NONE }
+                            val prio = runCatching { TaskPriority.valueOf(it.priority) }.getOrDefault(TaskPriority.NONE)
                             updatePriority(prio)
 
-                            val st = try { TaskState.valueOf(it.state) } catch (e: Exception) { TaskState.INBOX }
+                            val st = runCatching { TaskState.valueOf(it.state) }.getOrDefault(TaskState.INBOX)
                             updateState(st)
                         }
                     }
                 }
 
-                // Observe task tags
                 launch {
-                    kotlinx.coroutines.flow.combine(
-                        viewModel.allTags,
-                        viewModel.taskTags
-                    ) { allTags, taskTags ->
-                        Pair(allTags, taskTags)
-                    }.collect { (allTags, taskTags) ->
-                        populateDetailTagChips(allTags, taskTags)
-                    }
+                    combine(viewModel.allTags, viewModel.taskTags) { all, task -> Pair(all, task) }
+                        .collect { (allTags, taskTags) ->
+                            populateDetailTagChips(allTags, taskTags)
+                        }
                 }
 
-                // Observe Save Success
                 launch {
                     viewModel.saveSuccess.collect { success ->
                         if (success) {
@@ -392,7 +445,6 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                     }
                 }
 
-                // Observe Error
                 launch {
                     viewModel.error.collect { errorMsg ->
                         errorMsg?.let {
@@ -405,13 +457,18 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun populateDetailTagChips(allTags: List<com.vega.data.database.Tag>, assignedTags: List<com.vega.data.database.Tag>) {
+    // ── Tag chips ─────────────────────────────────────────────────────────────
+
+    private fun populateDetailTagChips(
+        allTags: List<com.vega.data.database.Tag>,
+        assignedTags: List<com.vega.data.database.Tag>
+    ) {
         val currentlySelectedIds = getSelectedTagIds().ifEmpty { assignedTags.map { it.id }.toSet() }
         binding.chipGroupDetailTags.removeAllViews()
         allTags.forEach { tagItem ->
             val isChecked = currentlySelectedIds.contains(tagItem.id)
             val tagColorHex = tagItem.colorHex.ifBlank { "#3171C6" }
-            val parsedColor = try { Color.parseColor(tagColorHex) } catch (e: Exception) { Color.parseColor("#3171C6") }
+            val parsedColor = runCatching { Color.parseColor(tagColorHex) }.getOrDefault(Color.parseColor("#3171C6"))
 
             val chip = Chip(requireContext()).apply {
                 id = View.generateViewId()
@@ -424,7 +481,6 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                     chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
                     chipIconTint = ColorStateList.valueOf(parsedColor)
                     isChipIconVisible = true
-
                     chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#1C1D22"))
                     chipStrokeColor = ColorStateList.valueOf(parsedColor)
                     chipStrokeWidth = 1.5f.dpToPx()
@@ -438,7 +494,6 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                     chipIcon = dotDrawable
                     chipIconTint = null
                     isChipIconVisible = true
-
                     chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#1C1D22"))
                     chipStrokeColor = ColorStateList.valueOf(Color.parseColor("#2A2C34"))
                     chipStrokeWidth = 1f.dpToPx()
@@ -449,7 +504,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                 chipMinHeight = 28f.dpToPx()
 
                 setOnClickListener {
-                    closeAllDropdowns()
+                    dismissAllPopups()
                     this.isChecked = !isChecked
                     populateDetailTagChips(allTags, assignedTags)
                 }
@@ -469,6 +524,8 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         return list
     }
 
+    // ── Utilities ─────────────────────────────────────────────────────────────
+
     private fun Float.dpToPx(): Float = this * resources.displayMetrics.density
 
     private fun formatDueDate(timestamp: Long): String {
@@ -481,23 +538,18 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
     private fun updateStateBasedOnDueDate() {
         if (!selectedRecurrence.isNullOrBlank()) return
         val dueDate = selectedDueDate
-        if (dueDate == null) {
-            updateState(TaskState.INBOX)
-            return
-        }
+        if (dueDate == null) { updateState(TaskState.INBOX); return }
 
         val todayEnd = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            set(Calendar.MILLISECOND, 999)
+            set(Calendar.HOUR_OF_DAY, 23); set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59);      set(Calendar.MILLISECOND, 999)
         }.timeInMillis
 
-        val targetState = if (dueDate <= todayEnd) TaskState.TODAY else TaskState.UPCOMING
-        updateState(targetState)
+        updateState(if (dueDate <= todayEnd) TaskState.TODAY else TaskState.UPCOMING)
     }
 
     override fun onDestroyView() {
+        dismissAllPopups()
         super.onDestroyView()
         _binding = null
     }
@@ -506,12 +558,8 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         const val TAG = "TaskDetailFragment"
         private const val ARG_TASK_ID = "arg_task_id"
 
-        fun newInstance(taskId: String): TaskDetailFragment {
-            return TaskDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_TASK_ID, taskId)
-                }
-            }
+        fun newInstance(taskId: String) = TaskDetailFragment().apply {
+            arguments = Bundle().apply { putString(ARG_TASK_ID, taskId) }
         }
     }
 }

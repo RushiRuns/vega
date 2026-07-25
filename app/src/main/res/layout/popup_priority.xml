@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_setting_card"
+    android:elevation="24dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Option None -->
+    <LinearLayout
+        android:id="@+id/option_priority_none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_circle_muted" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="None"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_priority_none"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#3171C6" />
+    </LinearLayout>
+
+    <!-- Option High -->
+    <LinearLayout
+        android:id="@+id/option_priority_high"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_circle_orange"
+            app:tint="#E94560" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="High"
+            android:textColor="#E94560"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_priority_high"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#E94560" />
+    </LinearLayout>
+
+    <!-- Option Medium -->
+    <LinearLayout
+        android:id="@+id/option_priority_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_circle_orange"
+            app:tint="#F2A65A" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Medium"
+            android:textColor="#F2A65A"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_priority_medium"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#F2A65A" />
+    </LinearLayout>
+
+    <!-- Option Low -->
+    <LinearLayout
+        android:id="@+id/option_priority_low"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_circle_orange"
+            app:tint="#3171C6" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Low"
+            android:textColor="#3171C6"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_priority_low"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#3171C6" />
+    </LinearLayout>
+</LinearLayout>

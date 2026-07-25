@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_setting_card"
+    android:elevation="24dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Option None -->
+    <LinearLayout
+        android:id="@+id/option_recurrence_none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="None"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_recurrence_none"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#4ECDC4" />
+    </LinearLayout>
+
+    <!-- Option Daily -->
+    <LinearLayout
+        android:id="@+id/option_recurrence_daily"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Every Day"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_recurrence_daily"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#4ECDC4" />
+    </LinearLayout>
+
+    <!-- Option Weekly -->
+    <LinearLayout
+        android:id="@+id/option_recurrence_weekly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Every Week"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_recurrence_weekly"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#4ECDC4" />
+    </LinearLayout>
+
+    <!-- Option Monthly -->
+    <LinearLayout
+        android:id="@+id/option_recurrence_monthly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Every Month"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_recurrence_monthly"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#4ECDC4" />
+    </LinearLayout>
+
+    <!-- Option Custom -->
+    <LinearLayout
+        android:id="@+id/option_recurrence_custom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Custom..."
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_check_recurrence_custom"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="#4ECDC4" />
+    </LinearLayout>
+</LinearLayout>
