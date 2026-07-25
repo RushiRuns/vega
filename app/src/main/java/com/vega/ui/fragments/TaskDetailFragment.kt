@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -72,17 +71,15 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupUI() {
-        // Close and Cancel buttons
-        binding.btnCloseSheet.setOnClickListener { dismiss() }
-        binding.btnCancel.setOnClickListener { dismiss() }
-
         // Manage tags trigger
         binding.btnManageTagsDetail.setOnClickListener {
+            closeAllDropdowns()
             TagManagementDialogFragment().show(parentFragmentManager, TagManagementDialogFragment.TAG)
         }
 
-        // Save button
+        // Save button in top header
         binding.btnSave.setOnClickListener {
+            closeAllDropdowns()
             val title = binding.etTitle.text?.toString().orEmpty()
             val notes = binding.etNotes.text?.toString()
 
@@ -97,9 +94,19 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             )
         }
 
+        // Tap outside area closes all dropdowns
+        binding.layoutRootContainer.setOnClickListener { closeAllDropdowns() }
+        binding.scrollRoot.setOnClickListener { closeAllDropdowns() }
+        binding.etTitle.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) closeAllDropdowns() }
+        binding.etNotes.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) closeAllDropdowns() }
+
         // Due Date Picker & Clear
-        binding.cardDueDate.setOnClickListener { showDatePicker() }
+        binding.cardDueDate.setOnClickListener {
+            closeAllDropdowns()
+            showDatePicker()
+        }
         binding.btnClearDueDate.setOnClickListener {
+            closeAllDropdowns()
             selectedDueDate = null
             binding.tvDueDateValue.text = "No Date Assigned"
             binding.btnClearDueDate.visibility = View.GONE
@@ -109,8 +116,12 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         // Priority Dropdown Toggles
         binding.cardPriority.setOnClickListener {
             val isExpanded = binding.layoutDropdownPriority.visibility == View.VISIBLE
-            binding.layoutDropdownPriority.visibility = if (isExpanded) View.GONE else View.VISIBLE
-            binding.ivChevronPriority.setImageResource(if (isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up)
+            closeAllDropdowns()
+            if (!isExpanded) {
+                refreshPriorityDropdownUI()
+                binding.layoutDropdownPriority.visibility = View.VISIBLE
+                binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_up)
+            }
         }
         binding.optionPriorityNone.setOnClickListener { updatePriority(TaskPriority.NONE) }
         binding.optionPriorityHigh.setOnClickListener { updatePriority(TaskPriority.HIGH) }
@@ -120,8 +131,12 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         // State Dropdown Toggles
         binding.cardState.setOnClickListener {
             val isExpanded = binding.layoutDropdownState.visibility == View.VISIBLE
-            binding.layoutDropdownState.visibility = if (isExpanded) View.GONE else View.VISIBLE
-            binding.ivChevronState.setImageResource(if (isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up)
+            closeAllDropdowns()
+            if (!isExpanded) {
+                refreshStateDropdownUI()
+                binding.layoutDropdownState.visibility = View.VISIBLE
+                binding.ivChevronState.setImageResource(R.drawable.ic_chevron_up)
+            }
         }
         binding.optionStateInbox.setOnClickListener { updateState(TaskState.INBOX) }
         binding.optionStateToday.setOnClickListener { updateState(TaskState.TODAY) }
@@ -131,19 +146,63 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         // Recurrence Dropdown Toggles
         binding.cardRecurrence.setOnClickListener {
             val isExpanded = binding.layoutDropdownRecurrence.visibility == View.VISIBLE
-            binding.layoutDropdownRecurrence.visibility = if (isExpanded) View.GONE else View.VISIBLE
-            binding.ivChevronRecurrence.setImageResource(if (isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up)
+            closeAllDropdowns()
+            if (!isExpanded) {
+                refreshRecurrenceDropdownUI()
+                binding.layoutDropdownRecurrence.visibility = View.VISIBLE
+                binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_up)
+            }
         }
         binding.optionRecurrenceNone.setOnClickListener { updateRecurrence(null) }
         binding.optionRecurrenceDaily.setOnClickListener { updateRecurrence("DAILY") }
         binding.optionRecurrenceWeekly.setOnClickListener { updateRecurrence("WEEKLY") }
         binding.optionRecurrenceMonthly.setOnClickListener { updateRecurrence("MONTHLY") }
+        binding.optionRecurrenceCustom.setOnClickListener {
+            closeAllDropdowns()
+            showRepeatsDialog()
+        }
+
+        // Set Fragment Result Listener for Custom Recurrence
+        parentFragmentManager.setFragmentResultListener(
+            RepeatsDialogFragment.REQUEST_KEY_RECURRENCE,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val ruleJson = bundle.getString(RepeatsDialogFragment.RESULT_KEY_RULE_JSON)
+            selectedRecurrence = ruleJson
+            updateRecurrenceText(ruleJson)
+        }
+    }
+
+    private fun closeAllDropdowns() {
+        binding.layoutDropdownPriority.visibility = View.GONE
+        binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_down)
+
+        binding.layoutDropdownState.visibility = View.GONE
+        binding.ivChevronState.setImageResource(R.drawable.ic_chevron_down)
+
+        binding.layoutDropdownRecurrence.visibility = View.GONE
+        binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_down)
+    }
+
+    private fun refreshPriorityDropdownUI() {
+        val options = listOf(
+            Triple(TaskPriority.NONE, binding.optionPriorityNone, binding.ivCheckPriorityNone),
+            Triple(TaskPriority.HIGH, binding.optionPriorityHigh, binding.ivCheckPriorityHigh),
+            Triple(TaskPriority.MEDIUM, binding.optionPriorityMedium, binding.ivCheckPriorityMedium),
+            Triple(TaskPriority.LOW, binding.optionPriorityLow, binding.ivCheckPriorityLow)
+        )
+        for (opt in options) {
+            val isSelected = opt.first == selectedPriority
+            opt.second.setBackgroundResource(
+                if (isSelected) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
+            )
+            opt.third.visibility = if (isSelected) View.VISIBLE else View.GONE
+        }
     }
 
     private fun updatePriority(priority: TaskPriority) {
         selectedPriority = priority
-        binding.layoutDropdownPriority.visibility = View.GONE
-        binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_down)
+        closeAllDropdowns()
 
         val (text, colorHex) = when (priority) {
             TaskPriority.HIGH -> "High" to "#E94560"
@@ -157,10 +216,25 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         binding.ivPriorityDot.backgroundTintList = ColorStateList.valueOf(Color.parseColor(colorHex))
     }
 
+    private fun refreshStateDropdownUI() {
+        val options = listOf(
+            Triple(TaskState.INBOX, binding.optionStateInbox, binding.ivCheckStateInbox),
+            Triple(TaskState.TODAY, binding.optionStateToday, binding.ivCheckStateToday),
+            Triple(TaskState.UPCOMING, binding.optionStateUpcoming, binding.ivCheckStateUpcoming),
+            Triple(TaskState.DONE, binding.optionStateDone, binding.ivCheckStateDone)
+        )
+        for (opt in options) {
+            val isSelected = opt.first == selectedState
+            opt.second.setBackgroundResource(
+                if (isSelected) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
+            )
+            opt.third.visibility = if (isSelected) View.VISIBLE else View.GONE
+        }
+    }
+
     private fun updateState(state: TaskState) {
         selectedState = state
-        binding.layoutDropdownState.visibility = View.GONE
-        binding.ivChevronState.setImageResource(R.drawable.ic_chevron_down)
+        closeAllDropdowns()
 
         val (text, iconRes, colorHex) = when (state) {
             TaskState.TODAY -> Triple("Today", R.drawable.ic_nav_today, "#F2A65A")
@@ -174,23 +248,42 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         binding.ivStateIcon.setColorFilter(Color.parseColor(colorHex))
     }
 
+    private fun refreshRecurrenceDropdownUI() {
+        val isCustom = !selectedRecurrence.isNullOrBlank() &&
+                selectedRecurrence != "DAILY" && selectedRecurrence != "WEEKLY" && selectedRecurrence != "MONTHLY"
+
+        val options = listOf(
+            Triple(null, binding.optionRecurrenceNone, binding.ivCheckRecurrenceNone),
+            Triple("DAILY", binding.optionRecurrenceDaily, binding.ivCheckRecurrenceDaily),
+            Triple("WEEKLY", binding.optionRecurrenceWeekly, binding.ivCheckRecurrenceWeekly),
+            Triple("MONTHLY", binding.optionRecurrenceMonthly, binding.ivCheckRecurrenceMonthly),
+            Triple("CUSTOM", binding.optionRecurrenceCustom, binding.ivCheckRecurrenceCustom)
+        )
+
+        for (opt in options) {
+            val isSelected = if (opt.first == "CUSTOM") isCustom else (opt.first == selectedRecurrence)
+            opt.second.setBackgroundResource(
+                if (isSelected) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
+            )
+            opt.third.visibility = if (isSelected) View.VISIBLE else View.GONE
+        }
+    }
+
     private fun updateRecurrence(ruleStr: String?) {
         selectedRecurrence = ruleStr
-        binding.layoutDropdownRecurrence.visibility = View.GONE
-        binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_down)
+        closeAllDropdowns()
+        updateRecurrenceText(ruleStr)
+    }
 
+    private fun updateRecurrenceText(ruleStr: String?) {
         val label = when (ruleStr?.uppercase()) {
             "DAILY" -> "Every Day"
             "WEEKLY" -> "Every Week"
             "MONTHLY" -> "Every Month"
-            else -> "None"
+            null, "" -> "None"
+            else -> com.vega.utils.RecurrenceUtils.formatSummary(requireContext(), ruleStr)
         }
         binding.tvRecurrenceValue.text = label
-
-        binding.optionRecurrenceNone.setBackgroundResource(if (ruleStr == null) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card)
-        binding.optionRecurrenceDaily.setBackgroundResource(if (ruleStr == "DAILY") R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card)
-        binding.optionRecurrenceWeekly.setBackgroundResource(if (ruleStr == "WEEKLY") R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card)
-        binding.optionRecurrenceMonthly.setBackgroundResource(if (ruleStr == "MONTHLY") R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card)
     }
 
     private fun showDatePicker() {
@@ -233,6 +326,11 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         timePickerDialog.show()
     }
 
+    private fun showRepeatsDialog() {
+        val dialog = RepeatsDialogFragment.newInstance(selectedRecurrence, selectedDueDate)
+        dialog.show(parentFragmentManager, RepeatsDialogFragment.TAG)
+    }
+
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -253,7 +351,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                             }
 
                             selectedRecurrence = it.recurrence
-                            updateRecurrence(it.recurrence)
+                            updateRecurrenceText(it.recurrence)
 
                             val prio = try { TaskPriority.valueOf(it.priority) } catch (e: Exception) { TaskPriority.NONE }
                             updatePriority(prio)
@@ -323,9 +421,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                 chipCornerRadius = 50f
                 chipMinHeight = 28f.dpToPx()
 
-                setOnCheckedChangeListener { _, _ ->
-                    populateDetailTagChips(allTags, assignedTags)
-                }
+                setOnClickListener { closeAllDropdowns() }
             }
             binding.chipGroupDetailTags.addView(chip)
         }

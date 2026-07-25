@@ -2,14 +2,20 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_dark_gradient"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:fillViewport="true">
 
     <LinearLayout
+        android:id="@+id/layout_root_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
         android:paddingTop="12dp"
@@ -23,7 +29,7 @@
             android:layout_marginBottom="16dp"
             android:src="@drawable/bg_drag_handle" />
 
-        <!-- Header: Circle Blue Dot + Title + Close Icon -->
+        <!-- Header: Circle Blue Dot + Title + Top SAVE Button -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,23 +59,22 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/btn_close_sheet"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+            <!-- Save Pill Button placed at top right -->
+            <TextView
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_setting_icon_circle"
+                android:background="@drawable/bg_btn_save"
                 android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    app:tint="#8E9096" />
-            </FrameLayout>
+                android:focusable="true"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="7dp"
+                android:text="SAVE"
+                android:textColor="#121218"
+                android:textSize="13sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <!-- 1. TITLE Field Card -->
@@ -174,21 +179,25 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <!-- 3. Row of PRIORITY & STATE (50% / 50%) -->
+        <!-- 3. Row of PRIORITY & STATE (50% / 50% width) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="horizontal">
 
-            <!-- PRIORITY Card -->
-            <LinearLayout
+            <!-- PRIORITY Container -->
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
+                <!-- PRIORITY Card View -->
                 <LinearLayout
                     android:id="@+id/card_priority"
                     android:layout_width="match_parent"
@@ -232,8 +241,8 @@
                                 android:id="@+id/tv_priority_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="High"
-                                android:textColor="#E94560"
+                                android:text="None"
+                                android:textColor="#8E9096"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -249,21 +258,26 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <!-- Expanded Dropdown Menu: Priority (Image 2) -->
+                <!-- Floating Dropdown Menu: Priority -->
                 <LinearLayout
                     android:id="@+id/layout_dropdown_priority"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="68dp"
                     android:background="@drawable/bg_setting_card"
+                    android:elevation="16dp"
+                    android:translationZ="16dp"
                     android:orientation="vertical"
                     android:padding="8dp"
                     android:visibility="gone">
 
+                    <!-- Option None -->
                     <LinearLayout
                         android:id="@+id/option_priority_none"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -274,20 +288,31 @@
                             android:background="@drawable/bg_circle_muted" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="None"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_priority_none"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#3171C6" />
                     </LinearLayout>
 
+                    <!-- Option High -->
                     <LinearLayout
                         android:id="@+id/option_priority_high"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/bg_setting_option_selected"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -312,14 +337,18 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_check"
+                            android:visibility="gone"
                             app:tint="#E94560" />
                     </LinearLayout>
 
+                    <!-- Option Medium -->
                     <LinearLayout
                         android:id="@+id/option_priority_medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -331,19 +360,31 @@
                             app:tint="#F2A65A" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Medium"
                             android:textColor="#F2A65A"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_priority_medium"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#F2A65A" />
                     </LinearLayout>
 
+                    <!-- Option Low -->
                     <LinearLayout
                         android:id="@+id/option_priority_low"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -355,24 +396,35 @@
                             app:tint="#3171C6" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Low"
                             android:textColor="#3171C6"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_priority_low"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#3171C6" />
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </FrameLayout>
 
-            <!-- STATE Card -->
-            <LinearLayout
+            <!-- STATE Container -->
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
+                <!-- STATE Card View -->
                 <LinearLayout
                     android:id="@+id/card_state"
                     android:layout_width="match_parent"
@@ -434,22 +486,26 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <!-- Expanded Dropdown Menu: State (Image 3) -->
+                <!-- Floating Dropdown Menu: State -->
                 <LinearLayout
                     android:id="@+id/layout_dropdown_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="68dp"
                     android:background="@drawable/bg_setting_card"
+                    android:elevation="16dp"
+                    android:translationZ="16dp"
                     android:orientation="vertical"
                     android:padding="8dp"
                     android:visibility="gone">
 
+                    <!-- Option Inbox -->
                     <LinearLayout
                         android:id="@+id/option_state_inbox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_setting_option_selected"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -474,14 +530,18 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_check"
+                            android:visibility="gone"
                             app:tint="#3171C6" />
                     </LinearLayout>
 
+                    <!-- Option Today -->
                     <LinearLayout
                         android:id="@+id/option_state_today"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -493,19 +553,31 @@
                             app:tint="#F2A65A" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Today"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_state_today"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#F2A65A" />
                     </LinearLayout>
 
+                    <!-- Option Upcoming -->
                     <LinearLayout
                         android:id="@+id/option_state_upcoming"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -517,19 +589,31 @@
                             app:tint="#A259FF" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Upcoming"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_state_upcoming"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#A259FF" />
                     </LinearLayout>
 
+                    <!-- Option Done -->
                     <LinearLayout
                         android:id="@+id/option_state_done"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:padding="10dp">
 
@@ -541,23 +625,33 @@
                             app:tint="#4ECDC4" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Done"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_state_done"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#4ECDC4" />
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
 
-        <!-- 4. RECURRENCE Field Card -->
-        <LinearLayout
+        <!-- 4. RECURRENCE Container -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:orientation="vertical">
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:id="@+id/card_recurrence"
@@ -626,22 +720,26 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <!-- Expanded Dropdown Menu: Recurrence (Image 4) -->
+            <!-- Floating Dropdown Menu: Recurrence -->
             <LinearLayout
                 android:id="@+id/layout_dropdown_recurrence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="72dp"
                 android:background="@drawable/bg_setting_card"
+                android:elevation="16dp"
+                android:translationZ="16dp"
                 android:orientation="vertical"
                 android:padding="8dp"
                 android:visibility="gone">
 
+                <!-- Option None -->
                 <LinearLayout
                     android:id="@+id/option_recurrence_none"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_setting_option_selected"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
 
@@ -659,61 +757,127 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_check"
+                        android:visibility="gone"
                         app:tint="#4ECDC4" />
                 </LinearLayout>
 
+                <!-- Option Daily -->
                 <LinearLayout
                     android:id="@+id/option_recurrence_daily"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Every Day"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_check_recurrence_daily"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="#4ECDC4" />
                 </LinearLayout>
 
+                <!-- Option Weekly -->
                 <LinearLayout
                     android:id="@+id/option_recurrence_weekly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Every Week"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_check_recurrence_weekly"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="#4ECDC4" />
                 </LinearLayout>
 
+                <!-- Option Monthly -->
                 <LinearLayout
                     android:id="@+id/option_recurrence_monthly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Every Month"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_check_recurrence_monthly"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="#4ECDC4" />
+                </LinearLayout>
+
+                <!-- Option Custom -->
+                <LinearLayout
+                    android:id="@+id/option_recurrence_custom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Custom..."
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_check_recurrence_custom"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="#4ECDC4" />
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </FrameLayout>
 
         <!-- 5. TAGS Field Card -->
         <LinearLayout
@@ -766,7 +930,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="12dp"
             android:background="@drawable/bg_setting_card"
             android:orientation="vertical"
             android:padding="16dp">
@@ -794,42 +958,6 @@
                 android:textColorHint="#8E9096"
                 android:textSize="14sp" />
         </LinearLayout>
-
-        <!-- Footer Action Row: Cancel & Save -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="8dp"
-                android:text="CANCEL"
-                android:textColor="#8E9096"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btn_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_btn_save"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="10dp"
-                android:text="SAVE"
-                android:textColor="#121218"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
