@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Vega Design System Colors (AGFlow DNA) -->
-    <color name="vega_background">#161719</color>
+    <color name="vega_background">#18181a</color>
     <color name="vega_surface">#232427</color>
     <color name="vega_surface_task">#242422</color>
     <color name="vega_surface_elevated">#2B2C30</color>
