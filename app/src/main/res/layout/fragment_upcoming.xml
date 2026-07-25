@@ -18,18 +18,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Standalone Top Screen Title: Upcoming -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="24dp"
-                android:paddingTop="28dp"
-                android:paddingBottom="16dp"
-                android:text="Upcoming"
-                android:textAppearance="@style/TextAppearance.Vega.Display"
-                android:textColor="@color/vega_on_background"
-                android:textSize="48sp"
-                android:textStyle="bold" />
 
             <!-- Calendar Widget Card -->
             <com.google.android.material.card.MaterialCardView
