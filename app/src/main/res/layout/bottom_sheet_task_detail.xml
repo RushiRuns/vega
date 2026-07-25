@@ -179,7 +179,87 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <!-- 3. Row of PRIORITY & STATE (50% / 50% width) -->
+        <!-- 3. TAGS Field Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_setting_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:letterSpacing="0.05"
+                    android:text="TAGS"
+                    android:textColor="#8E9096"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_manage_tags_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="+ Manage Tags"
+                    android:textColor="#1AD1B9"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_detail_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:chipSpacingHorizontal="8dp"
+                app:singleSelection="false" />
+        </LinearLayout>
+
+        <!-- 4. NOTES Field Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_setting_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.05"
+                android:text="NOTES"
+                android:textColor="#8E9096"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="Add notes..."
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="3"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#8E9096"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- 5. Row of STATE & PRIORITY (50% / 50% width) — placed at bottom so dropdowns expand into free space -->
         <LinearLayout
             android:id="@+id/layout_priority_state_row"
             android:layout_width="match_parent"
@@ -189,240 +269,12 @@
             android:clipToPadding="false"
             android:orientation="horizontal">
 
-            <!-- PRIORITY Container -->
-            <FrameLayout
-                android:id="@+id/container_priority"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:clipChildren="false"
-                android:clipToPadding="false">
-
-                <!-- PRIORITY Card View -->
-                <LinearLayout
-                    android:id="@+id/card_priority"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_setting_card"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:letterSpacing="0.05"
-                        android:text="PRIORITY"
-                        android:textColor="#8E9096"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <View
-                                android:id="@+id/iv_priority_dot"
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_marginEnd="8dp"
-                                android:background="@drawable/bg_circle_orange" />
-
-                            <TextView
-                                android:id="@+id/tv_priority_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="None"
-                                android:textColor="#8E9096"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/iv_chevron_priority"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_chevron_down"
-                            app:tint="#8E9096" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!-- Floating Dropdown Menu: Priority -->
-                <LinearLayout
-                    android:id="@+id/layout_dropdown_priority"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="68dp"
-                    android:background="@drawable/bg_setting_card"
-                    android:elevation="16dp"
-                    android:translationZ="16dp"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    android:visibility="gone">
-
-                    <!-- Option None -->
-                    <LinearLayout
-                        android:id="@+id/option_priority_none"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:padding="10dp">
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/bg_circle_muted" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="None"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/iv_check_priority_none"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_check"
-                            android:visibility="gone"
-                            app:tint="#3171C6" />
-                    </LinearLayout>
-
-                    <!-- Option High -->
-                    <LinearLayout
-                        android:id="@+id/option_priority_high"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:padding="10dp">
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/bg_circle_orange"
-                            app:tint="#E94560" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="High"
-                            android:textColor="#E94560"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/iv_check_priority_high"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_check"
-                            android:visibility="gone"
-                            app:tint="#E94560" />
-                    </LinearLayout>
-
-                    <!-- Option Medium -->
-                    <LinearLayout
-                        android:id="@+id/option_priority_medium"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:padding="10dp">
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/bg_circle_orange"
-                            app:tint="#F2A65A" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Medium"
-                            android:textColor="#F2A65A"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/iv_check_priority_medium"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_check"
-                            android:visibility="gone"
-                            app:tint="#F2A65A" />
-                    </LinearLayout>
-
-                    <!-- Option Low -->
-                    <LinearLayout
-                        android:id="@+id/option_priority_low"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:padding="10dp">
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/bg_circle_orange"
-                            app:tint="#3171C6" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Low"
-                            android:textColor="#3171C6"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/iv_check_priority_low"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_check"
-                            android:visibility="gone"
-                            app:tint="#3171C6" />
-                    </LinearLayout>
-                </LinearLayout>
-            </FrameLayout>
-
             <!-- STATE Container -->
             <FrameLayout
                 android:id="@+id/container_state"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
                 android:layout_weight="1"
                 android:clipChildren="false"
                 android:clipToPadding="false">
@@ -489,7 +341,7 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <!-- Floating Dropdown Menu: State -->
+                <!-- Floating Dropdown Menu: State — opens downward into free space -->
                 <LinearLayout
                     android:id="@+id/layout_dropdown_state"
                     android:layout_width="match_parent"
@@ -646,14 +498,241 @@
                     </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
+
+            <!-- PRIORITY Container -->
+            <FrameLayout
+                android:id="@+id/container_priority"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <!-- PRIORITY Card View -->
+                <LinearLayout
+                    android:id="@+id/card_priority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_setting_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.05"
+                        android:text="PRIORITY"
+                        android:textColor="#8E9096"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:id="@+id/iv_priority_dot"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_circle_orange" />
+
+                            <TextView
+                                android:id="@+id/tv_priority_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="None"
+                                android:textColor="#8E9096"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_chevron_priority"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="#8E9096" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!-- Floating Dropdown Menu: Priority — opens downward into free space -->
+                <LinearLayout
+                    android:id="@+id/layout_dropdown_priority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="68dp"
+                    android:background="@drawable/bg_setting_card"
+                    android:elevation="16dp"
+                    android:translationZ="16dp"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:visibility="gone">
+
+                    <!-- Option None -->
+                    <LinearLayout
+                        android:id="@+id/option_priority_none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/bg_circle_muted" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="None"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_priority_none"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#3171C6" />
+                    </LinearLayout>
+
+                    <!-- Option High -->
+                    <LinearLayout
+                        android:id="@+id/option_priority_high"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/bg_circle_orange"
+                            app:tint="#E94560" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="High"
+                            android:textColor="#E94560"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_priority_high"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#E94560" />
+                    </LinearLayout>
+
+                    <!-- Option Medium -->
+                    <LinearLayout
+                        android:id="@+id/option_priority_medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/bg_circle_orange"
+                            app:tint="#F2A65A" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Medium"
+                            android:textColor="#F2A65A"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_priority_medium"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#F2A65A" />
+                    </LinearLayout>
+
+                    <!-- Option Low -->
+                    <LinearLayout
+                        android:id="@+id/option_priority_low"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/bg_circle_orange"
+                            app:tint="#3171C6" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Low"
+                            android:textColor="#3171C6"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_check_priority_low"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone"
+                            app:tint="#3171C6" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
 
-        <!-- 4. RECURRENCE Container -->
+        <!-- 6. RECURRENCE Container — placed at bottom so dropdown expands into free space -->
         <FrameLayout
             android:id="@+id/container_recurrence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:clipChildren="false"
             android:clipToPadding="false">
 
@@ -724,7 +803,7 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <!-- Floating Dropdown Menu: Recurrence -->
+            <!-- Floating Dropdown Menu: Recurrence — opens downward into free space -->
             <LinearLayout
                 android:id="@+id/layout_dropdown_recurrence"
                 android:layout_width="match_parent"
@@ -882,86 +961,6 @@
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>
-
-        <!-- 5. TAGS Field Card -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_setting_card"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:letterSpacing="0.05"
-                    android:text="TAGS"
-                    android:textColor="#8E9096"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/btn_manage_tags_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="+ Manage Tags"
-                    android:textColor="#1AD1B9"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group_detail_tags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:chipSpacingHorizontal="8dp"
-                app:singleSelection="false" />
-        </LinearLayout>
-
-        <!-- 6. NOTES Field Card -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_setting_card"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:letterSpacing="0.05"
-                android:text="NOTES"
-                android:textColor="#8E9096"
-                android:textSize="11sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/et_notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="@null"
-                android:gravity="top"
-                android:hint="Add notes..."
-                android:inputType="textMultiLine|textCapSentences"
-                android:minLines="3"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#8E9096"
-                android:textSize="14sp" />
-        </LinearLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
