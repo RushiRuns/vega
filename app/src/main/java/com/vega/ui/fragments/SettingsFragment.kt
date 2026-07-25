@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.vega.R
 import com.vega.alarms.TaskAlarmScheduler
 import com.vega.databinding.FragmentSettingsBinding
-import com.vega.ui.theme.ThemeManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,28 +38,9 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSwitches()
-        setupThemeDropdown()
         setupNotificationModeDropdown()
         setupAlarmOffsetDropdown()
-    }
-
-    private fun setupSwitches() {
-        binding.switchEndOfDay.isChecked = prefs.getBoolean("pref_end_of_day_reminders", true)
-        binding.switchDailyReminder.isChecked = prefs.getBoolean("pref_daily_reminders", true)
-        binding.switchWeeklyReview.isChecked = prefs.getBoolean("pref_weekly_review", true)
-
-        binding.switchEndOfDay.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("pref_end_of_day_reminders", isChecked).apply()
-        }
-
-        binding.switchDailyReminder.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("pref_daily_reminders", isChecked).apply()
-        }
-
-        binding.switchWeeklyReview.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("pref_weekly_review", isChecked).apply()
-        }
+        setupThemeDropdown()
     }
 
     private fun setupNotificationModeDropdown() {
@@ -80,26 +60,13 @@ class SettingsFragment : Fragment() {
         val currentModeLabel = modeOptions.firstOrNull { it.second == currentMode }?.first.orEmpty()
         binding.actvNotificationMode.setText(currentModeLabel, false)
 
-        updateVisibilityForMode(currentMode)
-
         binding.actvNotificationMode.setOnItemClickListener { _, _, position, _ ->
             val selectedOption = modeOptions[position]
             val prevMode = prefs.getString("pref_notification_mode", "fixed_ritual")
             if (prevMode != selectedOption.second) {
                 prefs.edit().putString("pref_notification_mode", selectedOption.second).apply()
-                updateVisibilityForMode(selectedOption.second)
                 scheduler.rescheduleAllAlarms()
             }
-        }
-    }
-
-    private fun updateVisibilityForMode(mode: String?) {
-        if (mode == "task_specific") {
-            binding.tilAlarmOffset.visibility = View.VISIBLE
-            binding.layoutRitualSettings.visibility = View.GONE
-        } else {
-            binding.tilAlarmOffset.visibility = View.GONE
-            binding.layoutRitualSettings.visibility = View.VISIBLE
         }
     }
 
