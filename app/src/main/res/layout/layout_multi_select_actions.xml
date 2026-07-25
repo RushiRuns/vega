@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    app:cardCornerRadius="28dp"
-    app:cardElevation="32dp"
-    app:cardBackgroundColor="@color/vega_surface"
+    android:background="@drawable/bg_mac_glass_action_sheet"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@android:color/transparent"
     app:strokeWidth="0dp"
     android:visibility="gone">
 

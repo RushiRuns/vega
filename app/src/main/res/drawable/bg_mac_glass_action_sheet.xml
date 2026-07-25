@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Approximates macOS Ultra Thin Material for the bulk-select action sheet:
+    - Base: rgba(28,28,30, 0.92)  -> #EB1C1C1E  (slightly more opaque for bottom sheet)
+    - Top gradient sheen: rgba(255,255,255,0.10) → rgba(255,255,255,0.04)
+    - Border: rgba(255,255,255,0.14) -> #24FFFFFF
+    - Top-only corner radius: 28dp
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Layer 1: Dark semi-transparent base fill -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#EB1C1C1E" />
+            <corners
+                android:topLeftRadius="28dp"
+                android:topRightRadius="28dp"
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp" />
+        </shape>
+    </item>
+
+    <!-- Layer 2: Subtle top-to-bottom white gradient sheen -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:startColor="#1AFFFFFF"
+                android:endColor="#0AFFFFFF"
+                android:angle="270" />
+            <corners
+                android:topLeftRadius="28dp"
+                android:topRightRadius="28dp"
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp" />
+        </shape>
+    </item>
+
+    <!-- Layer 3: White border stroke on top and sides only -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="0.5dp"
+                android:color="#24FFFFFF" />
+            <corners
+                android:topLeftRadius="28dp"
+                android:topRightRadius="28dp"
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp" />
+        </shape>
+    </item>
+
+</layer-list>

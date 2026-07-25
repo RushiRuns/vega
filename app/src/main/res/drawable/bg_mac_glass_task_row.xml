@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Approximates macOS Ultra Thin Material / frosted glass pill:
+    - Base: rgba(28,28,30, 0.85)  -> #D91C1C1E  (alpha 217/255 ≈ 0.85)
+    - Top gradient sheen: rgba(255,255,255,0.10) → rgba(255,255,255,0.04)
+    - Border: rgba(255,255,255,0.14) -> #24FFFFFF
+    - Corner radius: 14dp (card-level, matches existing radius)
+    Android can't do real backdrop blur in XML, so we layer solid + gradient.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Layer 1: Dark semi-transparent base fill -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#D91C1C1E" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+
+    <!-- Layer 2: Subtle top-to-bottom white gradient sheen (glass highlight) -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:startColor="#1AFFFFFF"
+                android:endColor="#0AFFFFFF"
+                android:angle="270" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+
+    <!-- Layer 3: White border stroke -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="0.5dp"
+                android:color="#24FFFFFF" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+
+</layer-list>
