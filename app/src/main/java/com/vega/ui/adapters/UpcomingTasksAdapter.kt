@@ -17,7 +17,6 @@ import com.vega.data.database.Task
 import com.vega.data.database.TaskPriority
 import com.vega.data.database.TaskState
 import com.vega.databinding.ItemTaskBinding
-import com.vega.databinding.ItemUpcomingHeaderBinding
 import com.vega.ui.models.UpcomingListItem
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -125,42 +124,23 @@ class UpcomingTasksAdapter(
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is UpcomingListItem.Header -> TYPE_HEADER
-            is UpcomingListItem.TaskItem -> TYPE_TASK
-        }
-    }
+    override fun getItemViewType(position: Int): Int = TYPE_TASK
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            TYPE_HEADER -> {
-                val binding = ItemUpcomingHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                HeaderViewHolder(binding)
-            }
-            TYPE_TASK -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task_today, parent, false)
-                val binding = ItemTaskBinding.bind(view)
-                (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeWidth = 0
-                binding.circularCheckbox.isSquare = true
-                TaskViewHolder(binding)
-            }
-            else -> throw IllegalArgumentException("Invalid view type")
-        }
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task_today, parent, false)
+        val binding = ItemTaskBinding.bind(view)
+        (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeWidth = 0
+        binding.circularCheckbox.isSquare = true
+        return TaskViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (val item = getItem(position)) {
-            is UpcomingListItem.Header -> (holder as HeaderViewHolder).bind(item)
-            is UpcomingListItem.TaskItem -> (holder as TaskViewHolder).bind(item.task)
+        val item = getItem(position)
+        if (item is UpcomingListItem.TaskItem) {
+            (holder as TaskViewHolder).bind(item.task)
         }
     }
 
-    inner class HeaderViewHolder(private val binding: ItemUpcomingHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(header: UpcomingListItem.Header) {
-            binding.tvHeaderTitle.text = header.title
-        }
-    }
 
     inner class TaskViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
@@ -360,7 +340,6 @@ class UpcomingTasksAdapter(
     }
 
     companion object {
-        private const val TYPE_HEADER = 0
         private const val TYPE_TASK = 1
     }
 }

@@ -107,12 +107,6 @@ class UpcomingFragment : Fragment() {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                val position = viewHolder.adapterPosition
-                if (position == RecyclerView.NO_POSITION) return makeMovementFlags(0, 0)
-                val item = adapter.currentList[position]
-                if (item is UpcomingListItem.Header) {
-                    return makeMovementFlags(0, 0)
-                }
                 return super.getMovementFlags(recyclerView, viewHolder)
             }
 
