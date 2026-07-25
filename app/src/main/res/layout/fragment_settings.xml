@@ -7,95 +7,737 @@
     android:background="@drawable/bg_dark_gradient"
     android:fillViewport="true"
     android:clipToPadding="false"
-    android:paddingBottom="96dp">
+    android:paddingBottom="120dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="24dp"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="28dp"
         android:paddingBottom="24dp">
 
-        <!-- Top Settings Title -->
+        <!-- Top Header: Title & Subtitle -->
         <TextView
+            android:id="@+id/tv_settings_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="24dp"
             android:text="Settings"
             android:textAppearance="@style/TextAppearance.Vega.Display"
             android:textColor="@color/vega_on_background"
-            android:textSize="28sp"
+            android:textSize="38sp"
             android:textStyle="bold" />
 
-        <!-- App Preferences (Notification Mode, Reminder Advance Time, Theme) -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_settings_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp"
+            android:text="Configure your task notifications &amp; display"
+            android:textAppearance="@style/TextAppearance.Vega.Caption"
+            android:textColor="#8E9096"
+            android:textSize="14sp" />
+
+        <!-- GENERAL OPTIONS Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="GENERAL OPTIONS"
+            android:textColor="#7E8088"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <!-- Setting Item 1: Notification Mode -->
+        <LinearLayout
+            android:id="@+id/card_notification_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_setting_card"
             android:orientation="vertical"
-            android:paddingHorizontal="8dp">
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true">
 
-            <!-- Notification Mode Dropdown -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_notification_mode"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/label_notification_mode"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/vega_border"
-                app:hintTextColor="@color/vega_on_surface_muted">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <AutoCompleteTextView
-                    android:id="@+id/actv_notification_mode"
-                    android:layout_width="match_parent"
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_setting_icon_circle">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_meta_clock"
+                        app:tint="#FF5A16" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:textColor="@color/vega_on_background" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <!-- Reminder Advance Time Dropdown -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_alarm_offset"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Notification Mode"
+                        android:textColor="#9EA0A8"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_notification_mode_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Task-Specific Alarms"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_chevron_notification_mode"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="#9EA0A8" />
+            </LinearLayout>
+
+            <!-- Expanded Options: Notification Mode -->
+            <LinearLayout
+                android:id="@+id/layout_options_notification_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/label_alarm_offset"
-                android:layout_marginBottom="16dp"
-                android:visibility="visible"
-                app:boxStrokeColor="@color/vega_border"
-                app:hintTextColor="@color/vega_on_surface_muted">
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <AutoCompleteTextView
-                    android:id="@+id/actv_alarm_offset"
+                <!-- Task Specific Option -->
+                <LinearLayout
+                    android:id="@+id/option_notif_task_specific"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:textColor="@color/vega_on_background" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:background="@drawable/bg_setting_option_selected"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            <!-- Theme Settings -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_theme"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_meta_clock"
+                            app:tint="#FF5A16" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Task-Specific Alarms"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Trigger alarm at each task's scheduled time"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_check_task_specific"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <!-- Ritual Option -->
+                <LinearLayout
+                    android:id="@+id/option_notif_ritual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_setting_card"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_meta_clock"
+                            app:tint="#8E9096" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fixed Daily Rituals"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Group notifications into morning summary rituals"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_check_ritual"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Setting Item 2: Reminder Advance Time -->
+        <LinearLayout
+            android:id="@+id/card_alarm_offset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_setting_card"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:hint="Theme"
-                app:boxStrokeColor="@color/vega_border">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/actv_theme"
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_setting_icon_circle">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_meta_clock"
+                        app:tint="#FF5A16" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reminder Advance Time"
+                        android:textColor="#9EA0A8"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_alarm_offset_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="At due time"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_chevron_alarm_offset"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="#9EA0A8" />
+            </LinearLayout>
+
+            <!-- Expanded Options: Reminder Advance Time (Image 2) -->
+            <LinearLayout
+                android:id="@+id/layout_options_alarm_offset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- Option 1: At due time -->
+                <LinearLayout
+                    android:id="@+id/option_offset_0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:text="Dark Mode (Vega Canvas)"
-                    android:textColor="@color/vega_on_surface_muted" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:background="@drawable/bg_setting_option_selected"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:id="@+id/iv_icon_offset_0"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_meta_clock"
+                            app:tint="#FF5A16" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="At due time"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Alert exactly when task is scheduled"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_check_offset_0"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <!-- Option 2: 5 minutes before -->
+                <LinearLayout
+                    android:id="@+id/option_offset_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_setting_card"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:id="@+id/iv_icon_offset_5"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_meta_clock"
+                            app:tint="#8E9096" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5 minutes before"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Quick head start for immediate tasks"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_check_offset_5"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- Option 3: 15 minutes before -->
+                <LinearLayout
+                    android:id="@+id/option_offset_15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_setting_card"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:id="@+id/iv_icon_offset_15"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_hourglass"
+                            app:tint="#8E9096" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="15 minutes before"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Standard buffer for routine tasks"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_check_offset_15"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- Option 4: 1 hour before -->
+                <LinearLayout
+                    android:id="@+id/option_offset_60"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_setting_card"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:id="@+id/iv_icon_offset_60"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_hourglass"
+                            app:tint="#8E9096" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 hour before"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Ideal for meetings and appointments"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_check_offset_60"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- Option 5: 1 day before -->
+                <LinearLayout
+                    android:id="@+id/option_offset_1440"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_setting_card"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:id="@+id/iv_icon_offset_1440"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_action_calendar"
+                            app:tint="#8E9096" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 day before"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Early heads-up for major deadlines"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_check_offset_1440"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Divider Line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="24dp"
+            android:background="#1C1D22" />
+
+        <!-- APPEARANCE & EXTRAS Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="APPEARANCE &amp; EXTRAS"
+            android:textColor="#7E8088"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <!-- Setting Item 3: Theme -->
+        <LinearLayout
+            android:id="@+id/card_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_setting_card"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_setting_icon_circle">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_palette"
+                        app:tint="#FF5A16" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Theme"
+                        android:textColor="#9EA0A8"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_theme_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Dark Mode (Vega)"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_chevron_theme"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="#9EA0A8" />
+            </LinearLayout>
+
+            <!-- Expanded Options: Theme -->
+            <LinearLayout
+                android:id="@+id/layout_options_theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- Theme Option -->
+                <LinearLayout
+                    android:id="@+id/option_theme_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_setting_option_selected"
+                    android:padding="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_setting_icon_circle">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_palette"
+                            app:tint="#FF5A16" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dark Mode (Vega)"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Default deep dark linear gradient theme"
+                            android:textColor="#8E9096"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
