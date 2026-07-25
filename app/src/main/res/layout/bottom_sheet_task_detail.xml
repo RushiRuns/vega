@@ -181,6 +181,7 @@
 
         <!-- 3. Row of PRIORITY & STATE (50% / 50% width) -->
         <LinearLayout
+            android:id="@+id/layout_priority_state_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -190,6 +191,7 @@
 
             <!-- PRIORITY Container -->
             <FrameLayout
+                android:id="@+id/container_priority"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
@@ -417,6 +419,7 @@
 
             <!-- STATE Container -->
             <FrameLayout
+                android:id="@+id/container_state"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -647,6 +650,7 @@
 
         <!-- 4. RECURRENCE Container -->
         <FrameLayout
+            android:id="@+id/container_recurrence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"

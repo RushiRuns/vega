@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -52,6 +52,20 @@ class TagManagementDialogFragment : BottomSheetDialogFragment() {
 
         binding.btnAddNewTag.setOnClickListener {
             showAddEditTagDialog(null)
+        }
+
+        binding.btnQuickAdd.setOnClickListener {
+            val name = binding.etQuickTagName.text?.toString()?.trim().orEmpty()
+            if (name.isNotBlank()) {
+                viewModel.createTag(name, "#3171C6")
+                binding.etQuickTagName.setText("")
+            } else {
+                Toast.makeText(requireContext(), "Please enter a tag name", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnDoneManageTags.setOnClickListener {
+            dismiss()
         }
     }
 
@@ -169,7 +183,7 @@ class TagManagementDialogFragment : BottomSheetDialogFragment() {
             
             val dotDrawable = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
-                setColor(try { Color.parseColor(tag.colorHex) } catch (e: Exception) { Color.parseColor("#4ECDC4") })
+                setColor(try { Color.parseColor(tag.colorHex) } catch (e: Exception) { Color.parseColor("#3171C6") })
             }
             holder.binding.viewTagColorDot.background = dotDrawable
 

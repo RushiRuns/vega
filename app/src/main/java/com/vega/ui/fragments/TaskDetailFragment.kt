@@ -4,11 +4,13 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -119,6 +121,8 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             closeAllDropdowns()
             if (!isExpanded) {
                 refreshPriorityDropdownUI()
+                binding.layoutPriorityStateRow.bringToFront()
+                binding.containerPriority.bringToFront()
                 binding.layoutDropdownPriority.visibility = View.VISIBLE
                 binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_up)
             }
@@ -134,6 +138,8 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             closeAllDropdowns()
             if (!isExpanded) {
                 refreshStateDropdownUI()
+                binding.layoutPriorityStateRow.bringToFront()
+                binding.containerState.bringToFront()
                 binding.layoutDropdownState.visibility = View.VISIBLE
                 binding.ivChevronState.setImageResource(R.drawable.ic_chevron_up)
             }
@@ -149,6 +155,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             closeAllDropdowns()
             if (!isExpanded) {
                 refreshRecurrenceDropdownUI()
+                binding.containerRecurrence.bringToFront()
                 binding.layoutDropdownRecurrence.visibility = View.VISIBLE
                 binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_up)
             }
@@ -401,27 +408,52 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         val currentlySelectedIds = getSelectedTagIds().ifEmpty { assignedTags.map { it.id }.toSet() }
         binding.chipGroupDetailTags.removeAllViews()
         allTags.forEach { tagItem ->
+            val isChecked = currentlySelectedIds.contains(tagItem.id)
+            val tagColorHex = tagItem.colorHex.ifBlank { "#3171C6" }
+            val parsedColor = try { Color.parseColor(tagColorHex) } catch (e: Exception) { Color.parseColor("#3171C6") }
+
             val chip = Chip(requireContext()).apply {
                 id = View.generateViewId()
                 setTag(tagItem.id)
                 text = tagItem.name
                 isCheckable = true
-                isChecked = currentlySelectedIds.contains(tagItem.id)
+                this.isChecked = isChecked
 
-                val (chipBg, chipBorder, textColorHex) = if (isChecked) {
-                    Triple("#1B283A", "#3171C6", "#3171C6")
+                if (isChecked) {
+                    // Image 2 Selected Tag Chip: Checkmark + colored stroke + tag color text
+                    chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+                    chipIconTint = ColorStateList.valueOf(parsedColor)
+                    isChipIconVisible = true
+
+                    chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#1C1D22"))
+                    chipStrokeColor = ColorStateList.valueOf(parsedColor)
+                    chipStrokeWidth = 1.5f.dpToPx()
+                    setTextColor(parsedColor)
                 } else {
-                    Triple("#1C1D22", "#2A2C34", "#8E9096")
+                    // Image 2 Unselected Tag Chip: Oval color dot + dark border + white text
+                    val dotDrawable = GradientDrawable().apply {
+                        shape = GradientDrawable.OVAL
+                        setColor(parsedColor)
+                        setSize(10f.dpToPx().toInt(), 10f.dpToPx().toInt())
+                    }
+                    chipIcon = dotDrawable
+                    chipIconTint = null
+                    isChipIconVisible = true
+
+                    chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#1C1D22"))
+                    chipStrokeColor = ColorStateList.valueOf(Color.parseColor("#2A2C34"))
+                    chipStrokeWidth = 1f.dpToPx()
+                    setTextColor(Color.parseColor("#FFFFFF"))
                 }
 
-                chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(chipBg))
-                chipStrokeColor = ColorStateList.valueOf(Color.parseColor(chipBorder))
-                chipStrokeWidth = 1.5f.dpToPx()
-                setTextColor(Color.parseColor(textColorHex))
                 chipCornerRadius = 50f
                 chipMinHeight = 28f.dpToPx()
 
-                setOnClickListener { closeAllDropdowns() }
+                setOnClickListener {
+                    closeAllDropdowns()
+                    this.isChecked = !isChecked
+                    populateDetailTagChips(allTags, assignedTags)
+                }
             }
             binding.chipGroupDetailTags.addView(chip)
         }

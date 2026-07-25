@@ -3,18 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_setting_card"
     android:gravity="center_vertical"
-    android:paddingVertical="@dimen/spacing_sm"
-    android:paddingHorizontal="@dimen/spacing_xs">
+    android:orientation="horizontal"
+    android:padding="14dp">
 
     <!-- Color Dot -->
     <View
         android:id="@+id/view_tag_color_dot"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginEnd="@dimen/spacing_md"
-        android:background="@drawable/bg_priority_pill" />
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/bg_circle_orange" />
 
     <!-- Tag Name -->
     <TextView
@@ -22,27 +23,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="@style/TextAppearance.Vega.Body"
-        android:textColor="@color/vega_on_background" />
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <!-- Action Edit Button -->
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_edit_tag"
-        android:layout_width="@dimen/icon_tap_target"
-        android:layout_height="@dimen/icon_tap_target"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:contentDescription="Edit Tag"
-        android:src="@android:drawable/ic_menu_edit"
-        app:tint="@color/vega_on_surface" />
+        android:focusable="true"
+        android:src="@drawable/ic_edit"
+        app:tint="#8E9096" />
 
     <!-- Action Delete Button -->
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_delete_tag"
-        android:layout_width="@dimen/icon_tap_target"
-        android:layout_height="@dimen/icon_tap_target"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:contentDescription="Delete Tag"
-        android:src="@android:drawable/ic_menu_delete"
-        app:tint="@color/vega_priority_high" />
+        android:focusable="true"
+        android:src="@drawable/ic_trash"
+        app:tint="#E94560" />
 
 </LinearLayout>
