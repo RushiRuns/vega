@@ -17,104 +17,86 @@
         android:paddingTop="24dp"
         android:paddingBottom="24dp">
 
-        <!-- Top Settings Title Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Top Settings Title -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="24dp"
-            app:cardBackgroundColor="@color/vega_surface"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            android:paddingHorizontal="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="24dp"
+            android:text="Settings"
+            android:textAppearance="@style/TextAppearance.Vega.Display"
+            android:textColor="@color/vega_on_background"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:text="Settings"
-                android:textAppearance="@style/TextAppearance.Vega.Display"
-                android:textColor="@color/vega_on_background"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- App Preferences Card (Notification Mode, Reminder Advance Time, Theme) -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- App Preferences (Notification Mode, Reminder Advance Time, Theme) -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="24dp"
-            app:cardBackgroundColor="@color/vega_surface"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="8dp">
 
-            <LinearLayout
+            <!-- Notification Mode Dropdown -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_notification_mode"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:hint="@string/label_notification_mode"
+                android:layout_marginBottom="16dp"
+                app:boxStrokeColor="@color/vega_border"
+                app:hintTextColor="@color/vega_on_surface_muted">
 
-                <!-- Notification Mode Dropdown -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_notification_mode"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                <AutoCompleteTextView
+                    android:id="@+id/actv_notification_mode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/label_notification_mode"
-                    android:layout_marginBottom="16dp"
-                    app:boxStrokeColor="@color/vega_border"
-                    app:hintTextColor="@color/vega_on_surface_muted">
+                    android:inputType="none"
+                    android:textColor="@color/vega_on_background" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_notification_mode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:textColor="@color/vega_on_background" />
-                </com.google.android.material.textfield.TextInputLayout>
+            <!-- Reminder Advance Time Dropdown -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_alarm_offset"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/label_alarm_offset"
+                android:layout_marginBottom="16dp"
+                android:visibility="visible"
+                app:boxStrokeColor="@color/vega_border"
+                app:hintTextColor="@color/vega_on_surface_muted">
 
-                <!-- Reminder Advance Time Dropdown -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_alarm_offset"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                <AutoCompleteTextView
+                    android:id="@+id/actv_alarm_offset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/label_alarm_offset"
-                    android:layout_marginBottom="16dp"
-                    android:visibility="visible"
-                    app:boxStrokeColor="@color/vega_border"
-                    app:hintTextColor="@color/vega_on_surface_muted">
+                    android:inputType="none"
+                    android:textColor="@color/vega_on_background" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_alarm_offset"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:textColor="@color/vega_on_background" />
-                </com.google.android.material.textfield.TextInputLayout>
+            <!-- Theme Settings -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_theme"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Theme"
+                app:boxStrokeColor="@color/vega_border">
 
-                <!-- Theme Settings -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_theme"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/actv_theme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:hint="Theme"
-                    app:boxStrokeColor="@color/vega_border">
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:text="Dark Mode (Vega Canvas)"
+                    android:textColor="@color/vega_on_surface_muted" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/actv_theme"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:text="Dark Mode (Vega Canvas)"
-                        android:textColor="@color/vega_on_surface_muted" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

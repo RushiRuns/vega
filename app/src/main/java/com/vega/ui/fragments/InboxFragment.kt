@@ -25,6 +25,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import java.util.Calendar
 
+import com.vega.ui.activities.MainActivity
 import com.google.android.material.snackbar.Snackbar
 
 @AndroidEntryPoint
@@ -227,6 +228,14 @@ class InboxFragment : Fragment() {
         adapter.setOnSelectionChangedListener { count ->
             val bar = binding.layoutMultiSelect.cardMultiSelectActions
             if (count > 0) {
+                // Show contextual selection top header & hide normal title
+                binding.tvInboxTitle.visibility = View.GONE
+                binding.layoutSelectionHeader.visibility = View.VISIBLE
+                binding.tvSelectedCount.text = "$count Selected"
+
+                // Hide floating bottom bar in MainActivity so bottom sheet presents cleanly
+                (activity as? MainActivity)?.setFloatingBottomBarVisible(false)
+
                 if (bar.visibility != View.VISIBLE) {
                     bar.visibility = View.VISIBLE
                     bar.translationY = 100f
@@ -238,8 +247,14 @@ class InboxFragment : Fragment() {
                         .setInterpolator(androidx.interpolator.view.animation.FastOutSlowInInterpolator())
                         .start()
                 }
-                binding.layoutMultiSelect.tvSelectedCount.text = "$count selected"
             } else {
+                // Restore normal Inbox title & hide selection top header
+                binding.tvInboxTitle.visibility = View.VISIBLE
+                binding.layoutSelectionHeader.visibility = View.GONE
+
+                // Restore floating bottom bar in MainActivity
+                (activity as? MainActivity)?.setFloatingBottomBarVisible(true)
+
                 if (bar.visibility == View.VISIBLE) {
                     bar.animate()
                         .translationY(100f)
@@ -251,9 +266,14 @@ class InboxFragment : Fragment() {
             }
         }
 
-        binding.layoutMultiSelect.btnClearSelection.setOnClickListener {
+        binding.btnClearSelection.setOnClickListener {
             adapter.exitSelectionMode()
         }
+
+        binding.btnSelectAll.setOnClickListener {
+            adapter.selectAll()
+        }
+
 
         binding.layoutMultiSelect.btnActionDueDate.setOnClickListener {
             showBulkDueDateDialog(adapter.getSelectedTaskIds())

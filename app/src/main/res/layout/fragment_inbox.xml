@@ -18,18 +18,70 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Inbox Screen Header -->
-            <TextView
+            <!-- Top Header Container (Normal Title vs Contextual Selection Header) -->
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="24dp"
-                android:paddingTop="28dp"
-                android:paddingBottom="20dp"
-                android:text="Inbox"
-                android:textAppearance="@style/TextAppearance.Vega.Display"
-                android:textColor="@color/vega_on_background"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content">
+
+                <!-- Normal Header Title: Inbox -->
+                <TextView
+                    android:id="@+id/tv_inbox_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="28dp"
+                    android:paddingBottom="20dp"
+                    android:text="Inbox"
+                    android:textAppearance="@style/TextAppearance.Vega.Display"
+                    android:textColor="@color/vega_on_background"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <!-- Contextual Selection Header (Cancel X, Selected Count, Select All) -->
+                <RelativeLayout
+                    android:id="@+id/layout_selection_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="28dp"
+                    android:paddingBottom="20dp"
+                    android:visibility="gone">
+
+                    <ImageButton
+                        android:id="@+id/btn_clear_selection"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel"
+                        app:tint="@color/vega_on_background"
+                        android:contentDescription="Cancel selection" />
+
+                    <TextView
+                        android:id="@+id/tv_selected_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="1 Selected"
+                        android:textAppearance="@style/TextAppearance.Vega.Display"
+                        android:textColor="@color/vega_on_background"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/btn_select_all"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_select_all"
+                        app:tint="@color/vega_on_background"
+                        android:contentDescription="Select all tasks" />
+                </RelativeLayout>
+            </FrameLayout>
 
             <!-- Tasks Container (transparent, individual cards handle their own style) -->
             <com.google.android.material.card.MaterialCardView

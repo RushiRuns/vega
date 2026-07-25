@@ -130,6 +130,12 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(destinationId, null, navOptions)
     }
 
+    fun setFloatingBottomBarVisible(visible: Boolean) {
+        if (::binding.isInitialized) {
+            binding.layoutFloatingBottomBar.visibility = if (visible) View.VISIBLE else View.GONE
+        }
+    }
+
     private fun updateNavActiveState(destinationId: Int) {
         val activeColor = ContextCompat.getColor(this, R.color.vega_nav_icon_active)
         val inactiveColor = ContextCompat.getColor(this, R.color.vega_nav_icon_inactive)

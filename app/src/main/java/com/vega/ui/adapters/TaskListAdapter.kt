@@ -59,6 +59,15 @@ class TaskListAdapter(
         onSelectionChangedListener?.invoke(selectedTaskIds.size)
     }
 
+    fun selectAll() {
+        isSelectionMode = true
+        selectedTaskIds.clear()
+        selectedTaskIds.addAll(currentList.map { it.id })
+        notifyDataSetChanged()
+        onSelectionChangedListener?.invoke(selectedTaskIds.size)
+    }
+
+
     fun exitSelectionMode() {
         isSelectionMode = false
         selectedTaskIds.clear()
