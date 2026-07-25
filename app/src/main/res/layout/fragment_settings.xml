@@ -77,7 +77,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_meta_clock"
-                        app:tint="#FF5A16" />
+                        app:tint="@color/vega_primary" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -142,7 +142,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_meta_clock"
-                            app:tint="#FF5A16" />
+                            app:tint="@color/vega_primary" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -263,7 +263,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_meta_clock"
-                        app:tint="#FF5A16" />
+                        app:tint="@color/vega_primary" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -329,7 +329,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_meta_clock"
-                            app:tint="#FF5A16" />
+                            app:tint="@color/vega_primary" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -639,7 +639,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_palette"
-                        app:tint="#FF5A16" />
+                        app:tint="@color/vega_primary" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -704,7 +704,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_palette"
-                            app:tint="#FF5A16" />
+                            app:tint="@color/vega_primary" />
                     </FrameLayout>
 
                     <LinearLayout

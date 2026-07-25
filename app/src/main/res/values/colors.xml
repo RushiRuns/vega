@@ -12,14 +12,14 @@
     <color name="vega_on_surface">#8E9096</color>
     <color name="vega_on_surface_muted">#8E9096</color>
 
-    <color name="vega_primary">#FF5A16</color>
+    <color name="vega_primary">#3171C6</color>
     <color name="vega_priority_high">#E94560</color>
     <color name="vega_priority_medium">#F2A65A</color>
     <color name="vega_priority_low">#6B7080</color>
     <color name="vega_recurring_accent">#6C7CE7</color>
     <color name="vega_success">#4ECDC4</color>
-    <color name="vega_fab_orange">#FF5A16</color>
-    <color name="vega_nav_icon_active">#FF5A16</color>
+    <color name="vega_fab_orange">#3171C6</color>
+    <color name="vega_nav_icon_active">#3171C6</color>
     <color name="vega_nav_icon_inactive">#8E9096</color>
     <color name="vega_floating_nav_bg">#232427</color>
 
