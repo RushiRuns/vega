@@ -37,6 +37,10 @@ class InboxFragment : Fragment() {
     private val viewModel: InboxViewModel by viewModels()
     private lateinit var adapter: TaskListAdapter
 
+    private var allInboxTasks: List<Task> = emptyList()
+    private var currentFilterPill: String = "ALL"
+    private var currentSearchQuery: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +54,7 @@ class InboxFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        setupSearchAndFilterPills()
         observeViewModel()
         setupMultiSelectActions()
     }
@@ -85,6 +90,73 @@ class InboxFragment : Fragment() {
         binding.rvInboxTasks.adapter = adapter
         binding.rvInboxTasks.isNestedScrollingEnabled = false
         setupSwipeGestures()
+    }
+
+    private fun setupSearchAndFilterPills() {
+        binding.btnTriggerSelect.setOnClickListener {
+            if (adapter.currentList.isNotEmpty()) {
+                adapter.enterSelectionMode(adapter.currentList.first().id)
+            }
+        }
+
+        binding.etSearchInbox.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                currentSearchQuery = s?.toString()?.trim().orEmpty()
+                filterAndSubmitList()
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+
+        binding.btnFilterAll.setOnClickListener {
+            currentFilterPill = "ALL"
+            updatePillStyles()
+            filterAndSubmitList()
+        }
+
+        binding.btnFilterPriority.setOnClickListener {
+            currentFilterPill = "PRIORITY"
+            updatePillStyles()
+            filterAndSubmitList()
+        }
+
+        binding.btnFilterTags.setOnClickListener {
+            currentFilterPill = "TAGS"
+            updatePillStyles()
+            filterAndSubmitList()
+        }
+    }
+
+    private fun updatePillStyles() {
+        binding.btnFilterAll.setBackgroundResource(
+            if (currentFilterPill == "ALL") R.drawable.bg_filter_pill_active else R.drawable.bg_filter_pill_inactive
+        )
+        binding.btnFilterPriority.setBackgroundResource(
+            if (currentFilterPill == "PRIORITY") R.drawable.bg_filter_pill_active else R.drawable.bg_filter_pill_inactive
+        )
+        binding.btnFilterTags.setBackgroundResource(
+            if (currentFilterPill == "TAGS") R.drawable.bg_filter_pill_active else R.drawable.bg_filter_pill_inactive
+        )
+    }
+
+    private fun filterAndSubmitList() {
+        var filtered = allInboxTasks
+        if (currentSearchQuery.isNotBlank()) {
+            filtered = filtered.filter { it.title.contains(currentSearchQuery, ignoreCase = true) }
+        }
+        when (currentFilterPill) {
+            "PRIORITY" -> filtered = filtered.filter { it.priority != com.vega.data.database.TaskPriority.NONE.name }
+            "TAGS" -> filtered = filtered.filter { task -> adapter.getTaskTagsMap()[task.id]?.isNotEmpty() == true }
+        }
+        adapter.submitList(filtered)
+        binding.tvInboxSubtitle.text = "${filtered.size} tasks pending schedule"
+        if (filtered.isEmpty()) {
+            binding.layoutEmptyState.visibility = View.VISIBLE
+            binding.rvInboxTasks.visibility = View.GONE
+        } else {
+            binding.layoutEmptyState.visibility = View.GONE
+            binding.rvInboxTasks.visibility = View.VISIBLE
+        }
     }
 
     private fun showDeleteConfirmation(task: Task) {
@@ -137,25 +209,18 @@ class InboxFragment : Fragment() {
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     val position = viewHolder.adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
-                        val task = adapter.currentList[position]
-                        if (dX < 0) {
-                            super.onChildDraw(c, recyclerView, viewHolder, 0f, dY, actionState, isCurrentlyActive)
-                        } else {
-                            val alpha = 1.0f - dX / viewHolder.itemView.width
-                            viewHolder.itemView.alpha = alpha
-                            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        val viewHolderToday = viewHolder as? TaskListAdapter.TaskViewHolder
+                        viewHolderToday?.let {
+                            if (dX > 0) {
+                                it.itemView.translationX = 0f
+                            } else {
+                                it.itemView.translationX = dX
+                            }
                         }
-                    } else {
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     }
                 } else {
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 }
-            }
-
-            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-                super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.alpha = 1.0f
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
@@ -196,18 +261,11 @@ class InboxFragment : Fragment() {
 
                 launch {
                     viewModel.inboxTasks.collect { tasks ->
+                        allInboxTasks = tasks
                         val isInitialEmission = !hasAnimatedListEntrance && tasks.isNotEmpty()
-                        adapter.submitList(tasks) {
-                            if (isInitialEmission) {
-                                runEntranceStaggerAnimation(binding.rvInboxTasks)
-                            }
-                        }
-                        if (tasks.isEmpty()) {
-                            binding.layoutEmptyState.visibility = View.VISIBLE
-                            binding.rvInboxTasks.visibility = View.GONE
-                        } else {
-                            binding.layoutEmptyState.visibility = View.GONE
-                            binding.rvInboxTasks.visibility = View.VISIBLE
+                        filterAndSubmitList()
+                        if (isInitialEmission && tasks.isNotEmpty()) {
+                            runEntranceStaggerAnimation(binding.rvInboxTasks)
                         }
                     }
                 }
@@ -228,8 +286,8 @@ class InboxFragment : Fragment() {
         adapter.setOnSelectionChangedListener { count ->
             val bar = binding.layoutMultiSelect.cardMultiSelectActions
             if (count > 0) {
-                // Show contextual selection top header & hide normal title
-                binding.tvInboxTitle.visibility = View.GONE
+                // Show contextual selection top header & hide normal title layout
+                binding.layoutNormalHeader.visibility = View.GONE
                 binding.layoutSelectionHeader.visibility = View.VISIBLE
                 binding.tvSelectedCount.text = "$count Selected"
 
@@ -248,8 +306,8 @@ class InboxFragment : Fragment() {
                         .start()
                 }
             } else {
-                // Restore normal Inbox title & hide selection top header
-                binding.tvInboxTitle.visibility = View.VISIBLE
+                // Restore normal Inbox title layout & hide selection top header
+                binding.layoutNormalHeader.visibility = View.VISIBLE
                 binding.layoutSelectionHeader.visibility = View.GONE
 
                 // Restore floating bottom bar in MainActivity
@@ -274,7 +332,6 @@ class InboxFragment : Fragment() {
             adapter.selectAll()
         }
 
-
         binding.layoutMultiSelect.btnActionDueDate.setOnClickListener {
             showBulkDueDateDialog(adapter.getSelectedTaskIds())
         }
@@ -288,135 +345,125 @@ class InboxFragment : Fragment() {
         }
 
         binding.layoutMultiSelect.btnActionRecurrence.setOnClickListener {
-            showBulkRecurrenceDialog()
-        }
-
-        childFragmentManager.setFragmentResultListener(
-            "bulk_recurrence_inbox",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val ruleJson = bundle.getString(RepeatsDialogFragment.RESULT_KEY_RULE_JSON)
-            if (adapter.isSelectionMode()) {
-                viewModel.updateMultipleTasks(
-                    adapter.getSelectedTaskIds(),
-                    recurrence = ruleJson,
-                    recurrenceUpdated = true
-                )
-                adapter.exitSelectionMode()
-            }
+            showBulkRecurrenceDialog(adapter.getSelectedTaskIds())
         }
     }
 
-    private fun showBulkDueDateDialog(selectedTaskIds: List<String>) {
-        val options = arrayOf("Today", "Tomorrow", "Choose Date & Time...", "Clear Due Date")
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Set Due Date")
-            .setItems(options) { _, which ->
-                when (which) {
-                    0 -> { // Today
-                        val calendar = Calendar.getInstance().apply {
-                            set(Calendar.HOUR_OF_DAY, 9)
-                            set(Calendar.MINUTE, 0)
-                            set(Calendar.SECOND, 0)
-                            set(Calendar.MILLISECOND, 0)
-                        }
-                        viewModel.updateMultipleTasks(selectedTaskIds, dueDate = calendar.timeInMillis, dueDateUpdated = true)
-                        adapter.exitSelectionMode()
-                    }
-                    1 -> { // Tomorrow
-                        val calendar = Calendar.getInstance().apply {
-                            add(Calendar.DAY_OF_YEAR, 1)
-                            set(Calendar.HOUR_OF_DAY, 9)
-                            set(Calendar.MINUTE, 0)
-                            set(Calendar.SECOND, 0)
-                            set(Calendar.MILLISECOND, 0)
-                        }
-                        viewModel.updateMultipleTasks(selectedTaskIds, dueDate = calendar.timeInMillis, dueDateUpdated = true)
-                        adapter.exitSelectionMode()
-                    }
-                    2 -> { // Choose Date & Time
-                        showBulkDatePicker(selectedTaskIds)
-                    }
-                    3 -> { // Clear Due Date
-                        viewModel.updateMultipleTasks(selectedTaskIds, dueDate = null, dueDateUpdated = true)
-                        adapter.exitSelectionMode()
-                    }
-                }
-            }
-            .show()
-    }
-
-    private fun showBulkDatePicker(selectedTaskIds: List<String>) {
+    private fun showBulkDueDateDialog(taskIds: List<String>) {
+        if (taskIds.isEmpty()) return
         val calendar = Calendar.getInstance()
+
         DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, month)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                showBulkTimePicker(selectedTaskIds, calendar)
+                val selectedCalendar = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, year)
+                    set(Calendar.MONTH, month)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                }
+
+                TimePickerDialog(
+                    requireContext(),
+                    { _, hourOfDay, minute ->
+                        selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                        selectedCalendar.set(Calendar.MINUTE, minute)
+                        selectedCalendar.set(Calendar.SECOND, 0)
+
+                        viewModel.updateMultipleTasks(
+                            taskIds = taskIds,
+                            dueDate = selectedCalendar.timeInMillis,
+                            dueDateUpdated = true
+                        )
+                        adapter.exitSelectionMode()
+                    },
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    false
+                ).show()
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
-    }
-
-    private fun showBulkTimePicker(selectedTaskIds: List<String>, calendar: Calendar) {
-        TimePickerDialog(
-            requireContext(),
-            { _, hourOfDay, minute ->
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                calendar.set(Calendar.MINUTE, minute)
-                calendar.set(Calendar.SECOND, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
-
-                viewModel.updateMultipleTasks(selectedTaskIds, dueDate = calendar.timeInMillis, dueDateUpdated = true)
-                adapter.exitSelectionMode()
-            },
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
-            false
-        ).show()
-    }
-
-    private fun showBulkPriorityDialog(selectedTaskIds: List<String>) {
-        val priorities = arrayOf("None", "Low", "Medium", "High")
-        val priorityValues = arrayOf(
-            com.vega.data.database.TaskPriority.NONE,
-            com.vega.data.database.TaskPriority.LOW,
-            com.vega.data.database.TaskPriority.MEDIUM,
-            com.vega.data.database.TaskPriority.HIGH
-        )
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Set Priority")
-            .setItems(priorities) { _, which ->
-                viewModel.updateMultipleTasks(selectedTaskIds, priority = priorityValues[which])
+        ).apply {
+            setButton(DatePickerDialog.BUTTON_NEUTRAL, "Clear Date") { _, _ ->
+                viewModel.updateMultipleTasks(
+                    taskIds = taskIds,
+                    dueDate = null,
+                    dueDateUpdated = true
+                )
                 adapter.exitSelectionMode()
             }
-            .show()
+        }.show()
     }
 
-    private fun showBulkStateDialog(selectedTaskIds: List<String>) {
-        val states = arrayOf("Inbox", "Today", "Upcoming", "Done")
-        val stateValues = arrayOf(
-            com.vega.data.database.TaskState.INBOX,
-            com.vega.data.database.TaskState.TODAY,
-            com.vega.data.database.TaskState.UPCOMING,
-            com.vega.data.database.TaskState.DONE
-        )
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Set State")
-            .setItems(states) { _, which ->
-                viewModel.updateMultipleTasks(selectedTaskIds, state = stateValues[which])
-                adapter.exitSelectionMode()
+    private fun showBulkPriorityDialog(taskIds: List<String>) {
+        if (taskIds.isEmpty()) return
+        val popup = PopupMenu(requireContext(), binding.layoutMultiSelect.btnActionPriority)
+        popup.menu.add(0, 0, 0, "None")
+        popup.menu.add(0, 1, 1, "Low")
+        popup.menu.add(0, 2, 2, "Medium")
+        popup.menu.add(0, 3, 3, "High")
+
+        popup.setOnMenuItemClickListener { item ->
+            val priority = when (item.itemId) {
+                1 -> com.vega.data.database.TaskPriority.LOW
+                2 -> com.vega.data.database.TaskPriority.MEDIUM
+                3 -> com.vega.data.database.TaskPriority.HIGH
+                else -> com.vega.data.database.TaskPriority.NONE
             }
-            .show()
+            viewModel.updateMultipleTasks(taskIds = taskIds, priority = priority)
+            adapter.exitSelectionMode()
+            true
+        }
+        popup.show()
     }
 
-    private fun showBulkRecurrenceDialog() {
-        val dialog = RepeatsDialogFragment.newInstance(null, null, "bulk_recurrence_inbox")
-        dialog.show(childFragmentManager, "BulkRepeatsDialog")
+    private fun showBulkStateDialog(taskIds: List<String>) {
+        if (taskIds.isEmpty()) return
+        val popup = PopupMenu(requireContext(), binding.layoutMultiSelect.btnActionState)
+        popup.menu.add(0, 0, 0, "Inbox")
+        popup.menu.add(0, 1, 1, "Today")
+        popup.menu.add(0, 2, 2, "Upcoming")
+        popup.menu.add(0, 3, 3, "Done")
+
+        popup.setOnMenuItemClickListener { item ->
+            val state = when (item.itemId) {
+                1 -> com.vega.data.database.TaskState.TODAY
+                2 -> com.vega.data.database.TaskState.UPCOMING
+                3 -> com.vega.data.database.TaskState.DONE
+                else -> com.vega.data.database.TaskState.INBOX
+            }
+            viewModel.updateMultipleTasks(taskIds = taskIds, state = state)
+            adapter.exitSelectionMode()
+            true
+        }
+        popup.show()
+    }
+
+    private fun showBulkRecurrenceDialog(taskIds: List<String>) {
+        if (taskIds.isEmpty()) return
+        val popup = PopupMenu(requireContext(), binding.layoutMultiSelect.btnActionRecurrence)
+        popup.menu.add(0, 0, 0, "None")
+        popup.menu.add(0, 1, 1, "Daily")
+        popup.menu.add(0, 2, 2, "Weekly")
+        popup.menu.add(0, 3, 3, "Monthly")
+
+        popup.setOnMenuItemClickListener { item ->
+            val recurrenceStr = when (item.itemId) {
+                1 -> "DAILY"
+                2 -> "WEEKLY"
+                3 -> "MONTHLY"
+                else -> null
+            }
+            viewModel.updateMultipleTasks(
+                taskIds = taskIds,
+                recurrence = recurrenceStr,
+                recurrenceUpdated = true
+            )
+            adapter.exitSelectionMode()
+            true
+        }
+        popup.show()
     }
 
     override fun onDestroyView() {

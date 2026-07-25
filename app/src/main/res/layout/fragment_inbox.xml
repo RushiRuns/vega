@@ -23,20 +23,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Normal Header Title: Inbox -->
-                <TextView
-                    android:id="@+id/tv_inbox_title"
+                <!-- Normal Header Layout: Inbox Title & Subtitle + Aligned Select Button -->
+                <RelativeLayout
+                    android:id="@+id/layout_normal_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="24dp"
+                    android:paddingHorizontal="20dp"
                     android:paddingTop="28dp"
-                    android:paddingBottom="20dp"
-                    android:text="Inbox"
-                    android:textAppearance="@style/TextAppearance.Vega.Display"
-                    android:textColor="@color/vega_on_background"
-                    android:textSize="38sp"
-                    android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:paddingBottom="12dp"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/btn_trigger_select"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_inbox_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Inbox"
+                            android:textAppearance="@style/TextAppearance.Vega.Display"
+                            android:textColor="@color/vega_on_background"
+                            android:textSize="38sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_inbox_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="3 tasks pending schedule"
+                            android:textColor="#8E9096"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Aligned Select Pill Button -->
+                    <LinearLayout
+                        android:id="@+id/btn_trigger_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_filter_pill_inactive"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_select_all"
+                            app:tint="#3171C6" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="Select"
+                            android:textColor="#3171C6"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
 
                 <!-- Contextual Selection Header (Cancel X, Selected Count, Select All) -->
                 <RelativeLayout
@@ -82,6 +136,104 @@
                         android:contentDescription="Select all tasks" />
                 </RelativeLayout>
             </FrameLayout>
+
+            <!-- 1. Search Bar -->
+            <LinearLayout
+                android:id="@+id/layout_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_search_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="#8E9096" />
+
+                <EditText
+                    android:id="@+id/et_search_inbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:background="@null"
+                    android:hint="Search inbox tasks..."
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#8E9096"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- 2. Filter Pills Under Search Bar (All, Priority, Tags) -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="16dp"
+                android:clipToPadding="false"
+                android:paddingHorizontal="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Pill 1: All -->
+                    <TextView
+                        android:id="@+id/btn_filter_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_filter_pill_active"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="8dp"
+                        android:text="All"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <!-- Pill 2: Priority (Clean text pill without dot) -->
+                    <TextView
+                        android:id="@+id/btn_filter_priority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_pill_inactive"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="8dp"
+                        android:text="Priority"
+                        android:textColor="#D0D2DC"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <!-- Pill 3: Tags -->
+                    <TextView
+                        android:id="@+id/btn_filter_tags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_pill_inactive"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="8dp"
+                        android:text="Tags"
+                        android:textColor="#D0D2DC"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <!-- Tasks Container (transparent, individual cards handle their own style) -->
             <com.google.android.material.card.MaterialCardView

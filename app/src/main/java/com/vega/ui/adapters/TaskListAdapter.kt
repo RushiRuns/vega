@@ -43,6 +43,8 @@ class TaskListAdapter(
         notifyDataSetChanged()
     }
 
+    fun getTaskTagsMap(): Map<String, List<com.vega.data.database.Tag>> = taskTagsMap
+
     fun setOnSelectionChangedListener(listener: (Int) -> Unit) {
         onSelectionChangedListener = listener
     }
