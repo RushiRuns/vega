@@ -1,121 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/vega_background">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dark_gradient"
+    android:fillViewport="true">
 
-    <!-- Header / Action Bar -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:paddingStart="@dimen/spacing_lg"
-        android:paddingEnd="@dimen/spacing_lg"
-        android:background="@color/vega_background"
-        android:elevation="0dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp">
 
-        <ImageButton
-            android:id="@+id/btn_close"
-            android:layout_width="@dimen/icon_tap_target"
-            android:layout_height="@dimen/icon_tap_target"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:contentDescription="Close"
-            app:tint="@color/vega_on_surface_muted" />
-
-        <TextView
-            android:id="@+id/tv_title"
+        <!-- Drag Handle -->
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/btn_close"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/spacing_lg"
-            android:text="@string/label_repeats"
-            android:textAppearance="@style/TextAppearance.Vega.Title"
-            android:textColor="@color/vega_on_background" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/bg_drag_handle" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_done"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+        <!-- Header Row: Close (X) Icon + Repeats Title + DONE Button -->
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:text="@string/label_done"
-            android:textColor="@color/vega_recurring_accent" />
-    </RelativeLayout>
+            android:layout_marginBottom="20dp">
 
-    <!-- Content Area (Scrollable) -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+            <FrameLayout
+                android:id="@+id/btn_close"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_setting_icon_circle"
+                android:clickable="true"
+                android:focusable="true">
 
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:tint="#8E9096" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="14dp"
+                android:layout_toEndOf="@id/btn_close"
+                android:text="Repeats"
+                android:textAppearance="@style/TextAppearance.Vega.Title"
+                android:textColor="@color/vega_on_background"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_btn_save"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="7dp"
+                android:text="DONE"
+                android:textColor="#121218"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- 1. FREQUENCY Section Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_setting_card"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_24">
+            android:padding="16dp">
 
-            <!-- Interval Setup (Every X Days/Weeks/Months/Years) -->
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_every"
-                android:textAppearance="?attr/textAppearanceSubtitle2"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_marginBottom="@dimen/spacing_8" />
+                android:letterSpacing="0.05"
+                android:text="FREQUENCY"
+                android:textColor="#8E9096"
+                android:textSize="11sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="@dimen/spacing_24">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_interval"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="100dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_16">
+                    android:layout_marginEnd="12dp"
+                    android:text="Every"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_interval"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:text="1"
-                        android:gravity="center" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <!-- Interval Number Input Box -->
+                <EditText
+                    android:id="@+id/et_interval"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/bg_filter_pill_inactive"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spinner_frequency"
+                <!-- Spinner Unit Dropdown Box -->
+                <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:minHeight="48dp" />
+                    android:background="@drawable/bg_filter_pill_inactive">
+
+                    <Spinner
+                        android:id="@+id/spinner_frequency"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="28dp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_chevron_down"
+                        app:tint="#8E9096" />
+                </FrameLayout>
             </LinearLayout>
 
-            <!-- Weekdays Selection (Only visible for Weekly recurrence) -->
+            <!-- Weekdays Selection (Weekly) -->
             <LinearLayout
                 android:id="@+id/layout_weekdays"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:orientation="vertical"
-                android:layout_marginBottom="@dimen/spacing_24"
                 android:visibility="gone">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
                     android:text="Repeat on"
-                    android:textAppearance="?attr/textAppearanceSubtitle2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginBottom="@dimen/spacing_8" />
+                    android:textColor="#8E9096"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group_weekdays"
@@ -174,22 +225,14 @@
                 </com.google.android.material.chip.ChipGroup>
             </LinearLayout>
 
-            <!-- Monthly Option Selection (Only visible for Monthly recurrence) -->
+            <!-- Monthly Option Selection (Monthly) -->
             <LinearLayout
                 android:id="@+id/layout_monthly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:orientation="vertical"
-                android:layout_marginBottom="@dimen/spacing_24"
                 android:visibility="gone">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Monthly scheduling"
-                    android:textAppearance="?attr/textAppearanceSubtitle2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginBottom="@dimen/spacing_8" />
 
                 <RadioGroup
                     android:id="@+id/rg_monthly_options"
@@ -201,143 +244,236 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Day 5"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/rb_monthly_day_of_week"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="First Friday"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp" />
                 </RadioGroup>
             </LinearLayout>
+        </LinearLayout>
 
-            <!-- Start Date Selector -->
+        <!-- 2. STARTS Section Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_setting_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_starts"
-                android:textAppearance="?attr/textAppearanceSubtitle2"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_marginBottom="@dimen/spacing_8" />
+                android:letterSpacing="0.05"
+                android:text="STARTS"
+                android:textColor="#8E9096"
+                android:textSize="11sp"
+                android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_start_date"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <RelativeLayout
+                android:id="@+id/layout_starts_box"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_24"
-                app:startIconDrawable="@android:drawable/ic_menu_my_calendar">
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_filter_pill_inactive"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="14dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_start_date"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:cursorVisible="false"
-                    android:textColor="?android:attr/textColorPrimary" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            <!-- End Option Selection -->
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_action_calendar"
+                        app:tint="#3171C6" />
+
+                    <EditText
+                        android:id="@+id/et_start_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:text="Jul 30, 2026 at 6:15 PM"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_edit"
+                    app:tint="#8E9096" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!-- 3. ENDS Section Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_setting_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_ends"
-                android:textAppearance="?attr/textAppearanceSubtitle2"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_marginBottom="@dimen/spacing_8" />
+                android:letterSpacing="0.05"
+                android:text="ENDS"
+                android:textColor="#8E9096"
+                android:textSize="11sp"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/rg_end_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_24">
+                android:layout_marginTop="10dp">
 
-                <RadioButton
-                    android:id="@+id/rb_end_never"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_never"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:checked="true" />
-
+                <!-- Option 1: Never -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_filter_pill_inactive"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="14dp">
+
+                    <RadioButton
+                        android:id="@+id/rb_end_never"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Never"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:buttonTint="#3171C6" />
+                </LinearLayout>
+
+                <!-- Option 2: On Date -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_filter_pill_inactive"
+                    android:paddingHorizontal="14dp">
 
                     <RadioButton
                         android:id="@+id/rb_end_on_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_on"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="On"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:buttonTint="#3171C6" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_end_date"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="@dimen/spacing_8"
-                        android:enabled="false">
+                    <LinearLayout
+                        android:id="@+id/layout_end_date_box"
+                        android:layout_width="140dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_setting_card"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="10dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <EditText
                             android:id="@+id/et_end_date"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:focusable="false"
+                            android:layout_weight="1"
+                            android:background="@null"
                             android:clickable="true"
                             android:cursorVisible="false"
-                            android:textSize="14sp"
-                            android:textColor="?android:attr/textColorPrimary" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
+                            android:focusable="false"
+                            android:hint="Select date"
+                            android:textColor="#FFFFFF"
+                            android:textColorHint="#8E9096"
+                            android:textSize="13sp" />
 
-                <LinearLayout
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_action_calendar"
+                            app:tint="#8E9096" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!-- Option 3: After Occurrences -->
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="@dimen/spacing_8">
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_filter_pill_inactive"
+                    android:paddingHorizontal="14dp">
 
                     <RadioButton
                         android:id="@+id/rb_end_after_occurrences"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_after"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="After"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:buttonTint="#3171C6" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_end_occurrences"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_8"
-                        android:layout_marginEnd="@dimen/spacing_8"
-                        android:enabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_end_occurrences"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:text="10"
-                            android:gravity="center"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_occurrences"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary" />
-                </LinearLayout>
-            </RadioGroup>
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
+                        <EditText
+                            android:id="@+id/et_end_occurrences"
+                            android:layout_width="60dp"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_setting_card"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:text="10"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="occurrences"
+                            android:textColor="#8E9096"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RadioGroup>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

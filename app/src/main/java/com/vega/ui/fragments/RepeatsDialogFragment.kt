@@ -1,6 +1,7 @@
 package com.vega.ui.fragments
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.DialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vega.R
 import com.vega.data.database.RecurrenceRule
 import com.vega.databinding.DialogRepeatsBinding
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class RepeatsDialogFragment : DialogFragment() {
+class RepeatsDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: DialogRepeatsBinding? = null
     private val binding get() = _binding!!
@@ -36,11 +37,7 @@ class RepeatsDialogFragment : DialogFragment() {
         R.id.chip_sat to Calendar.SATURDAY
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Style as full screen dialog
-        setStyle(STYLE_NORMAL, R.style.Theme_Vega_FullScreenDialog)
-    }
+    override fun getTheme(): Int = R.style.Style_Vega_BottomSheet
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,13 +76,17 @@ class RepeatsDialogFragment : DialogFragment() {
 
         // End Options Radio Group listener
         binding.rgEndOptions.setOnCheckedChangeListener { _, checkedId ->
-            binding.tilEndDate.isEnabled = (checkedId == R.id.rb_end_on_date)
-            binding.tilEndOccurrences.isEnabled = (checkedId == R.id.rb_end_after_occurrences)
+            binding.etEndDate.isEnabled = (checkedId == R.id.rb_end_on_date)
+            binding.etEndOccurrences.isEnabled = (checkedId == R.id.rb_end_after_occurrences)
         }
 
         // Click listeners for picking dates
-        binding.etStartDate.setOnClickListener {
-            showStartDatePicker()
+        binding.layoutStartsBox.setOnClickListener { showStartDatePicker() }
+        binding.etStartDate.setOnClickListener { showStartDatePicker() }
+
+        binding.layoutEndDateBox.setOnClickListener {
+            binding.rbEndOnDate.isChecked = true
+            showEndDatePicker()
         }
         binding.etEndDate.setOnClickListener {
             binding.rbEndOnDate.isChecked = true
@@ -111,15 +112,14 @@ class RepeatsDialogFragment : DialogFragment() {
         // Read initial rule argument if exists
         val initialRuleJson = arguments?.getString(ARG_RULE_JSON)
         val initialTaskDueDate = arguments?.getLong(ARG_TASK_DUE_DATE)
-        
+
         startDate = initialTaskDueDate ?: System.currentTimeMillis()
-        
+
         val initialRule = initialRuleJson?.let { RecurrenceRule.fromJson(it) }
         populateUi(initialRule)
     }
 
     private fun setupFrequencySpinner() {
-        // We'll initialize with DAILY
         updateSpinnerAdapter(1)
 
         binding.spinnerFrequency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -164,7 +164,6 @@ class RepeatsDialogFragment : DialogFragment() {
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
-        // Calculate occurrence count of this weekday (1st, 2nd, 3rd, 4th, last)
         val tempCal = calendar.clone() as Calendar
         tempCal.set(Calendar.DAY_OF_MONTH, 1)
         var count = 0
@@ -215,7 +214,7 @@ class RepeatsDialogFragment : DialogFragment() {
     }
 
     private fun showStartTimePicker(calendar: Calendar) {
-        android.app.TimePickerDialog(
+        TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -243,7 +242,7 @@ class RepeatsDialogFragment : DialogFragment() {
                 calendar.set(Calendar.MONTH, month)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 endDate = calendar.timeInMillis
-                binding.etEndDate.setText(formatDate(endDate!!))
+                binding.etEndDate.setText(formatDateOnly(endDate!!))
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -258,22 +257,24 @@ class RepeatsDialogFragment : DialogFragment() {
         return SimpleDateFormat(pattern, Locale.getDefault()).format(cal.time)
     }
 
+    private fun formatDateOnly(timestamp: Long): String {
+        val cal = Calendar.getInstance().apply { timeInMillis = timestamp }
+        return SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(cal.time)
+    }
+
     private fun populateUi(rule: RecurrenceRule?) {
-        // Set starts date
         binding.etStartDate.setText(formatDate(startDate))
         updateMonthlyOptionStrings(startDate)
 
         if (rule == null) {
             binding.etInterval.setText("1")
-            binding.spinnerFrequency.setSelection(0) // DAILY
+            binding.spinnerFrequency.setSelection(0)
             binding.rbEndNever.isChecked = true
             return
         }
 
-        // Set interval
         binding.etInterval.setText(rule.interval.toString())
 
-        // Set frequency spinner
         val freqPos = when (rule.frequency.uppercase()) {
             "DAILY" -> 0
             "WEEKLY" -> 1
@@ -285,7 +286,6 @@ class RepeatsDialogFragment : DialogFragment() {
         selectedFrequency = rule.frequency.uppercase()
         updateConditionalViews()
 
-        // Set weekdays
         if (rule.frequency.uppercase() == "WEEKLY" && rule.weekdays != null) {
             rule.weekdays.forEach { day ->
                 val chipId = chipIdToWeekdayMap.filterValues { it == day }.keys.firstOrNull()
@@ -295,7 +295,6 @@ class RepeatsDialogFragment : DialogFragment() {
             }
         }
 
-        // Set monthly selection
         if (rule.frequency.uppercase() == "MONTHLY") {
             if (rule.monthlyType == "DAY_OF_WEEK") {
                 binding.rbMonthlyDayOfWeek.isChecked = true
@@ -304,12 +303,10 @@ class RepeatsDialogFragment : DialogFragment() {
             }
         }
 
-        // Set starts date (if rule has it)
         startDate = rule.startDate
         binding.etStartDate.setText(formatDate(startDate))
         updateMonthlyOptionStrings(startDate)
 
-        // Set ends criteria
         when (rule.endType.uppercase()) {
             "NEVER" -> {
                 binding.rbEndNever.isChecked = true
@@ -318,7 +315,7 @@ class RepeatsDialogFragment : DialogFragment() {
                 binding.rbEndOnDate.isChecked = true
                 rule.endDate?.let {
                     endDate = it
-                    binding.etEndDate.setText(formatDate(it))
+                    binding.etEndDate.setText(formatDateOnly(it))
                 }
             }
             "AFTER_OCCURRENCES" -> {
@@ -332,7 +329,7 @@ class RepeatsDialogFragment : DialogFragment() {
 
     private fun buildRule(): RecurrenceRule? {
         val interval = binding.etInterval.text?.toString()?.toIntOrNull() ?: 1
-        
+
         val weekdays = if (selectedFrequency == "WEEKLY") {
             val list = mutableListOf<Int>()
             chipIdToWeekdayMap.forEach { (chipId, calendarDay) ->
@@ -353,8 +350,7 @@ class RepeatsDialogFragment : DialogFragment() {
                 monthlyType = "DAY_OF_WEEK"
                 val calendar = Calendar.getInstance().apply { timeInMillis = startDate }
                 dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                
-                // Recalculate weekday occurrence count (1st, 2nd, etc.)
+
                 val tempCal = calendar.clone() as Calendar
                 tempCal.set(Calendar.DAY_OF_MONTH, 1)
                 var count = 0
@@ -371,7 +367,7 @@ class RepeatsDialogFragment : DialogFragment() {
                 tempCal.timeInMillis = calendar.timeInMillis
                 tempCal.add(Calendar.DAY_OF_MONTH, 7)
                 val isLast = tempCal.get(Calendar.MONTH) != calendar.get(Calendar.MONTH)
-                
+
                 dayOfWeekOccurrence = if (isLast) -1 else count
             } else {
                 monthlyType = "DAY_OF_MONTH"
@@ -416,7 +412,7 @@ class RepeatsDialogFragment : DialogFragment() {
         const val TAG = "RepeatsDialogFragment"
         const val REQUEST_KEY_RECURRENCE = "request_key_recurrence"
         const val RESULT_KEY_RULE_JSON = "result_key_rule_json"
-        
+
         const val ARG_RULE_JSON = "arg_rule_json"
         const val ARG_TASK_DUE_DATE = "arg_task_due_date"
         const val ARG_REQUEST_KEY = "arg_request_key"
