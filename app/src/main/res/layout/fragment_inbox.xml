@@ -31,15 +31,14 @@
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
-            <!-- Tasks Container Card -->
+            <!-- Tasks Container (transparent, individual cards handle their own style) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_inbox_tasks_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/vega_surface_task"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="0dp"
+                app:cardBackgroundColor="@android:color/transparent"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
 
@@ -54,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        android:paddingVertical="4dp"
+                        android:paddingVertical="0dp"
                         tools:listitem="@layout/item_task_today" />
 
                     <!-- Empty State View -->
