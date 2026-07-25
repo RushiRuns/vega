@@ -121,8 +121,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             closeAllDropdowns()
             if (!isExpanded) {
                 refreshPriorityDropdownUI()
-                binding.layoutPriorityStateRow.bringToFront()
-                binding.containerPriority.bringToFront()
+                binding.layoutPriorityStateRow.translationZ = 50f
                 binding.layoutDropdownPriority.visibility = View.VISIBLE
                 binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_up)
             }
@@ -138,8 +137,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             closeAllDropdowns()
             if (!isExpanded) {
                 refreshStateDropdownUI()
-                binding.layoutPriorityStateRow.bringToFront()
-                binding.containerState.bringToFront()
+                binding.layoutPriorityStateRow.translationZ = 50f
                 binding.layoutDropdownState.visibility = View.VISIBLE
                 binding.ivChevronState.setImageResource(R.drawable.ic_chevron_up)
             }
@@ -155,7 +153,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
             closeAllDropdowns()
             if (!isExpanded) {
                 refreshRecurrenceDropdownUI()
-                binding.containerRecurrence.bringToFront()
+                binding.containerRecurrence.translationZ = 50f
                 binding.layoutDropdownRecurrence.visibility = View.VISIBLE
                 binding.ivChevronRecurrence.setImageResource(R.drawable.ic_chevron_up)
             }
@@ -181,6 +179,9 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun closeAllDropdowns() {
+        binding.layoutPriorityStateRow.translationZ = 0f
+        binding.containerRecurrence.translationZ = 0f
+
         binding.layoutDropdownPriority.visibility = View.GONE
         binding.ivChevronPriority.setImageResource(R.drawable.ic_chevron_down)
 
@@ -420,7 +421,6 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                 this.isChecked = isChecked
 
                 if (isChecked) {
-                    // Image 2 Selected Tag Chip: Checkmark + colored stroke + tag color text
                     chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
                     chipIconTint = ColorStateList.valueOf(parsedColor)
                     isChipIconVisible = true
@@ -430,7 +430,6 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                     chipStrokeWidth = 1.5f.dpToPx()
                     setTextColor(parsedColor)
                 } else {
-                    // Image 2 Unselected Tag Chip: Oval color dot + dark border + white text
                     val dotDrawable = GradientDrawable().apply {
                         shape = GradientDrawable.OVAL
                         setColor(parsedColor)
