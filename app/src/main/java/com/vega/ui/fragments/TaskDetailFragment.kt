@@ -6,7 +6,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -279,15 +278,12 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    /** Show popup anchored just below the anchor view */
+    /** Show popup anchored just below the anchor view, correctly handling scroll offsets */
     private fun showPopupBelow(popup: PopupWindow, anchor: View) {
         anchor.post {
-            val location = IntArray(2)
-            anchor.getLocationInWindow(location)
-            val x = location[0]
-            val y = location[1] + anchor.height
-
-            popup.showAtLocation(anchor, Gravity.NO_GRAVITY, x, y)
+            // showAsDropDown anchors relative to the view itself, so it works correctly
+            // even when the anchor is inside a scrolled NestedScrollView
+            popup.showAsDropDown(anchor, 0, 0)
         }
     }
 
