@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base App Theme (Locked Dark Theme per Vega Spec) -->
+    <!-- Base App Theme (Tonal Pill Dark Theme) -->
     <style name="Theme.Vega" parent="Theme.MaterialComponents.NoActionBar">
-        <!-- Primary Color -->
+        <!-- Primary & Accent Colors -->
         <item name="colorPrimary">@color/vega_primary</item>
-        <item name="colorOnPrimary">#121218</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
         
         <!-- Secondary Color -->
         <item name="colorSecondary">@color/vega_primary</item>
-        <item name="colorOnSecondary">#121218</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
         
         <!-- Error Color -->
-        <item name="colorError">@color/vega_priority_high</item>
+        <item name="colorError">@color/vega_accent_red</item>
         <item name="colorOnError">#FFFFFF</item>
         
         <!-- Surface & Background -->
-        <item name="android:windowBackground">@drawable/bg_dark_gradient</item>
+        <item name="android:windowBackground">@color/vega_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
@@ -28,74 +28,118 @@
         
         <!-- Typography Scale Mapping -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.Vega.Display</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Vega.HeadlineSmall</item>
         <item name="textAppearanceHeadline6">@style/TextAppearance.Vega.Title</item>
         <item name="textAppearanceBody1">@style/TextAppearance.Vega.Body</item>
-        <item name="textAppearanceBody2">@style/TextAppearance.Vega.Caption</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Vega.Label</item>
         <item name="textAppearanceCaption">@style/TextAppearance.Vega.Caption</item>
-        <item name="textAppearanceOverline">@style/TextAppearance.Vega.Label</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Vega.Eyebrow</item>
         
         <!-- Shape Appearances -->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Vega.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Vega.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Vega.LargeComponent</item>
     </style>
     
-    <!-- Typography Scale Styles (Vega Design Spec) -->
-    <style name="TextAppearance.Vega.Display" parent="TextAppearance.MaterialComponents.Headline5">
+    <!-- Typography Scale Styles (Tonal Pill Design Spec) -->
+    <!-- Greeting / Hero Number: 30sp Bold -->
+    <style name="TextAppearance.Vega.Display" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">@dimen/text_display</item>
         <item name="android:textColor">@color/vega_on_background</item>
     </style>
 
+    <!-- Screen Title: 22sp Bold -->
+    <style name="TextAppearance.Vega.HeadlineSmall" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_title_large</item>
+        <item name="android:textColor">@color/vega_on_background</item>
+    </style>
+
+    <!-- Hero Card Date: 18sp Bold -->
+    <style name="TextAppearance.Vega.TitleLarge" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textColor">@color/vega_on_background</item>
+    </style>
+
+    <!-- Card / Task Title: 16sp SemiBold -->
     <style name="TextAppearance.Vega.Title" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
         <item name="android:textColor">@color/vega_on_background</item>
     </style>
 
+    <!-- Body / Meta Text: 14sp Regular -->
     <style name="TextAppearance.Vega.Body" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/vega_on_background</item>
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">@color/vega_on_surface</item>
     </style>
 
-    <style name="TextAppearance.Vega.Label" parent="TextAppearance.MaterialComponents.Overline">
+    <!-- Pill / Badge Label: 12sp Medium -->
+    <style name="TextAppearance.Vega.Label" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textSize">@dimen/text_label</item>
+        <item name="android:textColor">@color/vega_on_surface</item>
+    </style>
+
+    <!-- Eyebrow / Overline: 10sp Medium, +1.5sp tracking, Uppercase -->
+    <style name="TextAppearance.Vega.Eyebrow" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/text_micro</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/vega_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vega.Caption" parent="TextAppearance.MaterialComponents.Caption">
         <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/text_caption</item>
         <item name="android:textColor">@color/vega_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vega.Micro" parent="TextAppearance.MaterialComponents.Caption">
         <item name="fontFamily">@font/inter</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/text_micro</item>
         <item name="android:textColor">@color/vega_on_surface_muted</item>
     </style>
     
-    <!-- Shape Styles -->
+    <!-- Shape Styles (Tonal Pill Specs) -->
     <style name="ShapeAppearance.Vega.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">@dimen/shape_small_radius</item>
     </style>
     
     <style name="ShapeAppearance.Vega.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerRadius">16dp</item>
+        <item name="cornerRadius">@dimen/shape_medium_radius</item>
+    </style>
+
+    <style name="ShapeAppearance.Vega.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerRadius">@dimen/shape_large_radius</item>
+    </style>
+
+    <style name="ShapeAppearance.Vega.HeroComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerRadius">@dimen/shape_hero_radius</item>
+    </style>
+
+    <style name="ShapeAppearance.Vega.PillComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="ShapeAppearance.Vega.BottomSheet" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">20dp</item>
-        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">@dimen/sheet_corner_radius</item>
+        <item name="cornerSizeTopRight">@dimen/sheet_corner_radius</item>
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
