@@ -6,14 +6,16 @@ import androidx.appcompat.app.AppCompatDelegate
 object ThemeManager {
     private const val PREFS_NAME = "vega_prefs"
     private const val KEY_THEME = "pref_theme"
+    private const val DEFAULT_THEME = "dark"
 
     fun applyTheme(context: Context) {
         val sharedPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val theme = sharedPrefs.getString(KEY_THEME, "system") ?: "system"
+        val theme = sharedPrefs.getString(KEY_THEME, DEFAULT_THEME) ?: DEFAULT_THEME
         val mode = when (theme) {
             "light" -> AppCompatDelegate.MODE_NIGHT_NO
             "dark" -> AppCompatDelegate.MODE_NIGHT_YES
-            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            "system" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            else -> AppCompatDelegate.MODE_NIGHT_YES
         }
         AppCompatDelegate.setDefaultNightMode(mode)
     }
@@ -26,6 +28,6 @@ object ThemeManager {
 
     fun getTheme(context: Context): String {
         val sharedPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return sharedPrefs.getString(KEY_THEME, "system") ?: "system"
+        return sharedPrefs.getString(KEY_THEME, DEFAULT_THEME) ?: DEFAULT_THEME
     }
 }
