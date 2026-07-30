@@ -76,11 +76,13 @@ class TodayFragment : Fragment() {
 
     private fun setupHeaderDate() {
         val calendar = Calendar.getInstance()
-        val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
-        val dateFormat = SimpleDateFormat("MMMM d\nyyyy", Locale.getDefault())
+        val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MMM d", Locale.getDefault())
+        val weekFormat = SimpleDateFormat("'Week' w", Locale.getDefault())
 
         binding.tvDayName.text = dayFormat.format(calendar.time)
         binding.tvDateFull.text = dateFormat.format(calendar.time)
+        binding.tvWeekInfo.text = weekFormat.format(calendar.time)
         setupSummaryGreeting()
     }
 
