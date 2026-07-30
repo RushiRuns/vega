@@ -209,7 +209,7 @@ class UpcomingTasksAdapter(
                         text = tag.name
                         chipMinHeight = context.resources.getDimension(R.dimen.status_pill_height)
                         chipCornerRadius = context.resources.getDimension(R.dimen.pill_corner_radius)
-                        textAppearance = R.style.TextAppearance_Vega_Label
+                        setTextAppearance(R.style.TextAppearance_Vega_Label)
                         isClickable = false
                         isFocusable = false
                         val colorInt = try { Color.parseColor(tag.colorHex) } catch (e: Exception) { ContextCompat.getColor(context, R.color.vega_accent_green) }
