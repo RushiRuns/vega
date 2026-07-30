@@ -5,11 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.vega.R
 import com.vega.alarms.TaskAlarmScheduler
 import com.vega.databinding.FragmentSettingsBinding
+import com.vega.databinding.PopupAlarmOffsetBinding
+import com.vega.databinding.PopupNotificationModeBinding
+import com.vega.databinding.PopupThemeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -21,6 +26,10 @@ class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+
+    private var notifModePopup: PopupWindow? = null
+    private var alarmOffsetPopup: PopupWindow? = null
+    private var themePopup: PopupWindow? = null
 
     private val prefs by lazy {
         requireContext().getSharedPreferences("vega_prefs", Context.MODE_PRIVATE)
@@ -45,23 +54,48 @@ class SettingsFragment : Fragment() {
 
     private fun setupNotificationModeSection() {
         val currentMode = prefs.getString("pref_notification_mode", "task_specific") ?: "task_specific"
-        updateNotificationModeUI(currentMode)
+        updateNotificationModeText(currentMode)
 
         binding.cardNotificationMode.setOnClickListener {
-            val isExpanded = binding.layoutOptionsNotificationMode.visibility == View.VISIBLE
-            binding.layoutOptionsNotificationMode.visibility = if (isExpanded) View.GONE else View.VISIBLE
-            binding.ivChevronNotificationMode.setImageResource(
-                if (isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up
-            )
+            if (notifModePopup?.isShowing == true) {
+                dismissAllPopups()
+            } else {
+                dismissAllPopups()
+                showNotificationModePopup()
+            }
         }
+    }
 
-        binding.optionNotifTaskSpecific.setOnClickListener {
+    private fun showNotificationModePopup() {
+        val anchor = binding.cardNotificationMode
+        val popupBinding = PopupNotificationModeBinding.inflate(LayoutInflater.from(requireContext()))
+        val currentMode = prefs.getString("pref_notification_mode", "task_specific") ?: "task_specific"
+        val isTaskSpecific = currentMode == "task_specific"
+
+        popupBinding.optionNotifTaskSpecific.setBackgroundResource(
+            if (isTaskSpecific) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
+        )
+        popupBinding.ivCheckTaskSpecific.visibility = if (isTaskSpecific) View.VISIBLE else View.GONE
+
+        popupBinding.optionNotifRitual.setBackgroundResource(
+            if (!isTaskSpecific) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
+        )
+        popupBinding.ivCheckRitual.visibility = if (!isTaskSpecific) View.VISIBLE else View.GONE
+
+        val popup = buildPopup(popupBinding.root, anchor.width)
+        notifModePopup = popup
+
+        popupBinding.optionNotifTaskSpecific.setOnClickListener {
             selectNotificationMode("task_specific")
+            dismissAllPopups()
+        }
+        popupBinding.optionNotifRitual.setOnClickListener {
+            selectNotificationMode("fixed_ritual")
+            dismissAllPopups()
         }
 
-        binding.optionNotifRitual.setOnClickListener {
-            selectNotificationMode("fixed_ritual")
-        }
+        showPopupBelow(popup, anchor)
+        binding.ivChevronNotificationMode.setImageResource(R.drawable.ic_chevron_up)
     }
 
     private fun selectNotificationMode(mode: String) {
@@ -70,77 +104,42 @@ class SettingsFragment : Fragment() {
             prefs.edit().putString("pref_notification_mode", mode).apply()
             scheduler.rescheduleAllAlarms()
         }
-        updateNotificationModeUI(mode)
-        // Auto-collapse options after selection
-        binding.layoutOptionsNotificationMode.visibility = View.GONE
-        binding.ivChevronNotificationMode.setImageResource(R.drawable.ic_chevron_down)
+        updateNotificationModeText(mode)
     }
 
-    private fun updateNotificationModeUI(mode: String) {
+    private fun updateNotificationModeText(mode: String) {
         val isTaskSpecific = mode == "task_specific"
         binding.tvNotificationModeValue.text = if (isTaskSpecific) "Task-Specific Alarms" else "Fixed Daily Rituals"
-
-        binding.optionNotifTaskSpecific.setBackgroundResource(
-            if (isTaskSpecific) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
-        )
-        binding.ivCheckTaskSpecific.visibility = if (isTaskSpecific) View.VISIBLE else View.GONE
-
-        binding.optionNotifRitual.setBackgroundResource(
-            if (!isTaskSpecific) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
-        )
-        binding.ivCheckRitual.visibility = if (!isTaskSpecific) View.VISIBLE else View.GONE
     }
 
     private fun setupAlarmOffsetSection() {
         val currentOffset = prefs.getInt("pref_alarm_offset_minutes", 0)
-        updateAlarmOffsetUI(currentOffset)
+        updateAlarmOffsetText(currentOffset)
 
         binding.cardAlarmOffset.setOnClickListener {
-            val isExpanded = binding.layoutOptionsAlarmOffset.visibility == View.VISIBLE
-            binding.layoutOptionsAlarmOffset.visibility = if (isExpanded) View.GONE else View.VISIBLE
-            binding.ivChevronAlarmOffset.setImageResource(
-                if (isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up
-            )
+            if (alarmOffsetPopup?.isShowing == true) {
+                dismissAllPopups()
+            } else {
+                dismissAllPopups()
+                showAlarmOffsetPopup()
+            }
         }
-
-        binding.optionOffset0.setOnClickListener { selectAlarmOffset(0) }
-        binding.optionOffset5.setOnClickListener { selectAlarmOffset(5) }
-        binding.optionOffset15.setOnClickListener { selectAlarmOffset(15) }
-        binding.optionOffset60.setOnClickListener { selectAlarmOffset(60) }
-        binding.optionOffset1440.setOnClickListener { selectAlarmOffset(1440) }
     }
 
-    private fun selectAlarmOffset(offsetMinutes: Int) {
-        val prevOffset = prefs.getInt("pref_alarm_offset_minutes", 0)
-        if (prevOffset != offsetMinutes) {
-            prefs.edit().putInt("pref_alarm_offset_minutes", offsetMinutes).apply()
-            scheduler.rescheduleAllAlarms()
-        }
-        updateAlarmOffsetUI(offsetMinutes)
-        // Auto-collapse options after selection
-        binding.layoutOptionsAlarmOffset.visibility = View.GONE
-        binding.ivChevronAlarmOffset.setImageResource(R.drawable.ic_chevron_down)
-    }
-
-    private fun updateAlarmOffsetUI(selectedOffset: Int) {
-        val labelMap = mapOf(
-            0 to "At due time",
-            5 to "5 minutes before",
-            15 to "15 minutes before",
-            60 to "1 hour before",
-            1440 to "1 day before"
-        )
-        binding.tvAlarmOffsetValue.text = labelMap[selectedOffset] ?: "At due time"
+    private fun showAlarmOffsetPopup() {
+        val anchor = binding.cardAlarmOffset
+        val popupBinding = PopupAlarmOffsetBinding.inflate(LayoutInflater.from(requireContext()))
+        val selectedOffset = prefs.getInt("pref_alarm_offset_minutes", 0)
 
         val orangeColor = ContextCompat.getColor(requireContext(), R.color.vega_primary)
         val mutedColor = ContextCompat.getColor(requireContext(), R.color.vega_on_surface_muted)
 
         val options = listOf(
-            Triple(0, binding.optionOffset0, Pair(binding.ivIconOffset0, binding.ivCheckOffset0)),
-            Triple(5, binding.optionOffset5, Pair(binding.ivIconOffset5, binding.ivCheckOffset5)),
-            Triple(15, binding.optionOffset15, Pair(binding.ivIconOffset15, binding.ivCheckOffset15)),
-            Triple(60, binding.optionOffset60, Pair(binding.ivIconOffset60, binding.ivCheckOffset60)),
-            Triple(1440, binding.optionOffset1440, Pair(binding.ivIconOffset1440, binding.ivCheckOffset1440))
+            Triple(0, popupBinding.optionOffset0, Pair(popupBinding.ivIconOffset0, popupBinding.ivCheckOffset0)),
+            Triple(5, popupBinding.optionOffset5, Pair(popupBinding.ivIconOffset5, popupBinding.ivCheckOffset5)),
+            Triple(15, popupBinding.optionOffset15, Pair(popupBinding.ivIconOffset15, popupBinding.ivCheckOffset15)),
+            Triple(60, popupBinding.optionOffset60, Pair(popupBinding.ivIconOffset60, popupBinding.ivCheckOffset60)),
+            Triple(1440, popupBinding.optionOffset1440, Pair(popupBinding.ivIconOffset1440, popupBinding.ivCheckOffset1440))
         )
 
         for ((offset, layout, icons) in options) {
@@ -150,21 +149,111 @@ class SettingsFragment : Fragment() {
             )
             icons.first.setColorFilter(if (isSelected) orangeColor else mutedColor)
             icons.second.visibility = if (isSelected) View.VISIBLE else View.GONE
+
+            layout.setOnClickListener {
+                selectAlarmOffset(offset)
+                dismissAllPopups()
+            }
         }
+
+        val popup = buildPopup(popupBinding.root, anchor.width)
+        alarmOffsetPopup = popup
+
+        showPopupBelow(popup, anchor)
+        binding.ivChevronAlarmOffset.setImageResource(R.drawable.ic_chevron_up)
+    }
+
+    private fun selectAlarmOffset(offsetMinutes: Int) {
+        val prevOffset = prefs.getInt("pref_alarm_offset_minutes", 0)
+        if (prevOffset != offsetMinutes) {
+            prefs.edit().putInt("pref_alarm_offset_minutes", offsetMinutes).apply()
+            scheduler.rescheduleAllAlarms()
+        }
+        updateAlarmOffsetText(offsetMinutes)
+    }
+
+    private fun updateAlarmOffsetText(selectedOffset: Int) {
+        val labelMap = mapOf(
+            0 to "At due time",
+            5 to "5 minutes before",
+            15 to "15 minutes before",
+            60 to "1 hour before",
+            1440 to "1 day before"
+        )
+        binding.tvAlarmOffsetValue.text = labelMap[selectedOffset] ?: "At due time"
     }
 
     private fun setupThemeSection() {
         binding.tvThemeValue.text = "Dark Mode (Vega)"
         binding.cardTheme.setOnClickListener {
-            val isExpanded = binding.layoutOptionsTheme.visibility == View.VISIBLE
-            binding.layoutOptionsTheme.visibility = if (isExpanded) View.GONE else View.VISIBLE
-            binding.ivChevronTheme.setImageResource(
-                if (isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up
-            )
+            if (themePopup?.isShowing == true) {
+                dismissAllPopups()
+            } else {
+                dismissAllPopups()
+                showThemePopup()
+            }
         }
     }
 
+    private fun showThemePopup() {
+        val anchor = binding.cardTheme
+        val popupBinding = PopupThemeBinding.inflate(LayoutInflater.from(requireContext()))
+
+        popupBinding.optionThemeDark.setOnClickListener {
+            dismissAllPopups()
+        }
+
+        val popup = buildPopup(popupBinding.root, anchor.width)
+        themePopup = popup
+
+        showPopupBelow(popup, anchor)
+        binding.ivChevronTheme.setImageResource(R.drawable.ic_chevron_up)
+    }
+
+    private fun buildPopup(contentView: View, widthPx: Int): PopupWindow {
+        contentView.measure(
+            View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        return PopupWindow(
+            contentView,
+            widthPx,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        ).apply {
+            isOutsideTouchable = true
+            elevation = 24f
+            setOnDismissListener { resetChevrons() }
+        }
+    }
+
+    private fun showPopupBelow(popup: PopupWindow, anchor: View) {
+        anchor.post {
+            popup.showAsDropDown(anchor, 0, 0)
+        }
+    }
+
+    private fun dismissAllPopups() {
+        notifModePopup?.dismiss()
+        alarmOffsetPopup?.dismiss()
+        themePopup?.dismiss()
+        notifModePopup = null
+        alarmOffsetPopup = null
+        themePopup = null
+        resetChevrons()
+    }
+
+    private fun resetChevrons() {
+        if (notifModePopup?.isShowing != true)
+            binding.ivChevronNotificationMode.setImageResource(R.drawable.ic_chevron_down)
+        if (alarmOffsetPopup?.isShowing != true)
+            binding.ivChevronAlarmOffset.setImageResource(R.drawable.ic_chevron_down)
+        if (themePopup?.isShowing != true)
+            binding.ivChevronTheme.setImageResource(R.drawable.ic_chevron_down)
+    }
+
     override fun onDestroyView() {
+        dismissAllPopups()
         super.onDestroyView()
         _binding = null
     }

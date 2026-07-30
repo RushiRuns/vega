@@ -2,14 +2,16 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_dark_gradient"
-    android:fillViewport="true"
     android:clipToPadding="false"
+    android:fillViewport="true"
     android:paddingBottom="120dp">
 
     <LinearLayout
+        android:id="@+id/layout_root_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -44,11 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:letterSpacing="0.05"
             android:text="GENERAL OPTIONS"
             android:textColor="#7E8088"
             android:textSize="12sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.05" />
+            android:textStyle="bold" />
 
         <!-- Setting Item 1: Notification Mode -->
         <LinearLayout
@@ -56,10 +58,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_setting_card"
-            android:orientation="vertical"
-            android:padding="16dp"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,127 +114,6 @@
                     android:src="@drawable/ic_chevron_down"
                     app:tint="#9EA0A8" />
             </LinearLayout>
-
-            <!-- Expanded Options: Notification Mode -->
-            <LinearLayout
-                android:id="@+id/layout_options_notification_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <!-- Task Specific Option -->
-                <LinearLayout
-                    android:id="@+id/option_notif_task_specific"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_setting_option_selected"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_meta_clock"
-                            app:tint="@color/vega_primary" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Task-Specific Alarms"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Trigger alarm at each task's scheduled time"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_check_task_specific"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="visible" />
-                </LinearLayout>
-
-                <!-- Ritual Option -->
-                <LinearLayout
-                    android:id="@+id/option_notif_ritual"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_setting_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_meta_clock"
-                            app:tint="#8E9096" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Fixed Daily Rituals"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Group notifications into morning summary rituals"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_check_ritual"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
 
         <!-- Setting Item 2: Reminder Advance Time -->
@@ -242,10 +123,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_setting_card"
-            android:orientation="vertical"
-            android:padding="16dp"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -298,300 +179,6 @@
                     android:src="@drawable/ic_chevron_down"
                     app:tint="#9EA0A8" />
             </LinearLayout>
-
-            <!-- Expanded Options: Reminder Advance Time (Image 2) -->
-            <LinearLayout
-                android:id="@+id/layout_options_alarm_offset"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <!-- Option 1: At due time -->
-                <LinearLayout
-                    android:id="@+id/option_offset_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_setting_option_selected"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:id="@+id/iv_icon_offset_0"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_meta_clock"
-                            app:tint="@color/vega_primary" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="At due time"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Alert exactly when task is scheduled"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_check_offset_0"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="visible" />
-                </LinearLayout>
-
-                <!-- Option 2: 5 minutes before -->
-                <LinearLayout
-                    android:id="@+id/option_offset_5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_setting_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:id="@+id/iv_icon_offset_5"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_meta_clock"
-                            app:tint="#8E9096" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5 minutes before"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Quick head start for immediate tasks"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_check_offset_5"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <!-- Option 3: 15 minutes before -->
-                <LinearLayout
-                    android:id="@+id/option_offset_15"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_setting_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:id="@+id/iv_icon_offset_15"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_hourglass"
-                            app:tint="#8E9096" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="15 minutes before"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Standard buffer for routine tasks"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_check_offset_15"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <!-- Option 4: 1 hour before -->
-                <LinearLayout
-                    android:id="@+id/option_offset_60"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_setting_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:id="@+id/iv_icon_offset_60"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_hourglass"
-                            app:tint="#8E9096" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1 hour before"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Ideal for meetings and appointments"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_check_offset_60"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <!-- Option 5: 1 day before -->
-                <LinearLayout
-                    android:id="@+id/option_offset_1440"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_setting_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:id="@+id/iv_icon_offset_1440"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_action_calendar"
-                            app:tint="#8E9096" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1 day before"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Early heads-up for major deadlines"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_check_offset_1440"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
 
         <!-- Divider Line -->
@@ -606,11 +193,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:letterSpacing="0.05"
             android:text="APPEARANCE &amp; EXTRAS"
             android:textColor="#7E8088"
             android:textSize="12sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.05" />
+            android:textStyle="bold" />
 
         <!-- Setting Item 3: Theme -->
         <LinearLayout
@@ -618,10 +205,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_setting_card"
-            android:orientation="vertical"
-            android:padding="16dp"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -673,70 +260,6 @@
                     android:layout_height="24dp"
                     android:src="@drawable/ic_chevron_down"
                     app:tint="#9EA0A8" />
-            </LinearLayout>
-
-            <!-- Expanded Options: Theme -->
-            <LinearLayout
-                android:id="@+id/layout_options_theme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <!-- Theme Option -->
-                <LinearLayout
-                    android:id="@+id/option_theme_dark"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_setting_option_selected"
-                    android:padding="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:background="@drawable/bg_setting_icon_circle">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_palette"
-                            app:tint="@color/vega_primary" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dark Mode (Vega)"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Default deep dark linear gradient theme"
-                            android:textColor="#8E9096"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_check"
-                        android:visibility="visible" />
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
