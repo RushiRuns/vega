@@ -237,14 +237,15 @@ class TaskListAdapter(
                 tags.forEach { tag ->
                     val chip = com.google.android.material.chip.Chip(context).apply {
                         text = tag.name
-                        chipMinHeight = dpToPx(context, 18).toFloat()
-                        chipCornerRadius = dpToPx(context, 50).toFloat()
-                        textSize = 10f
+                        chipMinHeight = context.resources.getDimension(R.dimen.status_pill_height)
+                        chipCornerRadius = context.resources.getDimension(R.dimen.pill_corner_radius)
+                        textAppearance = R.style.TextAppearance_Vega_Label
                         isClickable = false
                         isFocusable = false
-                        val colorInt = try { Color.parseColor(tag.colorHex) } catch (e: Exception) { Color.parseColor("#4ECDC4") }
-                        chipBackgroundColor = android.content.res.ColorStateList.valueOf(colorInt)
-                        setTextColor(ContextCompat.getColor(context, R.color.vega_background))
+                        val colorInt = try { Color.parseColor(tag.colorHex) } catch (e: Exception) { ContextCompat.getColor(context, R.color.vega_accent_green) }
+                        val bgWithAlpha = ColorUtils.setAlphaComponent(colorInt, 38) // ~15% alpha
+                        chipBackgroundColor = android.content.res.ColorStateList.valueOf(bgWithAlpha)
+                        setTextColor(colorInt)
                     }
                     binding.chipGroupTaskTags.addView(chip)
                 }
@@ -268,8 +269,13 @@ class TaskListAdapter(
                     TaskPriority.LOW -> Pair(R.color.vega_priority_low, R.string.priority_low)
                     else -> Pair(android.R.color.transparent, R.string.priority_none)
                 }
+                val accentColor = ContextCompat.getColor(context, colorRes)
+                val bgWithAlpha = ColorUtils.setAlphaComponent(accentColor, 38) // ~15% alpha fill
                 binding.chipPriority.text = context.getString(textRes)
-                binding.chipPriority.setChipBackgroundColorResource(colorRes)
+                binding.chipPriority.chipBackgroundColor = android.content.res.ColorStateList.valueOf(bgWithAlpha)
+                binding.chipPriority.setTextColor(accentColor)
+                binding.chipPriority.chipMinHeight = context.resources.getDimension(R.dimen.status_pill_height)
+                binding.chipPriority.chipCornerRadius = context.resources.getDimension(R.dimen.pill_corner_radius)
             } else {
                 binding.chipPriority.visibility = View.GONE
             }
