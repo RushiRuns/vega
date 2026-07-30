@@ -140,10 +140,15 @@ class MainActivity : AppCompatActivity() {
         val activeColor = ContextCompat.getColor(this, R.color.vega_nav_icon_active)
         val inactiveColor = ContextCompat.getColor(this, R.color.vega_nav_icon_inactive)
 
-        binding.navBtnToday.setColorFilter(if (destinationId == R.id.todayFragment) activeColor else inactiveColor)
-        binding.navBtnUpcoming.setColorFilter(if (destinationId == R.id.upcomingFragment) activeColor else inactiveColor)
-        binding.navBtnInbox.setColorFilter(if (destinationId == R.id.inboxFragment) activeColor else inactiveColor)
-        binding.navBtnSettings.setColorFilter(if (destinationId == R.id.settingsFragment) activeColor else inactiveColor)
+        fun updateTab(btn: android.widget.ImageButton, isActive: Boolean) {
+            btn.setColorFilter(if (isActive) activeColor else inactiveColor)
+            btn.setBackgroundResource(if (isActive) R.drawable.bg_nav_tab_active_pill else android.R.color.transparent)
+        }
+
+        updateTab(binding.navBtnToday, destinationId == R.id.todayFragment)
+        updateTab(binding.navBtnUpcoming, destinationId == R.id.upcomingFragment)
+        updateTab(binding.navBtnInbox, destinationId == R.id.inboxFragment)
+        updateTab(binding.navBtnSettings, destinationId == R.id.settingsFragment)
     }
 
     override fun onNewIntent(intent: Intent?) {
