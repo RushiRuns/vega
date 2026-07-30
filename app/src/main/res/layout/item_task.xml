@@ -4,13 +4,12 @@
     android:id="@+id/card_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_lg"
-    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="@dimen/screen_margin_horizontal"
+    android:layout_marginVertical="5dp"
     app:cardCornerRadius="@dimen/card_corner_radius"
     app:cardElevation="@dimen/card_elevation"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:strokeColor="@color/vega_border"
-    app:strokeWidth="1dp">
+    app:cardBackgroundColor="@color/vega_surface"
+    app:strokeWidth="0dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -22,10 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="@dimen/spacing_md"
-            android:paddingHorizontal="@dimen/spacing_lg"
+            android:paddingVertical="14dp"
+            android:paddingHorizontal="16dp"
             android:gravity="center_vertical"
-            android:background="@android:color/transparent">
+            android:background="?attr/selectableItemBackground">
 
             <!-- Checkbox / Status Indicator -->
             <com.vega.ui.views.CircularCheckboxView
@@ -103,9 +102,9 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:visibility="gone"
-                app:chipMinHeight="20dp"
-                app:chipCornerRadius="50dp"
-                android:textSize="11sp" />
+                app:chipMinHeight="@dimen/status_pill_height"
+                app:chipCornerRadius="@dimen/pill_corner_radius"
+                android:textAppearance="@style/TextAppearance.Vega.Label" />
 
         </LinearLayout>
 
