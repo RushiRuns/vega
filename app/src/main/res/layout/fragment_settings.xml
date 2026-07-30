@@ -5,7 +5,7 @@
     android:id="@+id/scroll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_dark_gradient"
+    android:background="@color/vega_background"
     android:clipToPadding="false"
     android:fillViewport="true"
     android:paddingBottom="120dp">
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="@dimen/screen_margin_horizontal"
         android:paddingTop="28dp"
         android:paddingBottom="24dp">
 
@@ -25,9 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Settings"
-            android:textAppearance="@style/TextAppearance.Vega.Display"
+            android:textAppearance="@style/TextAppearance.Vega.HeadlineSmall"
             android:textColor="@color/vega_on_background"
-            android:textSize="38sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <TextView
@@ -37,9 +37,9 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="24dp"
             android:text="Configure your task notifications &amp; display"
-            android:textAppearance="@style/TextAppearance.Vega.Caption"
-            android:textColor="#8E9096"
-            android:textSize="14sp" />
+            android:textAppearance="@style/TextAppearance.Vega.Body"
+            android:textColor="@color/vega_on_surface"
+            android:textSize="13sp" />
 
         <!-- GENERAL OPTIONS Section -->
         <TextView

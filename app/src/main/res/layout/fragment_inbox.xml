@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_dark_gradient">
+    android:background="@color/vega_background">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
                     android:id="@+id/layout_normal_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="@dimen/screen_margin_horizontal"
                     android:paddingTop="28dp"
                     android:paddingBottom="12dp"
                     android:visibility="visible">
@@ -45,9 +45,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Inbox"
-                            android:textAppearance="@style/TextAppearance.Vega.Display"
+                            android:textAppearance="@style/TextAppearance.Vega.HeadlineSmall"
                             android:textColor="@color/vega_on_background"
-                            android:textSize="38sp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -56,8 +56,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="3 tasks pending schedule"
-                            android:textColor="#8E9096"
-                            android:textSize="14sp" />
+                            android:textAppearance="@style/TextAppearance.Vega.Body"
+                            android:textColor="@color/vega_on_surface"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <!-- Aligned Select Pill Button -->
