@@ -15,6 +15,7 @@ import com.vega.databinding.FragmentSettingsBinding
 import com.vega.databinding.PopupAlarmOffsetBinding
 import com.vega.databinding.PopupNotificationModeBinding
 import com.vega.databinding.PopupThemeBinding
+import com.vega.ui.theme.ThemeManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -184,7 +185,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupThemeSection() {
-        binding.tvThemeValue.text = "Dark Mode (Vega)"
+        updateThemeText(ThemeManager.getTheme(requireContext()))
         binding.cardTheme.setOnClickListener {
             if (themePopup?.isShowing == true) {
                 dismissAllPopups()
@@ -198,9 +199,29 @@ class SettingsFragment : Fragment() {
     private fun showThemePopup() {
         val anchor = binding.cardTheme
         val popupBinding = PopupThemeBinding.inflate(LayoutInflater.from(requireContext()))
+        
+        val currentTheme = ThemeManager.getTheme(requireContext())
+        
+        val orangeColor = ContextCompat.getColor(requireContext(), R.color.vega_primary)
+        val mutedColor = ContextCompat.getColor(requireContext(), R.color.vega_on_surface_muted)
 
-        popupBinding.optionThemeDark.setOnClickListener {
-            dismissAllPopups()
+        val options = listOf(
+            Triple("system", popupBinding.optionThemeSystem, popupBinding.ivCheckSystem),
+            Triple("dark", popupBinding.optionThemeDark, popupBinding.ivCheckDark),
+            Triple("light", popupBinding.optionThemeLight, popupBinding.ivCheckLight)
+        )
+
+        for ((themeVal, layout, checkIcon) in options) {
+            val isSelected = themeVal == currentTheme
+            layout.setBackgroundResource(
+                if (isSelected) R.drawable.bg_setting_option_selected else R.drawable.bg_setting_card
+            )
+            checkIcon.visibility = if (isSelected) View.VISIBLE else View.GONE
+            
+            layout.setOnClickListener {
+                selectTheme(themeVal)
+                dismissAllPopups()
+            }
         }
 
         val popup = buildPopup(popupBinding.root, anchor.width)
@@ -208,6 +229,20 @@ class SettingsFragment : Fragment() {
 
         showPopupBelow(popup, anchor)
         binding.ivChevronTheme.setImageResource(R.drawable.ic_chevron_up)
+    }
+
+    private fun selectTheme(theme: String) {
+        ThemeManager.setTheme(requireContext(), theme)
+        updateThemeText(theme)
+    }
+
+    private fun updateThemeText(theme: String) {
+        val labelMap = mapOf(
+            "system" to "System Default",
+            "dark" to "Dark Mode",
+            "light" to "Light Mode"
+        )
+        binding.tvThemeValue.text = labelMap[theme] ?: "System Default"
     }
 
     private fun buildPopup(contentView: View, widthPx: Int): PopupWindow {

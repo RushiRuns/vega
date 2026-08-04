@@ -5,9 +5,9 @@
     android:id="@+id/scroll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vega_background"
     android:clipToPadding="false"
     android:fillViewport="true"
+    android:background="@color/vega_background"
     android:paddingBottom="120dp">
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/screen_margin_horizontal"
+        android:paddingHorizontal="20dp"
         android:paddingTop="28dp"
         android:paddingBottom="24dp">
 
@@ -25,9 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Settings"
-            android:textAppearance="@style/TextAppearance.Vega.HeadlineSmall"
+            android:textAppearance="@style/TextAppearance.Vega.Display"
             android:textColor="@color/vega_on_background"
-            android:textSize="22sp"
+            android:textSize="38sp"
             android:textStyle="bold" />
 
         <TextView
@@ -38,8 +38,7 @@
             android:layout_marginBottom="24dp"
             android:text="Configure your task notifications &amp; display"
             android:textAppearance="@style/TextAppearance.Vega.Body"
-            android:textColor="@color/vega_on_surface"
-            android:textSize="13sp" />
+            android:textColor="@color/vega_on_surface_muted" />
 
         <!-- GENERAL OPTIONS Section -->
         <TextView
@@ -48,9 +47,8 @@
             android:layout_marginBottom="12dp"
             android:letterSpacing="0.05"
             android:text="GENERAL OPTIONS"
-            android:textColor="#7E8088"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textColor="@color/vega_on_surface"
+            android:textAppearance="@style/TextAppearance.Vega.Label" />
 
         <!-- Setting Item 1: Notification Mode -->
         <LinearLayout
@@ -93,8 +91,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Notification Mode"
-                        android:textColor="#9EA0A8"
-                        android:textSize="13sp" />
+                        android:textAppearance="@style/TextAppearance.Vega.Label"
+                        android:textColor="@color/vega_on_surface_muted" />
 
                     <TextView
                         android:id="@+id/tv_notification_mode_value"
@@ -102,9 +100,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Task-Specific Alarms"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.Vega.BodyMedium"
+                        android:textColor="@color/vega_on_background" />
                 </LinearLayout>
 
                 <ImageView
@@ -112,7 +109,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_chevron_down"
-                    app:tint="#9EA0A8" />
+                    app:tint="@color/vega_on_surface_muted" />
             </LinearLayout>
         </LinearLayout>
 
@@ -158,8 +155,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Reminder Advance Time"
-                        android:textColor="#9EA0A8"
-                        android:textSize="13sp" />
+                        android:textAppearance="@style/TextAppearance.Vega.Label"
+                        android:textColor="@color/vega_on_surface_muted" />
 
                     <TextView
                         android:id="@+id/tv_alarm_offset_value"
@@ -167,9 +164,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="At due time"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.Vega.BodyMedium"
+                        android:textColor="@color/vega_on_background" />
                 </LinearLayout>
 
                 <ImageView
@@ -177,7 +173,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_chevron_down"
-                    app:tint="#9EA0A8" />
+                    app:tint="@color/vega_on_surface_muted" />
             </LinearLayout>
         </LinearLayout>
 
@@ -186,7 +182,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginVertical="24dp"
-            android:background="#1C1D22" />
+            android:background="@color/vega_border" />
 
         <!-- APPEARANCE & EXTRAS Section -->
         <TextView
@@ -195,9 +191,8 @@
             android:layout_marginBottom="12dp"
             android:letterSpacing="0.05"
             android:text="APPEARANCE &amp; EXTRAS"
-            android:textColor="#7E8088"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textColor="@color/vega_on_surface"
+            android:textAppearance="@style/TextAppearance.Vega.Label" />
 
         <!-- Setting Item 3: Theme -->
         <LinearLayout
@@ -240,18 +235,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Theme"
-                        android:textColor="#9EA0A8"
-                        android:textSize="13sp" />
+                        android:textAppearance="@style/TextAppearance.Vega.Label"
+                        android:textColor="@color/vega_on_surface_muted" />
 
                     <TextView
                         android:id="@+id/tv_theme_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Dark Mode (Vega)"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="System Default"
+                        android:textAppearance="@style/TextAppearance.Vega.BodyMedium"
+                        android:textColor="@color/vega_on_background" />
                 </LinearLayout>
 
                 <ImageView
@@ -259,7 +253,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_chevron_down"
-                    app:tint="#9EA0A8" />
+                    app:tint="@color/vega_on_surface_muted" />
             </LinearLayout>
         </LinearLayout>
 

@@ -1,102 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Tonal Pill Spacing Grid (4dp Base Grid) -->
-    <dimen name="spacing_xs">4dp</dimen>
-    <dimen name="spacing_sm">8dp</dimen>
-    <dimen name="spacing_md">12dp</dimen>
-    <dimen name="spacing_lg">16dp</dimen>
-    <dimen name="spacing_xl">20dp</dimen>
-    <dimen name="spacing_2xl">24dp</dimen>
-    <dimen name="spacing_3xl">32dp</dimen>
-    <dimen name="spacing_4xl">48dp</dimen>
+    <!-- Vega Shape System -->
+    <dimen name="shape_hero">28dp</dimen>
+    <dimen name="shape_large">20dp</dimen>
+    <dimen name="shape_medium">16dp</dimen>
+    <dimen name="shape_small">12dp</dimen>
+    <dimen name="shape_pill">999dp</dimen>
 
-    <!-- Specific Layout Metrics -->
-    <dimen name="screen_margin_horizontal">20dp</dimen>
-    <dimen name="card_padding_internal">16dp</dimen>
-    <dimen name="hero_card_padding">20dp</dimen>
-    <dimen name="card_gap">10dp</dimen>
-    <dimen name="section_gap">24dp</dimen>
-    <dimen name="pill_icon_gap">6dp</dimen>
-    <dimen name="chip_gap">8dp</dimen>
+    <!-- Vega Spacing System -->
+    <dimen name="spacing_xxs">4dp</dimen>
+    <dimen name="spacing_xs">8dp</dimen>
+    <dimen name="spacing_sm">12dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">20dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+    <dimen name="spacing_xxl">32dp</dimen>
+    <dimen name="spacing_xxxl">48dp</dimen>
 
-    <!-- Legacy Material Design Spacing Aliases -->
-    <dimen name="spacing_4">@dimen/spacing_xs</dimen>
-    <dimen name="spacing_8">@dimen/spacing_sm</dimen>
-    <dimen name="spacing_12">@dimen/spacing_md</dimen>
-    <dimen name="spacing_16">@dimen/spacing_lg</dimen>
-    <dimen name="spacing_24">@dimen/spacing_2xl</dimen>
-    <dimen name="spacing_32">@dimen/spacing_3xl</dimen>
-    
-    <!-- Tonal Pill Shape System Radii -->
-    <dimen name="shape_hero_radius">28dp</dimen>
-    <dimen name="shape_large_radius">20dp</dimen>
-    <dimen name="shape_medium_radius">16dp</dimen>
-    <dimen name="shape_small_radius">12dp</dimen>
-    <dimen name="shape_pill_radius">999dp</dimen>
-    
-    <dimen name="card_hero_corner_radius">28dp</dimen>
-    <dimen name="card_section_corner_radius">20dp</dimen>
-    <dimen name="card_corner_radius">16dp</dimen>
-    <dimen name="chip_small_corner_radius">12dp</dimen>
-    <dimen name="chip_corner_radius">999dp</dimen>
-    <dimen name="pill_corner_radius">999dp</dimen>
-    <dimen name="sheet_corner_radius">20dp</dimen>
-    <dimen name="dialog_corner_radius">28dp</dimen>
-    <dimen name="floating_nav_bar_corner_radius">999dp</dimen>
-    
+    <!-- Legacy Spacing Aliases -->
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+
     <!-- Component & Tap Target Sizes -->
+    <dimen name="card_corner_radius">@dimen/shape_medium</dimen>
+    <dimen name="card_elevation">0dp</dimen>
+    <dimen name="card_gap">@dimen/spacing_xs</dimen>
     <dimen name="checkbox_size">22dp</dimen>
+    <dimen name="chip_corner_radius">@dimen/shape_pill</dimen>
+    
+    <!-- Sheet / Dialog Sizes -->
+    <dimen name="sheet_corner_radius">@dimen/shape_large</dimen>
     <dimen name="sheet_drag_handle_w">32dp</dimen>
     <dimen name="sheet_drag_handle_h">4dp</dimen>
-    <dimen name="icon_tap_target">40dp</dimen>
-    <dimen name="touch_target_min">48dp</dimen>
+    <dimen name="dialog_corner_radius">@dimen/shape_hero</dimen>
+    
+    <!-- Tap Targets -->
+    <dimen name="icon_tap_target">36dp</dimen>
     <dimen name="fab_tap_target">56dp</dimen>
-    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_size">60dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="bulk_select_tap_target">44dp</dimen>
+    
+    <!-- Button & Search -->
     <dimen name="button_height">48dp</dimen>
-    <dimen name="icon_size">24dp</dimen>
-    <dimen name="icon_small">20dp</dimen>
-
-    <!-- Component-Specific Specs -->
-    <dimen name="hero_card_height">210dp</dimen>
-    <dimen name="status_pill_height">26dp</dimen>
-    <dimen name="status_pill_padding_h">10dp</dimen>
     <dimen name="search_bar_height">52dp</dimen>
-    <dimen name="filter_chip_height">40dp</dimen>
-    <dimen name="filter_chip_padding_h">14dp</dimen>
+    <dimen name="status_pill_height">26dp</dimen>
+    
+    <!-- Icon Sizes -->
+    <dimen name="icon_size">20dp</dimen>
+    <dimen name="icon_size_small">10dp</dimen>
 
-    <!-- Segmented Progress Bar -->
-    <dimen name="segmented_tick_width">4dp</dimen>
-    <dimen name="segmented_tick_height">4dp</dimen>
-    <dimen name="segmented_tick_gap">4dp</dimen>
+    <!-- Segmented Progress Bar & Hero Card -->
+    <dimen name="segmented_tick_width">3dp</dimen>
+    <dimen name="segmented_tick_height">14dp</dimen>
+    <dimen name="segmented_tick_gap">2dp</dimen>
     <dimen name="nba_peek_offset">6dp</dimen>
+    <dimen name="hero_card_height">210dp</dimen>
     
-    <!-- Text Sizes -->
-    <dimen name="text_display">30sp</dimen>
-    <dimen name="text_title">18sp</dimen>
-    <dimen name="text_body">14sp</dimen>
-    <dimen name="text_label">12sp</dimen>
-    <dimen name="text_caption">12sp</dimen>
-    <dimen name="text_micro">10sp</dimen>
+    <!-- Navigation Bar -->
+    <dimen name="bottom_navigation_height">64dp</dimen>
+    <dimen name="floating_nav_bar_height">64dp</dimen>
+    <dimen name="floating_nav_bar_bottom_margin">24dp</dimen>
+    <dimen name="floating_nav_bar_side_margin">@dimen/spacing_lg</dimen>
+    <dimen name="floating_fab_size">60dp</dimen>
+    <dimen name="floating_nav_bar_corner_radius">32dp</dimen>
 
-    <dimen name="text_display_large">57sp</dimen>
-    <dimen name="text_display_medium">45sp</dimen>
-    <dimen name="text_headline_large">30sp</dimen>
-    <dimen name="text_headline_medium">28sp</dimen>
-    <dimen name="text_title_large">22sp</dimen>
-    <dimen name="text_body_large">16sp</dimen>
-    <dimen name="text_body_medium">14sp</dimen>
-    <dimen name="text_label_large">14sp</dimen>
-    <dimen name="text_label_medium">12sp</dimen>
-    <dimen name="text_label_small">10sp</dimen>
-    
-    <!-- Card and Navigation Specs -->
-    <dimen name="card_elevation">0dp</dimen>
-    <dimen name="list_item_height">76dp</dimen>
-    <dimen name="bottom_navigation_height">60dp</dimen>
-    <dimen name="floating_nav_bar_height">60dp</dimen>
-    <dimen name="floating_nav_bar_bottom_margin">16dp</dimen>
-    <dimen name="floating_nav_bar_side_margin">20dp</dimen>
-    <dimen name="floating_fab_size">56dp</dimen>
+    <!-- Text Sizes (Referenced by styles or legacy overrides) -->
+    <dimen name="text_display">28sp</dimen>
+    <dimen name="text_title">18sp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_label">13sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+    <dimen name="text_micro">11sp</dimen>
+
+    <!-- List Item -->
+    <dimen name="list_item_height">56dp</dimen>
 </resources>

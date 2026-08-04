@@ -8,30 +8,17 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <!-- Theme Option -->
+    <!-- System Theme Option -->
     <LinearLayout
-        android:id="@+id/option_theme_dark"
+        android:id="@+id/option_theme_system"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_setting_option_selected"
+        android:background="@drawable/bg_setting_card"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="14dp">
-
-        <FrameLayout
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@drawable/bg_setting_icon_circle">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_palette"
-                app:tint="@color/vega_primary" />
-        </FrameLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -43,25 +30,92 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dark Mode (Vega)"
-                android:textColor="#FFFFFF"
+                android:text="System Default"
+                android:textColor="@color/vega_on_background"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_check_system"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="@color/vega_primary" />
+    </LinearLayout>
+
+    <!-- Dark Theme Option -->
+    <LinearLayout
+        android:id="@+id/option_theme_dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_setting_card"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Default deep dark linear gradient theme"
-                android:textColor="#8E9096"
-                android:textSize="12sp" />
+                android:text="Dark Mode"
+                android:textColor="@color/vega_on_background"
+                android:textSize="15sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/iv_check_dark"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:src="@drawable/ic_check"
-            android:visibility="visible"
+            android:visibility="gone"
+            app:tint="@color/vega_primary" />
+    </LinearLayout>
+
+    <!-- Light Theme Option -->
+    <LinearLayout
+        android:id="@+id/option_theme_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_setting_card"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Light Mode"
+                android:textColor="@color/vega_on_background"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_check_light"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
             app:tint="@color/vega_primary" />
     </LinearLayout>
 </LinearLayout>

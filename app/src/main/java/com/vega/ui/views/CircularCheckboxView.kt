@@ -12,7 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
+import android.graphics.Color
 import com.vega.R
+import com.vega.ui.theme.ThemeManager
 
 class CircularCheckboxView @JvmOverloads constructor(
     context: Context,
@@ -36,12 +38,12 @@ class CircularCheckboxView @JvmOverloads constructor(
     private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = dpToPx(1.5f)
-        color = ContextCompat.getColor(context, R.color.vega_accent_amber)
+        color = ThemeManager.accentAmber(context)
     }
 
     private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.vega_accent_green)
+        color = ThemeManager.accentGreen(context)
     }
 
     private val checkmarkPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -49,7 +51,7 @@ class CircularCheckboxView @JvmOverloads constructor(
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
         strokeWidth = dpToPx(2f)
-        color = ContextCompat.getColor(context, R.color.vega_on_background)
+        color = Color.WHITE
     }
 
     private val circleBounds = RectF()
@@ -71,8 +73,8 @@ class CircularCheckboxView @JvmOverloads constructor(
 
     private val springAnimation = SpringAnimation(this, springAnimProperty).apply {
         spring = SpringForce().apply {
-            stiffness = 400f
-            dampingRatio = 0.8f
+            stiffness = SpringForce.STIFFNESS_MEDIUM
+            dampingRatio = 0.5f // Tuned for a satisfying pop/overshoot
         }
     }
 
@@ -134,35 +136,19 @@ class CircularCheckboxView @JvmOverloads constructor(
         pathMeasure.setPath(checkmarkPath, false)
     }
 
-    var isSquare: Boolean = false
-        set(value) {
-            field = value
-            invalidate()
-        }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val radius = circleBounds.width() / 2f
         val cx = circleBounds.centerX()
         val cy = circleBounds.centerY()
 
-        if (isSquare) {
-            val rx = dpToPx(5f)
-            if (fillProgress > 0f || isSelectionMode) {
-                canvas.drawRoundRect(circleBounds, rx, rx, fillPaint)
-            }
-            if (fillProgress < 1f && !checked) {
-                canvas.drawRoundRect(circleBounds, rx, rx, strokePaint)
-            }
-        } else {
-            if (fillProgress > 0f || isSelectionMode) {
-                val fillRadius = if (isSelectionMode && checked) radius else radius * fillProgress
-                canvas.drawCircle(cx, cy, fillRadius, fillPaint)
-            }
+        if (fillProgress > 0f || isSelectionMode) {
+            val fillRadius = if (isSelectionMode && checked) radius else radius * fillProgress
+            canvas.drawCircle(cx, cy, fillRadius, fillPaint)
+        }
 
-            if (fillProgress < 1f && !checked) {
-                canvas.drawCircle(cx, cy, radius, strokePaint)
-            }
+        if (fillProgress < 1f && !checked) {
+            canvas.drawCircle(cx, cy, radius, strokePaint)
         }
 
         if (fillProgress > 0f) {

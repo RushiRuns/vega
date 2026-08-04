@@ -11,6 +11,7 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.vega.R
+import com.vega.ui.theme.ThemeManager
 
 class SegmentedProgressBar @JvmOverloads constructor(
     context: Context,
@@ -29,13 +30,12 @@ class SegmentedProgressBar @JvmOverloads constructor(
 
     private val filledPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.vega_primary)
+        color = ThemeManager.accentGreen(context)
     }
 
     private val emptyPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        val borderColor = ContextCompat.getColor(context, R.color.vega_border)
-        color = ColorUtils.setAlphaComponent(borderColor, 102) // 40% alpha
+        color = ThemeManager.surfaceElevated(context)
     }
 
     private var tickRects = Array(tickCount) { RectF() }

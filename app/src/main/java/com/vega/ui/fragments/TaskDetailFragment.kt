@@ -28,6 +28,7 @@ import com.vega.databinding.PopupPriorityBinding
 import com.vega.databinding.PopupRecurrenceBinding
 import com.vega.databinding.PopupStateBinding
 import com.vega.ui.viewmodels.TaskDetailViewModel
+import com.vega.ui.theme.ThemeManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -310,28 +311,28 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
 
     private fun updatePriority(priority: TaskPriority) {
         selectedPriority = priority
-        val (text, colorHex) = when (priority) {
-            TaskPriority.HIGH   -> "High"   to "#E94560"
-            TaskPriority.MEDIUM -> "Medium" to "#F2A65A"
-            TaskPriority.LOW    -> "Low"    to "#3171C6"
-            else                -> "None"   to "#8E9096"
+        val (text, color) = when (priority) {
+            TaskPriority.HIGH   -> "High"   to ThemeManager.accentRed(requireContext())
+            TaskPriority.MEDIUM -> "Medium" to ThemeManager.accentAmber(requireContext())
+            TaskPriority.LOW    -> "Low"    to ThemeManager.accentBlue(requireContext())
+            else                -> "None"   to ThemeManager.textTertiary(requireContext())
         }
         binding.tvPriorityValue.text = text
-        binding.tvPriorityValue.setTextColor(Color.parseColor(colorHex))
-        binding.ivPriorityDot.backgroundTintList = ColorStateList.valueOf(Color.parseColor(colorHex))
+        binding.tvPriorityValue.setTextColor(color)
+        binding.ivPriorityDot.backgroundTintList = ColorStateList.valueOf(color)
     }
 
     private fun updateState(state: TaskState) {
         selectedState = state
-        val (text, iconRes, colorHex) = when (state) {
-            TaskState.TODAY    -> Triple("Today",    R.drawable.ic_nav_today,    "#F2A65A")
-            TaskState.UPCOMING -> Triple("Upcoming", R.drawable.ic_nav_upcoming, "#A259FF")
-            TaskState.DONE     -> Triple("Done",     R.drawable.ic_check,        "#4ECDC4")
-            else               -> Triple("Inbox",    R.drawable.ic_nav_inbox,    "#3171C6")
+        val (text, iconRes, color) = when (state) {
+            TaskState.TODAY    -> Triple("Today",    R.drawable.ic_nav_today,    ThemeManager.accentAmber(requireContext()))
+            TaskState.UPCOMING -> Triple("Upcoming", R.drawable.ic_nav_upcoming, ThemeManager.accentViolet(requireContext()))
+            TaskState.DONE     -> Triple("Done",     R.drawable.ic_check,        ThemeManager.accentGreen(requireContext()))
+            else               -> Triple("Inbox",    R.drawable.ic_nav_inbox,    ThemeManager.accentBlue(requireContext()))
         }
         binding.tvStateValue.text = text
         binding.ivStateIcon.setImageResource(iconRes)
-        binding.ivStateIcon.setColorFilter(Color.parseColor(colorHex))
+        binding.ivStateIcon.setColorFilter(color)
     }
 
     private fun updateRecurrence(ruleStr: String?) {
@@ -464,7 +465,11 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         allTags.forEach { tagItem ->
             val isChecked = currentlySelectedIds.contains(tagItem.id)
             val tagColorHex = tagItem.colorHex.ifBlank { "#3171C6" }
-            val parsedColor = runCatching { Color.parseColor(tagColorHex) }.getOrDefault(Color.parseColor("#3171C6"))
+            val parsedColor = runCatching { Color.parseColor(tagColorHex) }.getOrDefault(ThemeManager.accentBlue(requireContext()))
+            
+            val surfaceElevated = ThemeManager.surfaceElevated(requireContext())
+            val borderColor = ThemeManager.border(requireContext())
+            val textColor = ThemeManager.textPrimary(requireContext())
 
             val chip = Chip(requireContext()).apply {
                 id = View.generateViewId()
@@ -477,7 +482,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                     chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
                     chipIconTint = ColorStateList.valueOf(parsedColor)
                     isChipIconVisible = true
-                    chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#1C1D22"))
+                    chipBackgroundColor = ColorStateList.valueOf(surfaceElevated)
                     chipStrokeColor = ColorStateList.valueOf(parsedColor)
                     chipStrokeWidth = 1.5f.dpToPx()
                     setTextColor(parsedColor)
@@ -490,10 +495,10 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
                     chipIcon = dotDrawable
                     chipIconTint = null
                     isChipIconVisible = true
-                    chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#1C1D22"))
-                    chipStrokeColor = ColorStateList.valueOf(Color.parseColor("#2A2C34"))
+                    chipBackgroundColor = ColorStateList.valueOf(surfaceElevated)
+                    chipStrokeColor = ColorStateList.valueOf(borderColor)
                     chipStrokeWidth = 1f.dpToPx()
-                    setTextColor(Color.parseColor("#FFFFFF"))
+                    setTextColor(textColor)
                 }
 
                 chipCornerRadius = 50f

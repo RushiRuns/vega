@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Tonal Pill Task Card Background:
-    - Base: vega_surface (#1C1C1E)
-    - Corner radius: 16dp (shape.medium)
--->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Layer 1: Solid surface fill -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/vega_surface" />
-            <corners android:radius="@dimen/shape_medium_radius" />
-        </shape>
-    </item>
-
-</layer-list>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/vega_surface" />
+    <corners android:radius="@dimen/shape_medium" />
+</shape>

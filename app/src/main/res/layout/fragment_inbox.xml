@@ -28,7 +28,7 @@
                     android:id="@+id/layout_normal_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/screen_margin_horizontal"
+                    android:paddingHorizontal="20dp"
                     android:paddingTop="28dp"
                     android:paddingBottom="12dp"
                     android:visibility="visible">
@@ -45,10 +45,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Inbox"
-                            android:textAppearance="@style/TextAppearance.Vega.HeadlineSmall"
-                            android:textColor="@color/vega_on_background"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/TextAppearance.Vega.HeadlineLarge"
+                            android:textColor="@color/vega_on_background" />
 
                         <TextView
                             android:id="@+id/tv_inbox_subtitle"
@@ -56,9 +54,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="3 tasks pending schedule"
-                            android:textAppearance="@style/TextAppearance.Vega.Body"
-                            android:textColor="@color/vega_on_surface"
-                            android:textSize="13sp" />
+                            android:textAppearance="@style/TextAppearance.Vega.BodyMedium"
+                            android:textColor="@color/vega_on_surface_muted" />
                     </LinearLayout>
 
                     <!-- Aligned Select Pill Button -->
@@ -166,9 +163,9 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:singleLine="true"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#8E9096"
-                    android:textSize="14sp" />
+                    android:textColor="@color/vega_on_background"
+                    android:textColorHint="@color/vega_on_surface_muted"
+                    android:textAppearance="@style/TextAppearance.Vega.BodyMedium" />
             </LinearLayout>
 
             <!-- 2. Filter Pills Under Search Bar (All, Priority, Tags) -->
@@ -198,9 +195,8 @@
                         android:paddingHorizontal="18dp"
                         android:paddingVertical="8dp"
                         android:text="All"
-                        android:textColor="#FFFFFF"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/vega_background"
+                        android:textAppearance="@style/TextAppearance.Vega.LabelMedium" />
 
                     <!-- Pill 2: Priority (Clean text pill without dot) -->
                     <TextView
@@ -214,9 +210,8 @@
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="8dp"
                         android:text="Priority"
-                        android:textColor="#D0D2DC"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/vega_on_surface"
+                        android:textAppearance="@style/TextAppearance.Vega.LabelMedium" />
 
                     <!-- Pill 3: Tags -->
                     <TextView
@@ -230,9 +225,8 @@
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="8dp"
                         android:text="Tags"
-                        android:textColor="#D0D2DC"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/vega_on_surface"
+                        android:textAppearance="@style/TextAppearance.Vega.LabelMedium" />
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -259,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
                         android:paddingVertical="0dp"
-                        tools:listitem="@layout/item_task_today" />
+                        tools:listitem="@layout/item_task" />
 
                     <!-- Empty State View -->
                     <LinearLayout

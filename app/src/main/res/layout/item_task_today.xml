@@ -4,17 +4,16 @@
     android:id="@+id/card_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/screen_margin_horizontal"
-    android:layout_marginVertical="5dp"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:strokeWidth="0dp"
-    app:cardBackgroundColor="@android:color/transparent">
+    app:cardBackgroundColor="@color/vega_surface"
+    app:strokeWidth="0dp">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_mac_glass_task_row">
+        android:layout_height="wrap_content">
 
         <!-- Foreground Content Layout -->
         <LinearLayout
@@ -22,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="14dp"
+            android:paddingVertical="16dp"
             android:paddingHorizontal="16dp"
             android:gravity="center_vertical"
             android:background="?attr/selectableItemBackground">
@@ -45,23 +44,17 @@
                     android:id="@+id/tv_task_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Vega.Title"
-                    android:textColor="@color/vega_on_background"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/TextAppearance.Vega.TitleMedium"
+                    android:textColor="@color/vega_on_background" />
 
-                <!-- Task Due Date / Time / Location metadata -->
+                <!-- Task Due Date -->
                 <TextView
                     android:id="@+id/tv_task_due_date"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:gravity="center_vertical"
-                    android:drawableStart="@drawable/ic_meta_clock"
-                    android:drawablePadding="4dp"
-                    app:drawableTint="@color/vega_on_surface_muted"
-                    android:textAppearance="@style/TextAppearance.Vega.Label"
-                    android:textColor="@color/vega_on_surface_muted"
-                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="@style/TextAppearance.Vega.BodyMedium"
+                    android:textColor="@color/vega_on_surface"
                     android:visibility="gone" />
 
                 <!-- Recurrence Indicator Row -->
@@ -69,7 +62,7 @@
                     android:id="@+id/layout_task_recurrence"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:visibility="gone">
@@ -85,33 +78,28 @@
                         android:id="@+id/tv_task_recurrence"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.Vega.Caption"
+                        android:textAppearance="@style/TextAppearance.Vega.LabelMedium"
                         android:textColor="@color/vega_recurring_accent" />
                 </LinearLayout>
 
-                <!-- Tags ChipGroup Row -->
-                <com.google.android.material.chip.ChipGroup
+                <!-- Tags / Status Chips Row -->
+                <LinearLayout
                     android:id="@+id/chip_group_task_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:chipSpacingHorizontal="4dp"
-                    app:singleLine="true"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
                     android:visibility="gone" />
+                    
             </LinearLayout>
 
             <!-- Priority Badge -->
-            <com.google.android.material.chip.Chip
+            <com.vega.ui.views.StatusPillView
                 android:id="@+id/chip_priority"
-                style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="gone"
-                app:chipMinHeight="@dimen/status_pill_height"
-                app:chipCornerRadius="@dimen/pill_corner_radius"
-                android:textAppearance="@style/TextAppearance.Vega.Label" />
+                android:layout_marginStart="8dp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -150,12 +138,4 @@
 
         </LinearLayout>
     </FrameLayout>
-
-    <!-- Divider kept for R.id compatibility; hidden since cards use their own separation -->
-    <View
-        android:id="@+id/view_item_divider"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
 </com.google.android.material.card.MaterialCardView>

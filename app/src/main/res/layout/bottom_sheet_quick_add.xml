@@ -165,7 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:backgroundTint="@color/vega_primary"
-            android:textColor="#121218"
+            android:textColor="@color/vega_background"
             android:text="@string/button_add" />
     </LinearLayout>
 </LinearLayout>

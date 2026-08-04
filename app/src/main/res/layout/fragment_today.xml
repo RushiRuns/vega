@@ -18,351 +18,78 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Hero Day Card Block -->
-            <FrameLayout
-                android:id="@+id/card_hero_day"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/hero_card_height"
-                android:layout_marginHorizontal="@dimen/screen_margin_horizontal"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_hero_card_gradient"
-                android:padding="@dimen/hero_card_padding">
-
-                <!-- Top Badges Row -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <!-- Left Translucent Badge -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:background="@drawable/bg_hero_badge_pill"
-                        android:paddingHorizontal="12dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:src="@drawable/ic_action_calendar"
-                            app:tint="@android:color/white" />
-
-                        <TextView
-                            android:id="@+id/tv_hero_left_badge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Today"
-                            android:textAppearance="@style/TextAppearance.Vega.Label"
-                            android:textColor="@android:color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <!-- Right Translucent Badge -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:background="@drawable/bg_hero_badge_pill"
-                        android:paddingHorizontal="12dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:src="@drawable/ic_meta_spark"
-                            app:tint="@android:color/white" />
-
-                        <TextView
-                            android:id="@+id/tv_hero_right_badge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Focus"
-                            android:textAppearance="@style/TextAppearance.Vega.Label"
-                            android:textColor="@android:color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Bottom Content Row -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:orientation="horizontal"
-                    android:gravity="bottom">
-
-                    <!-- Bottom Left: Day Name & Week Subtitle -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_day_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.Vega.Display"
-                            android:textColor="@android:color/white"
-                            android:textSize="30sp"
-                            android:textStyle="bold"
-                            tools:text="Wednesday" />
-
-                        <TextView
-                            android:id="@+id/tv_week_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Week 38"
-                            android:textAppearance="@style/TextAppearance.Vega.Body"
-                            android:textColor="#CCFFFFFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <!-- Bottom Right: Date Full -->
-                    <TextView
-                        android:id="@+id/tv_date_full"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:textAppearance="@style/TextAppearance.Vega.TitleLarge"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:text="Sept 20" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <!-- 7-Day Date Strip Container -->
             <LinearLayout
-                android:id="@+id/layout_date_strip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/screen_margin_horizontal"
-                android:layout_marginTop="16dp"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center_vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="32dp">
 
-                <!-- Mon -->
-                <LinearLayout
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_day_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="16dp"
+                        android:textAppearance="@style/TextAppearance.Vega.HeadlineLarge"
+                        android:textColor="@color/vega_on_background"
+                        tools:text="Fri" />
+
+                    <ImageView
+                        android:id="@+id/tv_orange_dot"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/bg_circle_orange" />
+                </FrameLayout>
+
+                <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="8dp">
+                    android:layout_weight="1" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="18"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="MON"
-                        android:textAppearance="@style/TextAppearance.Vega.Micro"
-                        android:textColor="@color/vega_on_surface_muted" />
-                </LinearLayout>
-
-                <!-- Tue -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tv_date_full"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="19"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="TUE"
-                        android:textAppearance="@style/TextAppearance.Vega.Micro"
-                        android:textColor="@color/vega_on_surface_muted" />
-                </LinearLayout>
-
-                <!-- Wed (Selected Pill) -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_hero_badge_pill"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_accent_blue"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="WED"
-                        android:textAppearance="@style/TextAppearance.Vega.Micro"
-                        android:textColor="@color/vega_accent_red"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Thu -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="21"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="THU"
-                        android:textAppearance="@style/TextAppearance.Vega.Micro"
-                        android:textColor="@color/vega_on_surface_muted" />
-                </LinearLayout>
-
-                <!-- Fri -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="22"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="FRI"
-                        android:textAppearance="@style/TextAppearance.Vega.Micro"
-                        android:textColor="@color/vega_on_surface_muted" />
-                </LinearLayout>
-
-                <!-- Sat -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="23"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="SAT"
-                        android:textAppearance="@style/TextAppearance.Vega.Micro"
-                        android:textColor="@color/vega_on_surface_muted" />
-                </LinearLayout>
-
-                <!-- Sun -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="24"
-                        android:textAppearance="@style/TextAppearance.Vega.Title"
-                        android:textColor="@color/vega_on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="SUN"
-                        android:textAppearance="@style/TextAppearance.Vega.Micro"
-                        android:textColor="@color/vega_on_surface_muted" />
-                </LinearLayout>
-
+                    android:gravity="end"
+                    android:lineSpacingExtra="4dp"
+                    android:textAppearance="@style/TextAppearance.Vega.LabelMedium"
+                    android:textColor="@color/vega_on_surface_muted"
+                    tools:text="January 17\n2024" />
             </LinearLayout>
 
-            <!-- Summary Greeting Block -->
+            <!-- Static Summary Greeting Block -->
             <TextView
                 android:id="@+id/tv_summary_greeting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/screen_margin_horizontal"
-                android:paddingTop="20dp"
-                android:paddingBottom="16dp"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp"
                 android:textAppearance="@style/TextAppearance.Vega.HeadlineSmall"
-                android:textSize="20sp"
                 android:textColor="@color/vega_on_background"
                 android:lineSpacingMultiplier="1.2"
-                android:text="Good morning, Alexey. You have 3 meetings, 2 tasks and 1 habit today." />
+                android:text="Good morning, Alexey. You have 3 meetings, 2 tasks and 1 habit today. You're mostly free after 4 pm." />
 
-            <!-- Tasks Section Container -->
+            <!-- Tasks Section Header Title -->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingHorizontal="24dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:text="Tasks"-->
+<!--                android:textAppearance="@style/TextAppearance.Vega.Title"-->
+<!--                android:textColor="@color/vega_on_background"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold" />-->
+
+            <!-- Tasks Section Container (transparent, individual cards handle their own style) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_tasks_container"
                 android:layout_width="match_parent"
@@ -409,7 +136,7 @@
                             android:layout_marginTop="16dp"
                             android:gravity="center"
                             android:text="@string/empty_today"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textAppearance="@style/TextAppearance.Vega.BodyMedium"
                             android:textColor="@color/vega_on_surface_muted" />
                     </LinearLayout>
                 </LinearLayout>

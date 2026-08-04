@@ -21,6 +21,7 @@ import com.vega.ui.adapters.TaskListAdapter
 import com.vega.ui.viewmodels.TodayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import com.vega.ui.theme.ThemeManager
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -44,14 +45,14 @@ class TodayFragment : Fragment() {
             val childCount = recyclerView.childCount
             for (i in 0 until minOf(childCount, 5)) {
                 val child = recyclerView.getChildAt(i) ?: continue
-                child.translationY = 60f
+                child.translationY = 80f
                 child.alpha = 0f
                 child.animate()
                     .translationY(0f)
                     .alpha(1f)
-                    .setStartDelay(i * 30L)
-                    .setDuration(150)
-                    .setInterpolator(android.view.animation.DecelerateInterpolator())
+                    .setStartDelay(i * 50L)
+                    .setDuration(300)
+                    .setInterpolator(android.view.animation.OvershootInterpolator(1.0f))
                     .start()
             }
         }
@@ -76,13 +77,11 @@ class TodayFragment : Fragment() {
 
     private fun setupHeaderDate() {
         val calendar = Calendar.getInstance()
-        val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
-        val dateFormat = SimpleDateFormat("MMM d", Locale.getDefault())
-        val weekFormat = SimpleDateFormat("'Week' w", Locale.getDefault())
+        val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MMMM d\nyyyy", Locale.getDefault())
 
         binding.tvDayName.text = dayFormat.format(calendar.time)
         binding.tvDateFull.text = dateFormat.format(calendar.time)
-        binding.tvWeekInfo.text = weekFormat.format(calendar.time)
         setupSummaryGreeting()
     }
 
@@ -90,8 +89,8 @@ class TodayFragment : Fragment() {
         val context = requireContext()
         val builder = android.text.SpannableStringBuilder()
 
-        val mutedColor = android.graphics.Color.parseColor("#7A7A7A")
-        val whiteColor = androidx.core.content.ContextCompat.getColor(context, R.color.vega_on_background)
+        val mutedColor = ThemeManager.textTertiary(context)
+        val whiteColor = ThemeManager.textPrimary(context)
 
         fun appendMuted(text: String) {
             val start = builder.length
@@ -162,7 +161,7 @@ class TodayFragment : Fragment() {
             onItemLongClick = { task ->
                 showTaskDetailSheet(task.id)
             },
-            itemLayoutRes = R.layout.item_task_today
+            layoutResId = R.layout.item_task_today
         )
         binding.rvTodayTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTodayTasks.adapter = adapter

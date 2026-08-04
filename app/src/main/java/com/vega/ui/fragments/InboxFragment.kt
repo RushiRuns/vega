@@ -83,8 +83,7 @@ class InboxFragment : Fragment() {
                 } else {
                     adapter.enterSelectionMode(task.id)
                 }
-            },
-            itemLayoutRes = R.layout.item_task_today
+            }
         )
         binding.rvInboxTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvInboxTasks.adapter = adapter
@@ -237,14 +236,14 @@ class InboxFragment : Fragment() {
             val childCount = recyclerView.childCount
             for (i in 0 until minOf(childCount, 5)) {
                 val child = recyclerView.getChildAt(i) ?: continue
-                child.translationY = 60f
+                child.translationY = 80f
                 child.alpha = 0f
                 child.animate()
                     .translationY(0f)
                     .alpha(1f)
-                    .setStartDelay(i * 30L)
-                    .setDuration(150)
-                    .setInterpolator(android.view.animation.DecelerateInterpolator())
+                    .setStartDelay(i * 50L)
+                    .setDuration(300)
+                    .setInterpolator(android.view.animation.OvershootInterpolator(1.0f))
                     .start()
             }
         }

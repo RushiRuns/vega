@@ -4,10 +4,10 @@
     android:id="@+id/card_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/screen_margin_horizontal"
-    android:layout_marginVertical="5dp"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/card_elevation"
+    android:layout_marginHorizontal="@dimen/spacing_lg"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="@dimen/shape_medium"
+    app:cardElevation="0dp"
     app:cardBackgroundColor="@color/vega_surface"
     app:strokeWidth="0dp">
 
@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="14dp"
-            android:paddingHorizontal="16dp"
+            android:paddingVertical="@dimen/spacing_md"
+            android:paddingHorizontal="@dimen/spacing_lg"
             android:gravity="center_vertical"
             android:background="?attr/selectableItemBackground">
 
@@ -44,7 +44,7 @@
                     android:id="@+id/tv_task_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Vega.Title"
+                    android:textAppearance="@style/TextAppearance.Vega.TitleMedium"
                     android:textColor="@color/vega_on_background" />
 
                 <!-- Task Due Date -->
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textAppearance="@style/TextAppearance.Vega.Label"
+                    android:textAppearance="@style/TextAppearance.Vega.BodyMedium"
                     android:textColor="@color/vega_on_surface"
                     android:visibility="gone" />
 
@@ -78,33 +78,28 @@
                         android:id="@+id/tv_task_recurrence"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.Vega.Caption"
+                        android:textAppearance="@style/TextAppearance.Vega.LabelMedium"
                         android:textColor="@color/vega_recurring_accent" />
                 </LinearLayout>
 
-                <!-- Tags ChipGroup Row -->
-                <com.google.android.material.chip.ChipGroup
+                <!-- Tags / Status Chips Row -->
+                <LinearLayout
                     android:id="@+id/chip_group_task_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:chipSpacingHorizontal="4dp"
-                    app:singleLine="true"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
                     android:visibility="gone" />
+                    
             </LinearLayout>
 
             <!-- Priority Badge -->
-            <com.google.android.material.chip.Chip
+            <com.vega.ui.views.StatusPillView
                 android:id="@+id/chip_priority"
-                style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="gone"
-                app:chipMinHeight="@dimen/status_pill_height"
-                app:chipCornerRadius="@dimen/pill_corner_radius"
-                android:textAppearance="@style/TextAppearance.Vega.Label" />
+                android:layout_marginStart="8dp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

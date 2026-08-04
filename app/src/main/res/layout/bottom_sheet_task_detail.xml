@@ -4,7 +4,7 @@
     android:id="@+id/scroll_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_dark_gradient"
+    android:background="@color/vega_surface_elevated"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:fillViewport="true">
@@ -68,7 +68,7 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="7dp"
                 android:text="SAVE"
-                android:textColor="#121218"
+                android:textColor="@color/vega_background"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -87,9 +87,8 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.05"
                 android:text="TITLE"
-                android:textColor="#8E9096"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textColor="@color/vega_on_surface_muted"
+                android:textAppearance="@style/TextAppearance.Vega.Label" />
 
             <EditText
                 android:id="@+id/et_title"
@@ -99,10 +98,9 @@
                 android:background="@null"
                 android:hint="Task title..."
                 android:inputType="textCapSentences"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#8E9096"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="@color/vega_on_background"
+                android:textColorHint="@color/vega_on_surface_muted"
+                android:textAppearance="@style/TextAppearance.Vega.BodyMedium" />
         </LinearLayout>
 
         <!-- 2. DUE DATE Field Card -->
@@ -122,9 +120,8 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.05"
                 android:text="DUE DATE"
-                android:textColor="#8E9096"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textColor="@color/vega_on_surface_muted"
+                android:textAppearance="@style/TextAppearance.Vega.Label" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -158,9 +155,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="No Date Assigned"
-                        android:textColor="#FFFFFF"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/vega_on_background"
+                        android:textAppearance="@style/TextAppearance.Vega.BodyMedium" />
                 </LinearLayout>
 
                 <ImageView
@@ -171,7 +167,7 @@
                     android:layout_centerVertical="true"
                     android:src="@android:drawable/ic_menu_close_clear_cancel"
                     android:visibility="gone"
-                    app:tint="#8E9096" />
+                    app:tint="@color/vega_on_surface_muted" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -201,9 +197,8 @@
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.05"
                     android:text="PRIORITY"
-                    android:textColor="#8E9096"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/vega_on_surface_muted"
+                    android:textAppearance="@style/TextAppearance.Vega.Label" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -230,9 +225,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="None"
-                            android:textColor="#8E9096"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textColor="@color/vega_on_surface_muted"
+                            android:textAppearance="@style/TextAppearance.Vega.BodyMedium" />
                     </LinearLayout>
 
                     <ImageView
@@ -242,7 +236,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_chevron_down"
-                        app:tint="#8E9096" />
+                        app:tint="@color/vega_on_surface_muted" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -264,9 +258,8 @@
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.05"
                     android:text="STATE"
-                    android:textColor="#8E9096"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/vega_on_surface_muted"
+                    android:textAppearance="@style/TextAppearance.Vega.Label" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -294,9 +287,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Inbox"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textColor="@color/vega_on_background"
+                            android:textAppearance="@style/TextAppearance.Vega.BodyMedium" />
                     </LinearLayout>
 
                     <ImageView
@@ -306,7 +298,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_chevron_down"
-                        app:tint="#8E9096" />
+                        app:tint="@color/vega_on_surface_muted" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -328,9 +320,8 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.05"
                 android:text="RECURRENCE"
-                android:textColor="#8E9096"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textColor="@color/vega_on_surface_muted"
+                android:textAppearance="@style/TextAppearance.Vega.Label" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -364,9 +355,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="None"
-                        android:textColor="#FFFFFF"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/vega_on_background"
+                        android:textAppearance="@style/TextAppearance.Vega.BodyMedium" />
                 </LinearLayout>
 
                 <ImageView
@@ -376,7 +366,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_chevron_down"
-                    app:tint="#8E9096" />
+                    app:tint="@color/vega_on_surface_muted" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -400,9 +390,8 @@
                     android:layout_centerVertical="true"
                     android:letterSpacing="0.05"
                     android:text="TAGS"
-                    android:textColor="#8E9096"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/vega_on_surface_muted"
+                    android:textAppearance="@style/TextAppearance.Vega.Label" />
 
                 <TextView
                     android:id="@+id/btn_manage_tags_detail"
@@ -413,9 +402,8 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="+ Manage Tags"
-                    android:textColor="#1AD1B9"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/vega_primary"
+                    android:textAppearance="@style/TextAppearance.Vega.BodyMedium" />
             </RelativeLayout>
 
             <com.google.android.material.chip.ChipGroup
@@ -441,9 +429,8 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.05"
                 android:text="NOTES"
-                android:textColor="#8E9096"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textColor="@color/vega_on_surface_muted"
+                android:textAppearance="@style/TextAppearance.Vega.Label" />
 
             <EditText
                 android:id="@+id/et_notes"
@@ -455,9 +442,9 @@
                 android:hint="Add notes..."
                 android:inputType="textMultiLine|textCapSentences"
                 android:minLines="3"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#8E9096"
-                android:textSize="14sp" />
+                android:textColor="@color/vega_on_background"
+                android:textColorHint="@color/vega_on_surface_muted"
+                android:textAppearance="@style/TextAppearance.Vega.Body" />
         </LinearLayout>
 
     </LinearLayout>

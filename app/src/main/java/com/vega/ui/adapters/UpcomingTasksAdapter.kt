@@ -18,6 +18,8 @@ import com.vega.data.database.TaskPriority
 import com.vega.data.database.TaskState
 import com.vega.databinding.ItemTaskBinding
 import com.vega.ui.models.UpcomingListItem
+import com.vega.ui.theme.ThemeManager
+import com.vega.ui.views.StatusPillView
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -127,10 +129,8 @@ class UpcomingTasksAdapter(
     override fun getItemViewType(position: Int): Int = TYPE_TASK
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task_today, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
         val binding = ItemTaskBinding.bind(view)
-        (binding.cardTask as? com.google.android.material.card.MaterialCardView)?.strokeWidth = 0
-        binding.circularCheckbox.isSquare = true
         return TaskViewHolder(binding)
     }
 
@@ -169,12 +169,12 @@ class UpcomingTasksAdapter(
             }
 
             // Stroke based on selection
-            val baseBorderColor = ContextCompat.getColor(context, R.color.vega_border)
+            val baseBorderColor = ThemeManager.border(context)
             val borderWithAlpha = ColorUtils.setAlphaComponent(baseBorderColor, 102) // 40% alpha
 
             if (isSelectionMode) {
                 val isSel = selectedTaskIds.contains(task.id)
-                binding.cardTask.strokeColor = if (isSel) ContextCompat.getColor(context, R.color.vega_primary) else borderWithAlpha
+                binding.cardTask.strokeColor = if (isSel) ThemeManager.accentBlue(context) else borderWithAlpha
                 binding.cardTask.strokeWidth = dpToPx(context, if (isSel) 2 else 1)
             } else {
                 binding.cardTask.strokeColor = borderWithAlpha
@@ -205,19 +205,16 @@ class UpcomingTasksAdapter(
                 binding.chipGroupTaskTags.removeAllViews()
                 binding.chipGroupTaskTags.visibility = View.VISIBLE
                 tags.forEach { tag ->
-                    val chip = com.google.android.material.chip.Chip(context).apply {
-                        text = tag.name
-                        chipMinHeight = context.resources.getDimension(R.dimen.status_pill_height)
-                        chipCornerRadius = context.resources.getDimension(R.dimen.pill_corner_radius)
-                        setTextAppearance(R.style.TextAppearance_Vega_Label)
-                        isClickable = false
-                        isFocusable = false
-                        val colorInt = try { Color.parseColor(tag.colorHex) } catch (e: Exception) { ContextCompat.getColor(context, R.color.vega_accent_green) }
-                        val bgWithAlpha = ColorUtils.setAlphaComponent(colorInt, 38) // ~15% alpha
-                        chipBackgroundColor = android.content.res.ColorStateList.valueOf(bgWithAlpha)
-                        setTextColor(colorInt)
+                    val pill = StatusPillView(context).apply {
+                        layoutParams = android.widget.LinearLayout.LayoutParams(
+                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            marginEnd = dpToPx(context, 4)
+                        }
+                        setCustomTag(tag.name, tag.colorHex)
                     }
-                    binding.chipGroupTaskTags.addView(chip)
+                    binding.chipGroupTaskTags.addView(pill)
                 }
             } else {
                 binding.chipGroupTaskTags.visibility = View.GONE
@@ -229,26 +226,7 @@ class UpcomingTasksAdapter(
             } catch (e: Exception) {
                 TaskPriority.NONE
             }
-
-            if (priority != TaskPriority.NONE) {
-                binding.chipPriority.visibility = View.VISIBLE
-                
-                val (colorRes, textRes) = when (priority) {
-                    TaskPriority.HIGH -> Pair(R.color.vega_priority_high, R.string.priority_high)
-                    TaskPriority.MEDIUM -> Pair(R.color.vega_priority_medium, R.string.priority_medium)
-                    TaskPriority.LOW -> Pair(R.color.vega_priority_low, R.string.priority_low)
-                    else -> Pair(android.R.color.transparent, R.string.priority_none)
-                }
-                val accentColor = ContextCompat.getColor(context, colorRes)
-                val bgWithAlpha = ColorUtils.setAlphaComponent(accentColor, 38) // ~15% alpha fill
-                binding.chipPriority.text = context.getString(textRes)
-                binding.chipPriority.chipBackgroundColor = android.content.res.ColorStateList.valueOf(bgWithAlpha)
-                binding.chipPriority.setTextColor(accentColor)
-                binding.chipPriority.chipMinHeight = context.resources.getDimension(R.dimen.status_pill_height)
-                binding.chipPriority.chipCornerRadius = context.resources.getDimension(R.dimen.pill_corner_radius)
-            } else {
-                binding.chipPriority.visibility = View.GONE
-            }
+            binding.chipPriority.setPriority(priority)
 
             // Handle actions overlay visibility
             val showOverlay = isActionsRevealed(task.id)

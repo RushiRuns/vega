@@ -24,11 +24,10 @@
                 android:id="@+id/card_calendar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/screen_margin_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="20dp"
-                app:cardCornerRadius="@dimen/card_section_corner_radius"
-                app:cardBackgroundColor="@color/vega_surface"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@android:color/transparent"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
 
@@ -919,7 +918,7 @@
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
                         android:paddingVertical="0dp"
-                        tools:listitem="@layout/item_task_today" />
+                        tools:listitem="@layout/item_task" />
 
                     <!-- Empty State View -->
                     <LinearLayout

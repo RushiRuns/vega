@@ -1,49 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Tonal Pill Design System Core Surfaces (Dark Primary Theme) -->
-    <color name="vega_background">#0B0B0D</color>
-    <color name="vega_surface">#1C1C1E</color>
-    <color name="vega_surface_task">#1C1C1E</color>
-    <color name="vega_surface_elevated">#242426</color>
-    <color name="vega_surface_variant">#2C2C2E</color>
-    <color name="vega_surface_overlay">#2C2C2E</color>
-    <color name="vega_border">#3A3A3C</color>
+    <!-- Raw Palette -->
+    <color name="vega_palette_blue_500">#0A84FF</color>
+    <color name="vega_palette_green_500">#34C759</color>
+    <color name="vega_palette_amber_400">#FFC542</color>
+    <color name="vega_palette_red_500">#FF3B30</color>
 
-    <!-- Content & Text Tokens -->
-    <color name="vega_on_background">#FFFFFF</color>
-    <color name="vega_on_surface">#8E8E93</color>
-    <color name="vega_on_surface_muted">#8E8E93</color>
-    <color name="vega_text_tertiary">#636366</color>
+    <color name="vega_palette_grey_950">#0B0B0D</color>
+    <color name="vega_palette_grey_900">#1C1C1E</color>
+    <color name="vega_palette_grey_800">#242426</color>
+    <color name="vega_palette_grey_700">#2C2C2E</color>
+    <color name="vega_palette_grey_500">#8E8E93</color>
+    <color name="vega_palette_grey_300">#AEAEB2</color>
 
-    <!-- Accent & Semantic Colors -->
-    <color name="vega_primary">#0A84FF</color>
+    <color name="vega_palette_white">#FFFFFF</color>
+    <color name="vega_palette_off_white">#F2F2F5</color>
+
+    <!-- Core Palette: Dark -->
+    <color name="vega_dark_background">#0B0B0D</color>
+    <color name="vega_dark_surface">#1C1C1E</color>
+    <color name="vega_dark_surface_elevated">#2C2C2E</color>
+    <color name="vega_dark_surface_overlay">#242426</color>
+    <color name="vega_dark_border">#3A3A3C</color>
+
+    <!-- Core Palette: Light -->
+    <color name="vega_light_background">#F2F2F5</color>
+    <color name="vega_light_surface">#FFFFFF</color>
+    <color name="vega_light_surface_elevated">#ECECEE</color>
+    <color name="vega_light_surface_overlay">#E0E0E3</color>
+    <color name="vega_light_border">#E0E0E3</color>
+
+    <!-- Core Text: Dark -->
+    <color name="vega_dark_text_primary">#FFFFFF</color>
+    <color name="vega_dark_text_secondary">#FFFFFF</color>
+    <color name="vega_dark_text_tertiary">#8E8E93</color>
+
+    <!-- Core Text: Light -->
+    <color name="vega_light_text_primary">#1C1C1E</color>
+    <color name="vega_light_text_secondary">#1C1C1E</color>
+    <color name="vega_light_text_tertiary">#8E8E93</color>
+
+    <!-- Shared Accents -->
     <color name="vega_accent_blue">#0A84FF</color>
     <color name="vega_accent_green">#34C759</color>
     <color name="vega_accent_amber">#FFC542</color>
     <color name="vega_accent_red">#FF3B30</color>
     <color name="vega_accent_orange">#FF9500</color>
     <color name="vega_accent_violet">#8B5CF6</color>
+    <color name="vega_accent_blue_highlight">#1F0A84FF</color> <!-- 12% alpha -->
 
-    <!-- Priority & Status Mapping -->
-    <color name="vega_priority_high">#FF3B30</color>
-    <color name="vega_priority_medium">#FFC542</color>
-    <color name="vega_priority_low">#8E8E93</color>
-    <color name="vega_recurring_accent">#8B5CF6</color>
-    <color name="vega_success">#34C759</color>
-    <color name="vega_fab_orange">#0A84FF</color>
-    <color name="vega_nav_icon_active">#0A84FF</color>
-    <color name="vega_nav_icon_inactive">#8E8E93</color>
-    <color name="vega_floating_nav_bg">#1C1C1E</color>
+    <!-- Status Backgrounds (15% Alpha) -->
+    <color name="vega_status_success_bg">#2634C759</color>
+    <color name="vega_status_warning_bg">#26FFC542</color>
+    <color name="vega_status_error_bg">#26FF3B30</color>
+    <color name="vega_status_neutral_bg_light">#268E8E93</color>
+    <color name="vega_status_neutral_bg_dark">#268E8E93</color>
 
-    <!-- Status Pill Translucent Backgrounds (15% Alpha Fills) -->
-    <color name="status_green_bg">#2634C759</color>
-    <color name="status_blue_bg">#260A84FF</color>
-    <color name="status_amber_bg">#26FFC542</color>
-    <color name="status_red_bg">#26FF3B30</color>
-    <color name="status_orange_bg">#26FF9500</color>
-    <color name="status_violet_bg">#268B5CF6</color>
+    <!-- Extended Status Colors -->
+    <color name="status_success">#34C759</color>
+    <color name="status_warning">#FFC542</color>
+    <color name="status_active">#34C759</color>
+    <color name="status_success_container">#2634C759</color>
+    <color name="status_warning_container">#26FFC542</color>
 
-    <!-- Legacy / Material Aliases pointing to Tonal Pill Tokens -->
+    <!-- ============================================== -->
+    <!-- SEMANTIC TOKENS (Defaults to Light)            -->
+    <!-- ============================================== -->
+    <color name="vega_background">@color/vega_light_background</color>
+    <color name="vega_surface">@color/vega_light_surface</color>
+    <color name="vega_surface_elevated">@color/vega_light_surface_elevated</color>
+    <color name="vega_surface_overlay">@color/vega_light_surface_overlay</color>
+    <color name="vega_border">@color/vega_light_border</color>
+
+    <color name="vega_on_background">@color/vega_light_text_primary</color>
+    <color name="vega_on_surface">@color/vega_light_text_secondary</color>
+    <color name="vega_on_surface_muted">@color/vega_light_text_tertiary</color>
+
+    <color name="vega_primary">@color/vega_accent_blue</color>
+    <color name="vega_priority_high">@color/vega_accent_red</color>
+    <color name="vega_priority_medium">@color/vega_accent_amber</color>
+    <color name="vega_priority_low">@color/vega_accent_blue</color>
+    <color name="vega_recurring_accent">@color/vega_accent_violet</color>
+    <color name="vega_success">@color/vega_accent_green</color>
+    <color name="vega_status_neutral_bg">@color/vega_status_neutral_bg_light</color>
+
+    <!-- Legacy / Material Aliases -->
     <color name="primary">@color/vega_primary</color>
     <color name="on_primary">#FFFFFF</color>
     <color name="primary_container">@color/vega_surface_elevated</color>
@@ -54,39 +95,25 @@
     <color name="secondary_container">@color/vega_surface_elevated</color>
     <color name="on_secondary_container">@color/vega_on_background</color>
     
-    <color name="error">@color/vega_accent_red</color>
+    <color name="error">@color/vega_priority_high</color>
     <color name="on_error">#FFFFFF</color>
-    <color name="error_container">@color/status_red_bg</color>
-    <color name="on_error_container">@color/vega_accent_red</color>
+    <color name="error_container">@color/vega_status_error_bg</color>
+    <color name="on_error_container">@color/vega_priority_high</color>
     
     <color name="background">@color/vega_background</color>
     <color name="surface">@color/vega_surface</color>
     <color name="on_surface">@color/vega_on_background</color>
-    <color name="surface_variant">@color/vega_surface_variant</color>
+    <color name="surface_variant">@color/vega_surface_elevated</color>
     <color name="on_surface_variant">@color/vega_on_surface</color>
     
     <color name="outline">@color/vega_border</color>
-    <color name="outline_variant">#3A3A3C</color>
+    <color name="outline_variant">@color/vega_border</color>
     
-    <color name="scrim">#000000</color>
-    
-    <!-- Task Priority Colors -->
-    <color name="priority_none">@color/vega_on_surface_muted</color>
-    <color name="priority_low">@color/vega_priority_low</color>
-    <color name="priority_medium">@color/vega_priority_medium</color>
-    <color name="priority_high">@color/vega_priority_high</color>
-    
-    <!-- Task State Colors -->
-    <color name="state_inbox">@color/vega_on_surface_muted</color>
-    <color name="state_today">@color/vega_accent_green</color>
-    <color name="state_upcoming">@color/vega_accent_amber</color>
-    <color name="state_done">@color/vega_accent_green</color>
-    
-    <!-- Task Card Colors -->
+    <color name="scrim">#80000000</color>
+
     <color name="task_card_background">@color/vega_surface</color>
     <color name="task_card_stroke">@color/vega_border</color>
     
-    <!-- Recurrence Colors -->
     <color name="recurrence_primary">@color/vega_recurring_accent</color>
     <color name="recurrence_container">@color/vega_surface_elevated</color>
     <color name="recurrence_stroke">@color/vega_border</color>

@@ -18,6 +18,7 @@ import android.os.Build
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.vega.ui.theme.ThemeManager
 import com.vega.R
 import com.vega.databinding.ActivityMainBinding
 import com.vega.ui.fragments.QuickAddBottomSheetFragment
@@ -126,6 +127,10 @@ class MainActivity : AppCompatActivity() {
             .setLaunchSingleTop(true)
             .setRestoreState(true)
             .setPopUpTo(R.id.todayFragment, false, true)
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .setPopEnterAnim(android.R.anim.fade_in)
+            .setPopExitAnim(android.R.anim.fade_out)
             .build()
         navController.navigate(destinationId, null, navOptions)
     }
@@ -137,18 +142,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateNavActiveState(destinationId: Int) {
-        val activeColor = ContextCompat.getColor(this, R.color.vega_nav_icon_active)
-        val inactiveColor = ContextCompat.getColor(this, R.color.vega_nav_icon_inactive)
+        val activeColor = ThemeManager.primary(this) // we need ThemeManager.primary or accentBlue
+        // Actually we used vega_primary. Let's define primary getter in ThemeManager.
+        // Wait, earlier I didn't add primary(). I added accentBlue(). Let's use textPrimary and textTertiary for nav, 
+        // or accentBlue for active.
+        val activeTint = ThemeManager.accentBlue(this)
+        val inactiveTint = ThemeManager.textTertiary(this)
 
-        fun updateTab(btn: android.widget.ImageButton, isActive: Boolean) {
-            btn.setColorFilter(if (isActive) activeColor else inactiveColor)
-            btn.setBackgroundResource(if (isActive) R.drawable.bg_nav_tab_active_pill else android.R.color.transparent)
-        }
+        binding.navBtnToday.setColorFilter(if (destinationId == R.id.todayFragment) activeTint else inactiveTint)
+        binding.navBtnToday.setBackgroundResource(if (destinationId == R.id.todayFragment) R.drawable.bg_nav_active_highlight else 0)
 
-        updateTab(binding.navBtnToday, destinationId == R.id.todayFragment)
-        updateTab(binding.navBtnUpcoming, destinationId == R.id.upcomingFragment)
-        updateTab(binding.navBtnInbox, destinationId == R.id.inboxFragment)
-        updateTab(binding.navBtnSettings, destinationId == R.id.settingsFragment)
+        binding.navBtnUpcoming.setColorFilter(if (destinationId == R.id.upcomingFragment) activeTint else inactiveTint)
+        binding.navBtnUpcoming.setBackgroundResource(if (destinationId == R.id.upcomingFragment) R.drawable.bg_nav_active_highlight else 0)
+
+        binding.navBtnInbox.setColorFilter(if (destinationId == R.id.inboxFragment) activeTint else inactiveTint)
+        binding.navBtnInbox.setBackgroundResource(if (destinationId == R.id.inboxFragment) R.drawable.bg_nav_active_highlight else 0)
+
+        binding.navBtnSettings.setColorFilter(if (destinationId == R.id.settingsFragment) activeTint else inactiveTint)
+        binding.navBtnSettings.setBackgroundResource(if (destinationId == R.id.settingsFragment) R.drawable.bg_nav_active_highlight else 0)
     }
 
     override fun onNewIntent(intent: Intent?) {
